@@ -4,7 +4,7 @@ namespace Psrearick\Containers\Events;
 
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Psrearick\Containers\Contracts\Item;
+use Psrearick\Containers\Models\Base\Item;
 
 class ItemWasCreated
 {

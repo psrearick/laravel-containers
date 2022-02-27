@@ -7,7 +7,7 @@ trait DefinesClass
     public static function bootDefinesClass() : void
     {
         static::saving(static function ($model) {
-            $model->model = self::class;
+            $model->model = get_class($model);
         });
     }
 }
