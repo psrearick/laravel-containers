@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton\Commands;
+namespace Psrearick\Containers\Commands;
 
 use Illuminate\Console\Command;
 
-class SkeletonCommand extends Command
+class ContainersCommand extends Command
 {
-    public $signature = 'skeleton';
+    public $signature = 'laravel-containers';
 
     public $description = 'My command';
 
