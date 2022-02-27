@@ -2,9 +2,9 @@
 
 namespace Psrearick\Containers;
 
+use Psrearick\Containers\Commands\ContainersCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use Psrearick\Containers\Commands\ContainersCommand;
 
 class ContainersServiceProvider extends PackageServiceProvider
 {
