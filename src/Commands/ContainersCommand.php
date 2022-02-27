@@ -6,11 +6,11 @@ use Illuminate\Console\Command;
 
 class ContainersCommand extends Command
 {
-    public $signature = 'laravel-containers';
-
     public $description = 'My command';
 
-    public function handle(): int
+    public $signature = 'laravel-containers';
+
+    public function handle() : int
     {
         $this->comment('All done');
 

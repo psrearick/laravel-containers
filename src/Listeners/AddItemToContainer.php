@@ -2,12 +2,13 @@
 
 namespace Psrearick\Containers\Listeners;
 
+use Illuminate\Support\Str;
 use Psrearick\Containers\Events\ItemWasCreated;
 
 class AddItemToContainer
 {
     public function handle(ItemWasCreated $event) : void
     {
-        // create item
+        $event->item->update(['uuid' => Str::uuid()->toString()]);
     }
 }

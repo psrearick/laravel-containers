@@ -8,12 +8,11 @@ return new class extends Migration
 {
     public function up() : void
     {
-        Schema::create('containers', static function (Blueprint $table) {
+        Schema::create('items', static function (Blueprint $table) {
             $table->id();
             $table->uuid();
+            $table->string('container_uuid');
             $table->string('model');
-            $table->unsignedInteger('_lft')->default(0);
-            $table->unsignedInteger('_rgt')->default(0);
             $table->timestamps();
             $table->softDeletes();
         });

@@ -17,8 +17,7 @@
     ],
     "require": {
         "php": "^8.0",
-        "spatie/laravel-package-tools": "^1.9.2",
-        "illuminate/contracts": "^9.0"
+        "spatie/laravel-package-tools": "^1.9.2"
     },
     "require-dev": {
         "nunomaduro/collision": "^6.0",
@@ -45,6 +44,7 @@
     },
     "scripts": {
         "analyse": "vendor/bin/phpstan analyse",
+        "fix": "tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --config=./.php_cs.dist.php",
         "test": "vendor/bin/pest",
         "test-coverage": "vendor/bin/pest --coverage"
     },

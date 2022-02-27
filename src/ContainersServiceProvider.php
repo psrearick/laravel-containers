@@ -2,14 +2,14 @@
 
 namespace Psrearick\Containers;
 
+use Psrearick\Containers\Commands\ContainersCommand;
 use Psrearick\Containers\Providers\EventServiceProvider;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use Psrearick\Containers\Commands\ContainersCommand;
 
 class ContainersServiceProvider extends PackageServiceProvider
 {
-    public function configurePackage(Package $package): void
+    public function configurePackage(Package $package) : void
     {
         /*
          * This class is a Package Service Provider

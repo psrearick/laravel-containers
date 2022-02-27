@@ -8,7 +8,8 @@ use Psrearick\Containers\Contracts\Item;
 
 class ItemWasCreated
 {
-    use Dispatchable, SerializesModels;
+    use Dispatchable;
+    use SerializesModels;
 
     public Item $item;
 
