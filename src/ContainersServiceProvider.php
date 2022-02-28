@@ -20,7 +20,9 @@ class ContainersServiceProvider extends PackageServiceProvider
             ->name('laravel-containers')
             ->hasConfigFile()
 //            ->hasViews()
-//            ->hasMigration('create_laravel-containers_table')
+            ->hasMigration('create_laravel-containers_table')
+            ->hasMigration('create_laravel-items_table')
+            ->hasMigration('create_laravel-container-items_table')
             ->hasCommand(ContainersCommand::class);
     }
 

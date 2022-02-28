@@ -2,14 +2,28 @@
 
 namespace Psrearick\Containers\Models\Base;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Psrearick\Containers\Models\ContainerItem;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Carbon;
 use Psrearick\Containers\Contracts\Container as ContainerContract;
-use Psrearick\Containers\Database\Factories\ContainerFactory;
 use Psrearick\Containers\Models\Traits\DefinesClass;
 use Psrearick\Containers\Models\Traits\HasUuid;
 
+/**
+ * Psrearick\Containers\Models\Base\Container
+ *
+ * @property int $id
+ * @property string $uuid
+ * @property string $model
+ * @property int $_lft
+ * @property int $_rgt
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property Carbon|null $deleted_at
+ * @property-read ContainerItem|null $containerItem
+ */
 abstract class Container extends Model implements ContainerContract
 {
     use DefinesClass;
@@ -17,10 +31,10 @@ abstract class Container extends Model implements ContainerContract
     use HasUuid;
     use SoftDeletes;
 
-    protected $guarded = [];
+    protected string $containerItemClass = ContainerItem::class;
 
-    protected static function newFactory() : ContainerFactory
+    public function containerItem() : BelongsTo
     {
-        return ContainerFactory::new();
+        return $this->belongsTo($this->containerItemClass, 'uuid', 'container_uuid');
     }
 }

@@ -12,12 +12,9 @@ class ItemFactory extends Factory
 
     public function definition() : array
     {
-        $container = Container::factory()->create();
-
         return [
             'uuid'              => $this->faker->uuid,
             'model'             => Item::class,
-            'container_uuid'    => $container->uuid,
         ];
     }
 }

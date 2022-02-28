@@ -22,11 +22,14 @@ class TestCase extends Orchestra
     {
         config()->set('database.default', 'testing');
 
-        $container_migration = include __DIR__ . '/../database/migrations/create_containers_table.php.stub';
+        $container_migration = include __DIR__ . '/../database/migrations/create_laravel-containers_table.php.stub';
         $container_migration->up();
 
-        $item_migration = include __DIR__ . '/../database/migrations/create_items_table.php.stub';
+        $item_migration = include __DIR__ . '/../database/migrations/create_laravel-items_table.php.stub';
         $item_migration->up();
+
+        $container_items_migration = include __DIR__ . '/../database/migrations/create_laravel-container-items_table.php.stub';
+        $container_items_migration->up();
     }
 
     protected function getPackageProviders($app) : array
