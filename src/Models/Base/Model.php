@@ -6,7 +6,6 @@ use Eloquent as EloquentBase;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 
 /**
- *
  * @method static \Illuminate\Database\Eloquent\Builder|Model newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Model newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Model query()

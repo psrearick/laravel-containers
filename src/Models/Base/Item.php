@@ -34,13 +34,13 @@ abstract class Item extends Model implements ItemContract
     use HasUuid;
     use SoftDeletes;
 
+    protected string $containerItemClass = ContainerItem::class;
+
     protected $dispatchesEvents = [
         'created'   => ItemWasCreated::class,
         'deleted'   => ItemWasDeleted::class,
         'updated'   => ItemWasUpdated::class,
     ];
-
-    protected string $containerItemClass = ContainerItem::class;
 
     public function containerItem() : BelongsTo
     {

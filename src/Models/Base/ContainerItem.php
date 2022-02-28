@@ -2,13 +2,13 @@
 
 namespace Psrearick\Containers\Models\Base;
 
-use Psrearick\Containers\Models\Item;
-use Psrearick\Containers\Models\Container;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 use Psrearick\Containers\Contracts\ContainerItem as ContainerItemContract;
+use Psrearick\Containers\Models\Container;
+use Psrearick\Containers\Models\Item;
 use Psrearick\Containers\Models\Traits\HasUuid;
 
 /**
@@ -29,21 +29,13 @@ use Psrearick\Containers\Models\Traits\HasUuid;
  */
 abstract class ContainerItem extends Model implements ContainerItemContract
 {
-    use SoftDeletes, HasFactory, HasUuid;
+    use SoftDeletes;
+    use HasFactory;
+    use HasUuid;
 
     protected string $containerClass = Container::class;
 
     protected string $itemClass = Item::class;
-
-    public function item() : BelongsTo
-    {
-        return $this->belongsTo($this->itemClass, 'item_uuid', 'uuid');
-    }
-
-    public function container() : BelongsTo
-    {
-        return $this->belongsTo($this->containerClass, 'container_uuid', 'uuid');
-    }
 
     public static function boot() : void
     {
@@ -53,5 +45,15 @@ abstract class ContainerItem extends Model implements ContainerItemContract
             $model->container_model = $model->containerClass;
             $model->item_model      = $model->containerClass;
         });
+    }
+
+    public function container() : BelongsTo
+    {
+        return $this->belongsTo($this->containerClass, 'container_uuid', 'uuid');
+    }
+
+    public function item() : BelongsTo
+    {
+        return $this->belongsTo($this->itemClass, 'item_uuid', 'uuid');
     }
 }

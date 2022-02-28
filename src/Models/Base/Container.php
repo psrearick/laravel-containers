@@ -2,12 +2,12 @@
 
 namespace Psrearick\Containers\Models\Base;
 
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Psrearick\Containers\Models\ContainerItem;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 use Psrearick\Containers\Contracts\Container as ContainerContract;
+use Psrearick\Containers\Models\ContainerItem;
 use Psrearick\Containers\Models\Traits\DefinesClass;
 use Psrearick\Containers\Models\Traits\HasUuid;
 
