@@ -1,9 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Str;
 use Psrearick\Containers\Events\ItemWasCreated;
-use Psrearick\Containers\Listeners\AddItemToContainer;
 use Psrearick\Containers\Models\Item;
 
 it('emits an event when an item is created',  function () {

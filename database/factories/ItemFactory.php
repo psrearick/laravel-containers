@@ -15,6 +15,8 @@ class ItemFactory extends Factory
         return [
             'uuid'              => $this->faker->uuid,
             'model'             => Item::class,
+            'name'              => $this->faker->words(3, true),
+            'description'       => $this->faker->words(10, true),
         ];
     }
 }

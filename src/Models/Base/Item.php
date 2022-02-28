@@ -20,6 +20,8 @@ use Psrearick\Containers\Models\Traits\HasUuid;
  * @property int $id
  * @property string $uuid
  * @property string $model
+ * @property string $name
+ * @property string|null $description
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property Carbon|null $deleted_at

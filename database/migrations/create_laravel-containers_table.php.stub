@@ -12,6 +12,8 @@ return new class extends Migration
             $table->id();
             $table->uuid();
             $table->string('model');
+            $table->string('name');
+            $table->string('description')->nullable();
             $table->unsignedInteger('_lft')->default(0);
             $table->unsignedInteger('_rgt')->default(0);
             $table->timestamps();

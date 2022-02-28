@@ -12,8 +12,10 @@ class ContainerFactory extends Factory
     public function definition() : array
     {
         return [
-            'uuid'  => $this->faker->uuid,
-            'model' => Container::class,
+            'uuid'          => $this->faker->uuid,
+            'model'         => Container::class,
+            'name'          => $this->faker->words(3, true),
+            'description'   => $this->faker->words(10, true),
         ];
     }
 }
