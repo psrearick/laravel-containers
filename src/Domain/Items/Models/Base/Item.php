@@ -1,21 +1,22 @@
 <?php
 
-namespace Psrearick\Containers\Models\Base;
+namespace Psrearick\Containers\Domain\Items\Models\Base;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 use Psrearick\Containers\Contracts\Item as ItemContract;
-use Psrearick\Containers\Events\ItemWasCreated;
-use Psrearick\Containers\Events\ItemWasDeleted;
-use Psrearick\Containers\Events\ItemWasUpdated;
-use Psrearick\Containers\Models\ContainerItem;
-use Psrearick\Containers\Models\Traits\DefinesClass;
-use Psrearick\Containers\Models\Traits\HasUuid;
+use Psrearick\Containers\Domain\Base\Model;
+use Psrearick\Containers\Domain\Containers\Models\ContainerItem;
+use Psrearick\Containers\Domain\Items\Aggregate\Events\ItemWasCreated;
+use Psrearick\Containers\Domain\Items\Aggregate\Events\ItemWasDeleted;
+use Psrearick\Containers\Domain\Items\Aggregate\Events\ItemWasUpdated;
+use Psrearick\Containers\Traits\DefinesClass;
+use Psrearick\Containers\Traits\HasUuid;
 
 /**
- * Psrearick\Containers\Models\Base\Item
+ * Psrearick\Containers\Domain\Items\Models\Base\Item
  *
  * @property int $id
  * @property string $uuid
@@ -34,13 +35,13 @@ abstract class Item extends Model implements ItemContract
     use HasUuid;
     use SoftDeletes;
 
+    protected string $containerItemClass = ContainerItem::class;
+
     protected $dispatchesEvents = [
         'created'   => ItemWasCreated::class,
         'deleted'   => ItemWasDeleted::class,
         'updated'   => ItemWasUpdated::class,
     ];
-
-    protected string $containerItemClass = ContainerItem::class;
 
     public function containerItem() : BelongsTo
     {

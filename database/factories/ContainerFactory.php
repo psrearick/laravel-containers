@@ -3,7 +3,7 @@
 namespace Psrearick\Containers\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Psrearick\Containers\Models\Container;
+use Psrearick\Containers\Domain\Containers\Models\Container;
 
 class ContainerFactory extends Factory
 {

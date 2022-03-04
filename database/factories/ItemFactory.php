@@ -3,8 +3,8 @@
 namespace Psrearick\Containers\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Psrearick\Containers\Models\Container;
-use Psrearick\Containers\Models\Item;
+use Psrearick\Containers\Domain\Containers\Models\Container;
+use Psrearick\Containers\Domain\Items\Models\Item;
 
 class ItemFactory extends Factory
 {

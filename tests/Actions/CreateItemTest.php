@@ -1,9 +1,9 @@
 <?php
 
-use Psrearick\Containers\Actions\CreateItem;
-use Psrearick\Containers\Events\ItemWasCreated;
-use Psrearick\Containers\Models\Item;
 use Illuminate\Support\Facades\Event;
+use Psrearick\Containers\Domain\Items\Aggregate\Actions\CreateItem;
+use Psrearick\Containers\Domain\Items\Aggregate\Events\ItemWasCreated;
+use Psrearick\Containers\Domain\Items\Models\Item;
 
 it('can create an item from an action', function () {
     $item = app(CreateItem::class)->execute(

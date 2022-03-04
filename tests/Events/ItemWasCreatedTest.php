@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Event;
-use Psrearick\Containers\Events\ItemWasCreated;
-use Psrearick\Containers\Models\Item;
+use Psrearick\Containers\Domain\Items\Aggregate\Events\ItemWasCreated;
+use Psrearick\Containers\Domain\Items\Models\Item;
 
 it('emits an event when an item is created',  function () {
     Event::fake();

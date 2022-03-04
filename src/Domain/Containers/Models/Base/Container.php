@@ -1,18 +1,19 @@
 <?php
 
-namespace Psrearick\Containers\Models\Base;
+namespace Psrearick\Containers\Domain\Containers\Models\Base;
 
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Psrearick\Containers\Models\ContainerItem;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 use Psrearick\Containers\Contracts\Container as ContainerContract;
-use Psrearick\Containers\Models\Traits\DefinesClass;
-use Psrearick\Containers\Models\Traits\HasUuid;
+use Psrearick\Containers\Domain\Base\Model;
+use Psrearick\Containers\Domain\Containers\Models\ContainerItem;
+use Psrearick\Containers\Traits\DefinesClass;
+use Psrearick\Containers\Traits\HasUuid;
 
 /**
- * Psrearick\Containers\Models\Base\Container
+ * Psrearick\Containers\Domain\Containers\Models\Base\Container
  *
  * @property int $id
  * @property string $uuid

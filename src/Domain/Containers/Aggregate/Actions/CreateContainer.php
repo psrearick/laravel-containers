@@ -1,10 +1,10 @@
 <?php
 
-namespace Psrearick\Containers\Actions;
+namespace Psrearick\Containers\Domain\Containers\Aggregate\Actions;
 
-use Psrearick\Containers\Models\Base\Container;
+use Psrearick\Containers\Domain\Containers\Models\Base\Container;
 
-class UpdateContainerQuantity
+class CreateContainer
 {
     public function execute(string $class = '', array $data = []) : Container
     {

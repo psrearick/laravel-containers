@@ -1,9 +1,9 @@
 <?php
 
-namespace Psrearick\Containers\Models;
+namespace Psrearick\Containers\Domain\Containers\Models;
 
 use Psrearick\Containers\Database\Factories\ContainerFactory;
-use Psrearick\Containers\Models\Base\Container as Base;
+use Psrearick\Containers\Domain\Containers\Models\Base\Container as Base;
 
 class Container extends Base
 {

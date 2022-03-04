@@ -1,12 +1,12 @@
 <?php
 
-namespace Psrearick\Containers\Events;
+namespace Psrearick\Containers\Domain\Items\Aggregate\Events;
 
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Psrearick\Containers\Models\Base\Item;
+use Psrearick\Containers\Domain\Items\Models\Base\Item;
 
-class ItemWasDeleted
+class ItemWasCreated
 {
     use Dispatchable;
     use SerializesModels;

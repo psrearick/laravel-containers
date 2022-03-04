@@ -1,8 +1,8 @@
 <?php
 
-namespace Psrearick\Containers\Actions;
+namespace Psrearick\Containers\Domain\Items\Aggregate\Actions;
 
-use Psrearick\Containers\Models\Base\Item;
+use Psrearick\Containers\Domain\Items\Models\Base\Item;
 
 class CreateItem
 {

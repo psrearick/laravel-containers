@@ -31,5 +31,9 @@ class ContainersServiceProvider extends PackageServiceProvider
         parent::registeringPackage();
 
         $this->app->register(EventServiceProvider::class);
+
+        $this->app->bind('laravel-containers', function () {
+            return new Containers();
+        });
     }
 }

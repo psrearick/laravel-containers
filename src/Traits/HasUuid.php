@@ -1,6 +1,6 @@
 <?php
 
-namespace Psrearick\Containers\Models\Traits;
+namespace Psrearick\Containers\Traits;
 
 use Illuminate\Support\Str;
 
