@@ -2,7 +2,7 @@
 
 namespace Psrearick\Containers\Domain\Containers\Aggregate\Actions;
 
-use Psrearick\Containers\Domain\Containers\Models\Base\Container;
+use Psrearick\Containers\Contracts\Container;
 
 class CreateContainer
 {

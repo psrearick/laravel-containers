@@ -5,7 +5,7 @@ namespace Psrearick\Containers\Traits;
 use Illuminate\Support\Str;
 
 /**
- * @property string uuid
+ * @property string $uuid
  */
 trait HasUuid
 {
@@ -18,6 +18,6 @@ trait HasUuid
 
     public static function uuid(string $uuid) : ?self
     {
-        return self::where('uuid', '=', $uuid)->first();
+        return self::query()->where('uuid', '=', $uuid)->first();
     }
 }
