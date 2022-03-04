@@ -7,8 +7,8 @@ use Psrearick\Containers\Domain\Containers\Models\ContainerItem;
 
 trait Containerable
 {
-    use HasUuid;
     use DefinesClass;
+    use HasUuid;
 
     public function containerItems() : MorphMany
     {

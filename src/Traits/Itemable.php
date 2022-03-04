@@ -11,8 +11,8 @@ use Psrearick\Containers\Domain\Items\Aggregate\ItemsAggregateRoot;
 
 trait Itemable
 {
-    use HasUuid;
     use DefinesClass;
+    use HasUuid;
 
     protected ?ItemsAggregateRoot $root = null;
 
