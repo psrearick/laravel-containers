@@ -4,12 +4,15 @@ namespace Psrearick\Containers\Traits;
 
 use Illuminate\Support\Str;
 
+/**
+ * @property string uuid
+ */
 trait HasUuid
 {
     public static function bootHasUuid() : void
     {
-        static::saving(static function ($model) {
-            $model->uuid = Str::uuid()->toString();
+        static::creating(static function ($model) {
+            $model->uuid = $model->uuid ?: Str::uuid()->toString();
         });
     }
 

@@ -3,14 +3,14 @@
 namespace Psrearick\Containers\Providers;
 
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as Provider;
-use Psrearick\Containers\Domain\Items\Aggregate\Events\ItemWasDeleted;
-use Psrearick\Containers\Domain\Items\Aggregate\Listeners\AddItemToContainer;
+use Psrearick\Containers\Domain\Items\Aggregate\Events\ItemWasCreated;
+use Psrearick\Containers\Domain\Items\Aggregate\Listeners\AddItem;
 
 class EventServiceProvider extends Provider
 {
     protected $listen = [
-        //        ItemWasDeleted::class => [
-        //            AddItemToContainer::class,
-        //        ],
+        ItemWasCreated::class => [
+            AddItem::class,
+        ],
     ];
 }

@@ -10,11 +10,10 @@ return new class extends Migration
     {
         Schema::create('container_items', static function (Blueprint $table) {
             $table->id();
-            $table->uuid();
-            $table->string('container_uuid');
-            $table->string('container_model');
-            $table->string('item_uuid');
-            $table->string('item_model');
+            $table->string('containerable_uuid');
+            $table->string('containerable_type');
+            $table->string('itemable_uuid');
+            $table->string('itemable_type');
             $table->integer('quantity', false, true);
             $table->timestamps();
             $table->softDeletes();

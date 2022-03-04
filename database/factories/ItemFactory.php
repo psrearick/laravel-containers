@@ -3,8 +3,7 @@
 namespace Psrearick\Containers\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Psrearick\Containers\Domain\Containers\Models\Container;
-use Psrearick\Containers\Domain\Items\Models\Item;
+use Psrearick\Containers\Tests\ImplementationClasses\Item;
 
 class ItemFactory extends Factory
 {
@@ -14,7 +13,7 @@ class ItemFactory extends Factory
     {
         return [
             'uuid'              => $this->faker->uuid,
-            'model'             => Item::class,
+            'model'             => $this->model,
             'name'              => $this->faker->words(3, true),
             'description'       => $this->faker->words(10, true),
         ];
