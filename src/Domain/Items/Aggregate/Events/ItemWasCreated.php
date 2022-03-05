@@ -5,8 +5,9 @@ namespace Psrearick\Containers\Domain\Items\Aggregate\Events;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use Psrearick\Containers\Contracts\Item;
+use Psrearick\Containers\Contracts\ItemEvent;
 
-class ItemWasCreated
+class ItemWasCreated implements ItemEvent
 {
     use Dispatchable;
     use SerializesModels;

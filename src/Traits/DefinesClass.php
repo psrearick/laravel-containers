@@ -2,6 +2,9 @@
 
 namespace Psrearick\Containers\Traits;
 
+/**
+ * @property string $model
+ */
 trait DefinesClass
 {
     public static function bootDefinesClass() : void

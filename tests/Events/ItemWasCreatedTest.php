@@ -2,43 +2,32 @@
 
 use Illuminate\Support\Facades\Event;
 use Psrearick\Containers\Domain\Items\Aggregate\Events\ItemWasCreated;
+use Psrearick\Containers\Domain\Items\Aggregate\Listeners\AddItem;
 use Psrearick\Containers\Tests\ImplementationClasses\Container;
 use Psrearick\Containers\Tests\ImplementationClasses\Item;
 
-//use Psrearick\Containers\Domain\Items\Models\Item;
-
-it('emits an event when an item is created',  function () {
+it('emits an event when an item is created', function () {
     Event::fake(ItemWasCreated::class);
 
     $item = Item::factory()->create();
 
-    Event::assertDispatched(ItemWasCreated::class, function (ItemWasCreated $event) use ($item) {
-        return $event->item->uuid === $item->uuid;
-    });
+    Event::assertDispatched(
+        ItemWasCreated::class,
+        static function (ItemWasCreated $event) use ($item) {
+            return $event->item->uuid === $item->uuid;
+        }
+    );
 });
 
-//it('updates the container item quantity when an item event is triggered', function () {
-//    /** @var Item $item */
-//    $item = Item::factory()->create();
-//    $uuid = $item->uuid;
-//
-//    (new AddItemToContainer())->handle(
-//        new ItemWasCreated($item)
-//    );
-//
-//    $this->assertNotEquals($uuid, $item->fresh()->uuid);
-//});
+it('creates a new container item when an item event listener is triggered with a quantity', function () {
+    Event::fake(ItemWasCreated::class);
 
-it('updates the container item quantity when an item is created', function () {
     /** @var Container $container */
     $container = Container::factory()->create();
-    $container2 = Container::factory()->create();
-
-    $uuid = Str::uuid()->toString();
 
     /** @var Item $item */
     $item = Item::factory()->create([
-        'uuid'          => $uuid,
+        'uuid'          => null,
         'quantity'      => 5,
         'containers'    => [
             'container' => [
@@ -48,13 +37,32 @@ it('updates the container item quantity when an item is created', function () {
         ],
     ]);
 
-    $item->containerItems()->make(['quantity' => 2])
-        ->containerable()
-        ->associate($container2)
-        ->save();
+    (new AddItem())->handle(
+        new ItemWasCreated($item)
+    );
 
-    ray(Item::factory()->create());
+    $this->assertCount(1, $item->containerItems);
+    $this->assertCount(1, $item->containers());
+    $this->assertEquals($container->uuid, $item->containers()->first()->uuid);
+});
 
-//    ray($uuid, $item);
-//    $this->assertNotEquals($uuid, $item->fresh()->uuid);
+it('creates a new container item when an item is created with a quantity', function () {
+    /** @var Container $container */
+    $container = Container::factory()->create();
+
+    /** @var Item $item */
+    $item = Item::factory()->create([
+        'uuid'          => null,
+        'quantity'      => 5,
+        'containers'    => [
+            'container' => [
+                'class' => Container::class,
+                'uuid'  => $container->uuid,
+            ],
+        ],
+    ]);
+
+    $this->assertCount(1, $item->containerItems);
+    $this->assertCount(1, $item->containers());
+    $this->assertEquals($container->uuid, $item->containers()->first()->uuid);
 });

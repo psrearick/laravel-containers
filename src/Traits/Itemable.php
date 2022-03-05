@@ -4,11 +4,18 @@ namespace Psrearick\Containers\Traits;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Support\Carbon;
 use Psrearick\Containers\Contracts\Item;
 use Psrearick\Containers\Domain\Containers\Models\ContainerItem;
 use Psrearick\Containers\Domain\Items\Aggregate\Events\ItemWasCreated;
 use Psrearick\Containers\Domain\Items\Aggregate\ItemsAggregateRoot;
 
+/**
+ * @property int $id
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read Collection|null $containerItems
+ */
 trait Itemable
 {
     use DefinesClass;

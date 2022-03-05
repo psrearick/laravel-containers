@@ -18,6 +18,8 @@ trait HasUuid
 
     public static function uuid(string $uuid) : ?self
     {
-        return self::query()->where('uuid', '=', $uuid)->first();
+        return self::query()
+            ->where('uuid', '=', $uuid)
+            ->first();
     }
 }
