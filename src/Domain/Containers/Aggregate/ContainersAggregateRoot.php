@@ -2,6 +2,8 @@
 
 namespace Psrearick\Containers\Domain\Containers\Aggregate;
 
-class ContainersAggregateRoot
+use Psrearick\Containers\Contracts\AggregateRoot;
+
+class ContainersAggregateRoot implements AggregateRoot
 {
 }

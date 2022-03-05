@@ -8,6 +8,8 @@ use Illuminate\Support\Carbon;
 use Psrearick\Containers\Contracts\Container as ContainerContract;
 use Psrearick\Containers\Database\Factories\ContainerFactory;
 use Psrearick\Containers\Traits\Containerable;
+use Psrearick\Containers\Traits\ContainerBaseActions;
+use Psrearick\Containers\Traits\ContainerBaseAttributes;
 
 /**
  * @property string $name
@@ -18,6 +20,8 @@ class Container extends Model implements ContainerContract
 {
     use Containerable;
     use hasFactory;
+    use ContainerBaseActions;
+    use ContainerBaseAttributes;
 
     protected static function newFactory() : ContainerFactory
     {

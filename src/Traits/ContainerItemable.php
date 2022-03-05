@@ -3,7 +3,13 @@
 namespace Psrearick\Containers\Traits;
 
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Psrearick\Containers\Contracts\Container;
+use Psrearick\Containers\Contracts\Item;
 
+/**
+ * @property Container $containerable
+ * @property Item $itemable;
+ */
 trait ContainerItemable
 {
     public function containerable() : MorphTo

@@ -5,6 +5,8 @@ namespace Psrearick\Containers\Traits;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Carbon;
+use Psrearick\Containers\Domain\Containers\Aggregate\ContainersAggregateRoot;
+use Psrearick\Containers\Domain\Containers\Aggregate\Events\ContainerWasCreated;
 use Psrearick\Containers\Domain\Containers\Models\ContainerItem;
 
 /**
@@ -19,6 +21,17 @@ trait Containerable
 {
     use DefinesClass;
     use HasUuid;
+    use Aggregatable;
+
+    protected string $aggregateRootClass = ContainersAggregateRoot::class;
+
+    protected array $events = [
+        'created' => [
+            ContainerWasCreated::class,
+        ],
+    ];
+
+    protected string $modelName = 'container';
 
     public function containerItems() : MorphMany
     {
