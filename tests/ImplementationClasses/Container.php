@@ -19,9 +19,9 @@ use Psrearick\Containers\Traits\ContainerBaseAttributes;
 class Container extends Model implements ContainerContract
 {
     use Containerable;
-    use hasFactory;
     use ContainerBaseActions;
     use ContainerBaseAttributes;
+    use hasFactory;
 
     protected static function newFactory() : ContainerFactory
     {

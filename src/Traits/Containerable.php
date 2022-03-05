@@ -19,9 +19,9 @@ use Psrearick\Containers\Domain\Containers\Models\ContainerItem;
  */
 trait Containerable
 {
+    use Aggregatable;
     use DefinesClass;
     use HasUuid;
-    use Aggregatable;
 
     protected string $aggregateRootClass = ContainersAggregateRoot::class;
 

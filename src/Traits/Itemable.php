@@ -17,9 +17,9 @@ use Psrearick\Containers\Domain\Items\Aggregate\ItemsAggregateRoot;
  */
 trait Itemable
 {
+    use Aggregatable;
     use DefinesClass;
     use HasUuid;
-    use Aggregatable;
 
     protected string $aggregateRootClass = ItemsAggregateRoot::class;
 
