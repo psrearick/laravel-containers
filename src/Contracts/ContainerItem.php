@@ -2,11 +2,11 @@
 
 namespace Psrearick\Containers\Contracts;
 
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 interface ContainerItem extends Model
 {
-    public function container() : BelongsTo;
+    public function containerable() : MorphTo;
 
-    public function item() : BelongsTo;
+    public function itemable() : MorphTo;
 }
