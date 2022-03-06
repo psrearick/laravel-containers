@@ -1,7 +1,5 @@
 <?php
 
-namespace Psrearick\Containers\Tests\Models;
-
 use Psrearick\Containers\Tests\ImplementationClasses\Item;
 
 it('creates an item with a uuid and model class', function () {

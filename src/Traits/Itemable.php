@@ -31,8 +31,6 @@ trait Itemable
 
     protected string $modelName = 'item';
 
-//    protected ?ItemsAggregateRoot $root = null;
-
     public function containerItems() : MorphMany
     {
         return $this->morphMany(ContainerItem::class, 'itemable', null, 'itemable_uuid', 'uuid');
@@ -46,39 +44,4 @@ trait Itemable
             ->get()
             ->map(fn (ContainerItem $containerItem) => $containerItem->containerable);
     }
-
-//    public function root() : ?ItemsAggregateRoot
-//    {
-//        return $this->root;
-//    }
-
-//    protected static function bootItemable() : void
-//    {
-//        static::created(static function (Item $item) {
-//            ItemWasCreated::dispatch($item);
-//        });
-//
-//        static::creating(static function (Item $item) {
-//            foreach ($item->aggregateAttributes() as $attribute) {
-//                if (! array_key_exists($attribute, $item->attributes)) {
-//                    continue;
-//                }
-//
-//                $item->root()->$attribute = $item->$attribute;
-//
-//                unset($item->$attribute);
-//            }
-//        });
-//    }
-//
-//    protected function initializeItemable() : void
-//    {
-//        $this->setRoot();
-//    }
-//
-//    protected function setRoot() : void
-//    {
-//        $this->root       = new ItemsAggregateRoot();
-//        $this->root->item = $this;
-//    }
 }

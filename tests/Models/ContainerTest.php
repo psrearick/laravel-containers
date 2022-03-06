@@ -8,6 +8,7 @@ it('created a container with a uuid and model class', function () {
         'uuid'  => null,
         'model' => null,
     ]);
+
     $this->assertNotNull($container->uuid);
     $this->assertEquals(Container::class, $container->model);
 });
