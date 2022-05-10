@@ -4,6 +4,7 @@ namespace Psrearick\Containers\Contracts;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Support\Carbon;
 
 /**
@@ -12,11 +13,12 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $updated_at
  * @property string $model
  * @property string $uuid
- * @property int $_lft
- * @property int $_rgt
+ * @property int $parentId
  * @property-read Collection|null $containerItems
  */
 interface Container extends Eventable
 {
     public function containerItems() : MorphMany;
+
+    public function containerSummary() : MorphOne;
 }

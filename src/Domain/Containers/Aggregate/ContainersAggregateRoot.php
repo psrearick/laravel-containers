@@ -6,4 +6,8 @@ use Psrearick\Containers\Contracts\AggregateRoot;
 
 class ContainersAggregateRoot implements AggregateRoot
 {
+    public function computationFields(): array
+    {
+        return [];
+    }
 }

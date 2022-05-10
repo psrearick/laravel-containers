@@ -66,24 +66,3 @@ it('creates a new container item when an item is created with a quantity', funct
     $this->assertCount(1, $item->containers());
     $this->assertEquals($container->uuid, $item->containers()->first()->uuid);
 });
-
-//it('updates a container quantity when an item is created with a quantity', function () {
-//    /** @var Container $container */
-//    $container = Container::factory()->create();
-//
-//    /** @var Item $item */
-//    $item = Item::factory()->create([
-//        'uuid'          => null,
-//        'quantity'      => 5,
-//        'containers'    => [
-//            'container' => [
-//                'class' => Container::class,
-//                'uuid'  => $container->uuid,
-//            ],
-//        ],
-//    ]);
-//
-//    $this->assertCount(1, $item->containerItems);
-//    $this->assertCount(1, $item->containers());
-//    $this->assertEquals($container->uuid, $item->containers()->first()->uuid);
-//});

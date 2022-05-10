@@ -4,7 +4,7 @@ namespace Psrearick\Containers\Traits;
 
 trait ItemBaseAttributes
 {
-    protected array $aggregateAttributes = ['quantity', 'containers'];
+    protected array $aggregateAttributes = ['quantity', 'change', 'containers'];
 
     public function aggregateAttributes() : array
     {

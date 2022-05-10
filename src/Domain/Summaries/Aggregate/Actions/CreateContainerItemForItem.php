@@ -3,8 +3,8 @@
 namespace Psrearick\Containers\Domain\Summaries\Aggregate\Actions;
 
 use Psrearick\Containers\Contracts\Container;
+use Psrearick\Containers\Contracts\ContainerItem;
 use Psrearick\Containers\Contracts\Item;
-use Psrearick\Containers\Domain\Containers\Models\ContainerItem;
 use Psrearick\Containers\Domain\Items\Aggregate\ItemsAggregateRoot;
 
 class CreateContainerItemForItem

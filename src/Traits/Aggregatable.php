@@ -55,7 +55,7 @@ trait Aggregatable
 
     protected function setRoot() : void
     {
-        $this->root                     = app($this->aggregateRootClass);
+        $this->root                     = app($this->classes('aggregateRoot'));
         $this->root->{$this->modelName} = $this;
     }
 }
