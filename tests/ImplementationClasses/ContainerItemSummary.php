@@ -2,10 +2,10 @@
 
 namespace Psrearick\Containers\Tests\ImplementationClasses;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Psrearick\Containers\Contracts\Summary;
 
-class ContainerItemSummary extends Model
+class ContainerItemSummary extends Model implements Summary
 {
     public function container() : BelongsTo
     {

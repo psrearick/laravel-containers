@@ -27,6 +27,7 @@ class TestCase extends Orchestra
         (include 'Migrations/create_containers_table.php')->up();
         (include 'Migrations/create_items_table.php')->up();
         (include 'Migrations/create_outers_table.php')->up();
+        (include 'Migrations/create_container_item_summaries_table.php')->up();
     }
 
     protected function getPackageProviders($app) : array

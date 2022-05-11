@@ -3,6 +3,7 @@
 namespace Psrearick\Containers\Tests\ImplementationClasses;
 
 use Illuminate\Database\Eloquent\Relations\Pivot;
+use Psrearick\Containers\Computations\Sum;
 use Psrearick\Containers\Concerns\IsSummarized;
 use Psrearick\Containers\Contracts\ContainerItem as ContainerItemContract;
 use Psrearick\Containers\Contracts\Summarized;
@@ -22,8 +23,16 @@ class ContainerItem extends Pivot implements ContainerItemContract, Summarized
         'value'     => 'float',
     ];
 
-    public function summaryRelation() : string
+    public function computations() : array
     {
-        return 'containerItemSummary';
+        return [
+            'quantity'  => Sum::class,
+            'value'     => Sum::class,
+        ];
+    }
+
+    public function summaryClass() : string
+    {
+        return ContainerItemSummary::class;
     }
 }

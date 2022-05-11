@@ -3,7 +3,6 @@
 namespace Psrearick\Containers\Tests\ImplementationClasses;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Psrearick\Containers\Concerns\IsContainerable;
 use Psrearick\Containers\Contracts\Container as ContainerContract;

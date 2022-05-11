@@ -2,7 +2,11 @@
 
 namespace Psrearick\Containers\Contracts;
 
-interface Summarized
+interface Summarized extends ContainerItem
 {
-    public function summaryRelation() : string;
+    public function computations() : array;
+
+    public function foreignIds() : array;
+
+    public function summaryClass() : string;
 }

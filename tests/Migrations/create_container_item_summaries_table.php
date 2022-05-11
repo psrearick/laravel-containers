@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 return new class () extends Migration {
     public function up() : void
     {
-        Schema::create('container_item_summary', static function (Blueprint $table) {
+        Schema::create('container_item_summaries', static function (Blueprint $table) {
             $table->id();
             $table->foreignId('container_id');
             $table->foreignId('item_id');

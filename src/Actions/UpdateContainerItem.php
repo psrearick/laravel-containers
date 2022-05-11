@@ -14,8 +14,6 @@ class UpdateContainerItem
     {
         $containerItem = $item->lastContainerItem($container);
 
-        ray($containerItem);
-
         if (! $attributes) {
             return null;
         }
