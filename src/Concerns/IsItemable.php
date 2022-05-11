@@ -3,14 +3,19 @@
 namespace Psrearick\Containers\Concerns;
 
 use Illuminate\Support\Facades\Event;
+use Psrearick\Containers\Actions\AddItemToContainer;
 use Psrearick\Containers\Contracts\Container;
 use Psrearick\Containers\Contracts\ContainerItem;
 use Psrearick\Containers\Contracts\Item as ItemContract;
-use Psrearick\Containers\Events\ContainerItemWasCreated;
 use Psrearick\Containers\Events\ItemWasCreated;
 
 trait IsItemable
 {
+    public function addToContainer(Container $container, ?array $attributes = []) : void
+    {
+        app(AddItemToContainer::class)->execute($container, $this, $attributes);
+    }
+
     public static function bootIsItemable() : void
     {
         static::created(static function (ItemContract $item) {
@@ -18,22 +23,22 @@ trait IsItemable
         });
     }
 
-    public function containerItem(Container $container) : ContainerItem
+    public function containerItem(Container $container) : ?ContainerItem
     {
         $relation = $this->relationName($container);
 
-        return $this->$relation->first()->pivot;
+        return optional($this->$relation->first())->pivot;
+    }
+
+    public function lastContainerItem(Container $container) : ?ContainerItem
+    {
+        $relation = $this->relationName($container);
+
+        return optional($this->$relation->last())->pivot;
     }
 
     public function relationName(Container $container) : string
     {
         return $this->containedBy()[get_class($container)];
-    }
-
-    public function addToContainer(Container $container, ?array $attributes = []) : void
-    {
-        $relation = $container->contains()[get_class($this)];
-        $container->$relation()->attach($this->id);
-        Event::dispatch(new ContainerItemWasCreated($container, $this, $attributes));
     }
 }

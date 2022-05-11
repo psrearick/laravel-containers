@@ -2,6 +2,9 @@
 
 namespace Psrearick\Containers\Contracts;
 
+/**
+ * @method Container refresh()
+ */
 interface Container extends Model
 {
     public function contains() : array;

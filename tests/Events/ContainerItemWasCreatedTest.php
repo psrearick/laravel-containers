@@ -49,5 +49,3 @@ test('an event is emitted when an item is added to a container', function () {
         }
     );
 });
-
-

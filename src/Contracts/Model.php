@@ -18,6 +18,7 @@ use JsonSerializable;
  * @property Carbon|null $updated_at
  *
  * @method \Illuminate\Database\Eloquent\Model refresh()
+ * @method \Illuminate\Database\Eloquent\Model update(array $update)
  */
 interface Model extends Arrayable, ArrayAccess, CanBeEscapedWhenCastToString, HasBroadcastChannel, Jsonable, JsonSerializable, QueueableEntity, UrlRoutable
 {

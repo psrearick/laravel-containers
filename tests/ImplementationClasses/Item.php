@@ -5,6 +5,7 @@ namespace Psrearick\Containers\Tests\ImplementationClasses;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Psrearick\Containers\Computations\Sum;
 use Psrearick\Containers\Concerns\IsItemable;
 use Psrearick\Containers\Contracts\Item as ItemContract;
@@ -26,6 +27,11 @@ class Item extends Model implements ItemContract
     public function containedBy() : array
     {
         return [Container::class => 'containers'];
+    }
+
+    public function containerItemSummary() : HasMany
+    {
+        return $this->hasMany(ContainerItemSummary::class);
     }
 
     public function containers() : BelongsToMany
