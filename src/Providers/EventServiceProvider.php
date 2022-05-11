@@ -12,11 +12,5 @@ class EventServiceProvider extends Provider
         ContainerItemWasCreated::class => [
             UpdateContainerItemAttributesListener::class,
         ],
-        //        ItemWasCreated::class => [
-        //            AddItem::class,
-        //        ],
-        //        ContainerItemWasSaved::class => [
-        //            UpdateContainerSummary::class,
-        //        ],
     ];
 }
