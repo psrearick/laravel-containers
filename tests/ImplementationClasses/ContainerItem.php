@@ -12,4 +12,9 @@ use Psrearick\Containers\Contracts\ContainerItem as ContainerItemContract;
 class ContainerItem extends Pivot implements ContainerItemContract
 {
     public $incrementing = true;
+
+    protected $casts = [
+        'quantity'  => 'float',
+        'value'     => 'float',
+    ];
 }

@@ -22,7 +22,7 @@ trait IsContainerable
         return $this->contains()[get_class($item)];
     }
 
-    public function receiveItem(Item $item, ?array $attributes) : void
+    public function receiveItem(Item $item, ?array $attributes = []) : void
     {
         $relation = $item->containedBy()[get_class($this)];
         $item->$relation()->attach($this->id);

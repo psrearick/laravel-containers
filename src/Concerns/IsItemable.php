@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Event;
 use Psrearick\Containers\Contracts\Container;
 use Psrearick\Containers\Contracts\ContainerItem;
 use Psrearick\Containers\Contracts\Item as ItemContract;
+use Psrearick\Containers\Events\ContainerItemWasCreated;
 use Psrearick\Containers\Events\ItemWasCreated;
 
 trait IsItemable
@@ -27,5 +28,12 @@ trait IsItemable
     public function relationName(Container $container) : string
     {
         return $this->containedBy()[get_class($container)];
+    }
+
+    public function addToContainer(Container $container, ?array $attributes = []) : void
+    {
+        $relation = $container->contains()[get_class($this)];
+        $container->$relation()->attach($this->id);
+        Event::dispatch(new ContainerItemWasCreated($container, $this, $attributes));
     }
 }

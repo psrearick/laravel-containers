@@ -5,7 +5,7 @@ use Psrearick\Containers\Tests\ImplementationClasses\Container;
 use Psrearick\Containers\Tests\ImplementationClasses\ContainerItem;
 use Psrearick\Containers\Tests\ImplementationClasses\Item;
 
-test('an item can be added to a container', function () {
+test('an event is emitted when an item is added to a container with attributes', function () {
     Event::fake(ContainerItemWasUpdated::class);
 
     /** @var Container $container */
@@ -14,21 +14,40 @@ test('an item can be added to a container', function () {
     /** @var Item $item */
     $item = Item::factory()->create();
 
-    $container->receiveItem($item, [
-        'quantity'  => 5,
+    $attributes = [
+        'quantity'  => 5.0,
         'value'     => 1.5,
-    ]);
+    ];
+
+    $container->receiveItem($item, $attributes);
 
     /** @var ContainerItem $containerItem */
     $containerItem = $item->containerItem($container)->fresh();
 
-    $this->assertEquals(5, optional($containerItem)->quantity);
-    $this->assertEquals(1.5, optional($containerItem)->value);
+    ray($containerItem);
 
     Event::assertDispatched(
         ContainerItemWasUpdated::class,
-        static function (ContainerItemWasUpdated $event) use ($containerItem) {
-            return $event->containerItem->id === $containerItem->id;
+        static function (ContainerItemWasUpdated $event) use ($containerItem, $attributes) {
+            return $event->containerItem->id === $containerItem->id
+                && $containerItem->quantity === $attributes['quantity']
+                && $containerItem->value === $attributes['value'];
         }
+    );
+});
+
+test('an event is not emitted when an item is added to a container without attributes', function () {
+    Event::fake();
+
+    /** @var Container $container */
+    $container = Container::factory()->create();
+
+    /** @var Item $item */
+    $item = Item::factory()->create();
+
+    $container->receiveItem($item);
+
+    Event::assertNotDispatched(
+        ContainerItemWasUpdated::class,
     );
 });

@@ -11,7 +11,7 @@ return new class () extends Migration {
             $table->id();
             $table->foreignId('container_id');
             $table->foreignId('item_id');
-            $table->integer('quantity', false, true)->nullable();
+            $table->float('quantity')->nullable();
             $table->float('value')->nullable();
             $table->timestamps();
         });
