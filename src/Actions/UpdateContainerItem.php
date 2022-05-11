@@ -24,8 +24,9 @@ class UpdateContainerItem
             );
         })->all();
 
-        $containerItem->update($updates);
+        $relation = $container->containsRelationName($item);
+        $container->$relation()->updateExistingPivot($item->id, $updates);
 
-        Event::dispatch(new ContainerItemWasUpdated($containerItem));
+        Event::dispatch(new ContainerItemWasUpdated($containerItem->refresh()));
     }
 }

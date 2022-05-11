@@ -9,4 +9,6 @@ interface Item extends Model
     public function containedBy() : array;
 
     public function containerItem(Container $container) : ContainerItem;
+
+    public function relationName(Container $container) : string;
 }

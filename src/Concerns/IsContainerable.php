@@ -17,6 +17,11 @@ trait IsContainerable
         });
     }
 
+    public function containsRelationName(Item $item) : string
+    {
+        return $this->contains()[get_class($item)];
+    }
+
     public function receiveItem(Item $item, ?array $attributes) : void
     {
         $relation = $item->containedBy()[get_class($this)];

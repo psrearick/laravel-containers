@@ -19,8 +19,13 @@ trait IsItemable
 
     public function containerItem(Container $container) : ContainerItem
     {
-        $relation = $this->containedBy()[get_class($container)];
+        $relation = $this->relationName($container);
 
         return $this->$relation->first()->pivot;
+    }
+
+    public function relationName(Container $container) : string
+    {
+        return $this->containedBy()[get_class($container)];
     }
 }

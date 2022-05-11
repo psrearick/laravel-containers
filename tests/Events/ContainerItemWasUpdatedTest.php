@@ -18,12 +18,10 @@ it('updates new container item attributes', function () {
         'value'     => 1.5,
     ]);
 
-    $containerItem = $item->containerItem($container);
+    $containerItem = $item->containerItem($container)->fresh();
 
     $this->assertEquals(5, $containerItem->quantity);
     $this->assertEquals(1.5, $containerItem->value);
-
-    ray($containerItem->id);
 
     Event::assertDispatched(
         ContainerItemWasUpdated::class,
