@@ -1,8 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Event;
-use Psrearick\Containers\Domain\Items\Aggregate\Events\ItemWasCreated;
-use Psrearick\Containers\Domain\Items\Aggregate\Listeners\AddItem;
+use Psrearick\Containers\Events\ItemWasCreated;
 use Psrearick\Containers\Tests\ImplementationClasses\Container;
 use Psrearick\Containers\Tests\ImplementationClasses\Item;
 
@@ -14,7 +13,7 @@ it('emits an event when an item is created', function () {
     Event::assertDispatched(
         ItemWasCreated::class,
         static function (ItemWasCreated $event) use ($item) {
-            return $event->item->uuid === $item->uuid;
+            return $event->item->id === $item->id;
         }
     );
 });
