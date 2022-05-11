@@ -2,7 +2,7 @@
 
 use Psrearick\Containers\Tests\ImplementationClasses\Outer;
 
-it('creates an outer object', function () {
+test('an outer object can be created', function () {
     $data = ['name' => 'outer'];
     $item = Outer::factory()->create($data);
 

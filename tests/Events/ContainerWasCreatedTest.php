@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Event;
 use Psrearick\Containers\Events\ContainerWasCreated;
 use Psrearick\Containers\Tests\ImplementationClasses\Container;
 
-it('emits an event when a container is created', function () {
+test('an event is emitted when a container is created', function () {
     Event::fake(ContainerWasCreated::class);
 
     /** @var Container $container */

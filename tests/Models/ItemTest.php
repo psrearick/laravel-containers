@@ -2,7 +2,7 @@
 
 use Psrearick\Containers\Tests\ImplementationClasses\Item;
 
-it('creates an item', function () {
+test('an item can be created', function () {
     $data = ['name' => 'item'];
     $item = Item::factory()->create($data);
 

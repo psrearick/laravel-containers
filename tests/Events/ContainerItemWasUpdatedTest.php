@@ -2,9 +2,10 @@
 
 use Psrearick\Containers\Events\ContainerItemWasUpdated;
 use Psrearick\Containers\Tests\ImplementationClasses\Container;
+use Psrearick\Containers\Tests\ImplementationClasses\ContainerItem;
 use Psrearick\Containers\Tests\ImplementationClasses\Item;
 
-it('updates new container item attributes', function () {
+test('an item can be added to a container', function () {
     Event::fake(ContainerItemWasUpdated::class);
 
     /** @var Container $container */
@@ -18,10 +19,11 @@ it('updates new container item attributes', function () {
         'value'     => 1.5,
     ]);
 
+    /** @var ContainerItem $containerItem */
     $containerItem = $item->containerItem($container)->fresh();
 
-    $this->assertEquals(5, $containerItem->quantity);
-    $this->assertEquals(1.5, $containerItem->value);
+    $this->assertEquals(5, optional($containerItem)->quantity);
+    $this->assertEquals(1.5, optional($containerItem)->value);
 
     Event::assertDispatched(
         ContainerItemWasUpdated::class,

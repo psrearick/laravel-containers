@@ -2,7 +2,7 @@
 
 use Psrearick\Containers\Tests\ImplementationClasses\Container;
 
-it('creates a container', function () {
+test('a container can be created', function () {
     $data      = ['name' => 'container'];
     $container = Container::factory()->create($data);
 

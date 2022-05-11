@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Event;
 use Psrearick\Containers\Events\ItemWasCreated;
 use Psrearick\Containers\Tests\ImplementationClasses\Item;
 
-it('emits an event when an item is created', function () {
+test('an event is emitted when an item is created', function () {
     Event::fake(ItemWasCreated::class);
 
     $item = Item::factory()->create();
