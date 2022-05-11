@@ -17,7 +17,7 @@ test('a summary is created for new container items with attributes', function ()
 
     $container->receiveItem($item, $attributes);
 
-    $itemContainerItemSummary = $item->containerItemSummary->first();
+    $itemContainerItemSummary      = $item->containerItemSummary->first();
     $containerContainerItemSummary = $container->containerItemSummary->first();
 
     $this->assertEquals($attributes['quantity'], $itemContainerItemSummary->quantity);
@@ -43,7 +43,7 @@ test('a summary is updated for new container items that match existing container
     $container->receiveItem($item, $attributes);
     $container->receiveItem($item, $attributes);
 
-    $itemContainerItemSummary = $item->containerItemSummary->first();
+    $itemContainerItemSummary      = $item->containerItemSummary->first();
     $containerContainerItemSummary = $container->containerItemSummary->first();
 
     $this->assertEquals($attributes['quantity'] * 3, $itemContainerItemSummary->quantity);
