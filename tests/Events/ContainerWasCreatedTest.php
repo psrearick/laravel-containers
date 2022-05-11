@@ -1,22 +1,19 @@
 <?php
 
 use Illuminate\Support\Facades\Event;
-use Psrearick\Containers\Domain\Containers\Aggregate\Events\ContainerWasCreated;
+use Psrearick\Containers\Events\ContainerWasCreated;
 use Psrearick\Containers\Tests\ImplementationClasses\Container;
 
 it('emits an event when a container is created', function () {
     Event::fake(ContainerWasCreated::class);
 
     /** @var Container $container */
-    $container = Container::factory()->create([
-        'model' => null,
-        'uuid'  => null,
-    ]);
+    $container = Container::factory()->create();
 
     Event::assertDispatched(
         ContainerWasCreated::class,
         static function (ContainerWasCreated $event) use ($container) {
-            return $event->container->uuid === $container->uuid;
+            return $event->container->id === $container->id;
         }
     );
 });

@@ -4,17 +4,17 @@ namespace Psrearick\Containers\Events;
 
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Psrearick\Containers\Contracts\Item;
+use Psrearick\Containers\Contracts\Container;
 
-class ItemWasCreated
+class ContainerWasCreated
 {
     use Dispatchable;
     use SerializesModels;
 
-    public Item $item;
+    public Container $container;
 
-    public function __construct(Item $item)
+    public function __construct(Container $container)
     {
-        $this->item = $item;
+        $this->container = $container;
     }
 }

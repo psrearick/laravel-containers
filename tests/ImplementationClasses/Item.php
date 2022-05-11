@@ -13,15 +13,15 @@ class Item extends Model implements ItemContract
 {
     use HasFactory;
 
-    protected static function newFactory() : ItemFactory
-    {
-        return ItemFactory::new();
-    }
-
     protected static function booted() : void
     {
         static::created(function (ItemContract $item) {
             Event::dispatch(new ItemWasCreated($item));
         });
+    }
+
+    protected static function newFactory() : ItemFactory
+    {
+        return ItemFactory::new();
     }
 }

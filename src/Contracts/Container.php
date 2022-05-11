@@ -2,6 +2,6 @@
 
 namespace Psrearick\Containers\Contracts;
 
-interface Item extends Model
+interface Container extends Model
 {
 }

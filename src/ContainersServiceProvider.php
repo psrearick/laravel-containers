@@ -2,8 +2,6 @@
 
 namespace Psrearick\Containers;
 
-use Psrearick\Containers\Commands\ContainersCommand;
-use Psrearick\Containers\Providers\AggregateServiceProvider;
 use Psrearick\Containers\Providers\EventServiceProvider;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
