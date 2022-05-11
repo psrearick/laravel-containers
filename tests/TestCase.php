@@ -14,7 +14,7 @@ class TestCase extends Orchestra
         parent::setUp();
 
         Factory::guessFactoryNamesUsing(
-            static fn (string $modelName) => 'Psrearick\\Containers\\Database\\Factories\\' . class_basename($modelName) . 'Factory'
+            static fn (string $modelName) => 'Psrearick\\Containers\\Tests\\Factories\\' . class_basename($modelName) . 'Factory'
         );
     }
 
@@ -22,20 +22,11 @@ class TestCase extends Orchestra
     {
         config()->set('database.default', 'testing');
 
-        $container_migration = include __DIR__ . '/../database/migrations/create_laravel-containers_containers_table.php.stub';
-        $container_migration->up();
-
-        $item_migration = include __DIR__ . '/../database/migrations/create_laravel-containers_items_table.php.stub';
-        $item_migration->up();
-
-        $container_items_migration = include __DIR__ . '/../database/migrations/create_laravel-containers_container-items_table.php.stub';
-        $container_items_migration->up();
-
-        $container_summaries_migration = include __DIR__ . '/../database/migrations/create_laravel-containers_container-summaries_table.php.stub';
-        $container_summaries_migration->up();
-
-        $add_summaries_fields = include 'Migrations/add_laravel-containers_summary_fields.php';
-        $add_summaries_fields->up();
+        (include 'Migrations/create_container_items_table.php')->up();
+        (include 'Migrations/create_container_outers_table.php')->up();
+        (include 'Migrations/create_containers_table.php')->up();
+        (include 'Migrations/create_items_table.php')->up();
+        (include 'Migrations/create_outers_table.php')->up();
     }
 
     protected function getPackageProviders($app) : array

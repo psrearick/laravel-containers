@@ -4,14 +4,14 @@ namespace Psrearick\Containers\Tests\ImplementationClasses;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Psrearick\Containers\Tests\Factories\ContainerFactory;
+use Psrearick\Containers\Tests\Factories\OuterFactory;
 
-class Container extends Model
+class Outer extends Model
 {
     use HasFactory;
 
-    protected static function newFactory() : ContainerFactory
+    protected static function newFactory() : OuterFactory
     {
-        return ContainerFactory::new();
+        return OuterFactory::new();
     }
 }

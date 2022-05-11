@@ -8,14 +8,14 @@ return new class extends Migration
 {
     public function up() : void
     {
-        Schema::create('container_summaries', static function (Blueprint $table) {
+        Schema::create('container_outers', static function (Blueprint $table) {
             $table->id();
             $table->string('containerable_uuid');
             $table->string('containerable_type');
+            $table->string('outerable_uuid');
+            $table->string('outerable_type');
             $table->integer('quantity', false, true);
-            $table->integer('change', false, false);
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 };

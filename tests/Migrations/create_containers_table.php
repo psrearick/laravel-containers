@@ -8,14 +8,11 @@ return new class extends Migration
 {
     public function up() : void
     {
-        Schema::create('items', static function (Blueprint $table) {
+        Schema::create('containers', static function (Blueprint $table) {
             $table->id();
-            $table->uuid();
-            $table->string('model');
             $table->string('name');
-            $table->string('description')->nullable();
+            $table->unsignedBigInteger('parent_id')->nullable();
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 };

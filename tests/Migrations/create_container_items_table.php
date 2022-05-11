@@ -15,9 +15,7 @@ return new class extends Migration
             $table->string('itemable_uuid');
             $table->string('itemable_type');
             $table->integer('quantity', false, true);
-            $table->integer('change', false, false);
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 };

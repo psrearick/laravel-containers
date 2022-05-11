@@ -35,7 +35,7 @@
     "autoload": {
         "psr-4": {
             "Psrearick\\Containers\\": "src",
-            "Psrearick\\Containers\\Database\\Factories\\": "database/factories"
+            "Psrearick\\Containers\\Tests\\Factories\\": "tests/Factories"
         }
     },
     "autoload-dev": {
