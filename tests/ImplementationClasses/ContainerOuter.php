@@ -2,8 +2,9 @@
 
 namespace Psrearick\Containers\Tests\ImplementationClasses;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class ContainerOuter extends Model
+class ContainerOuter extends Pivot
 {
+    public $incrementing = true;
 }

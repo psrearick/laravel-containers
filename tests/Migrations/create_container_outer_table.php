@@ -7,12 +7,10 @@ use Illuminate\Support\Facades\Schema;
 return new class () extends Migration {
     public function up() : void
     {
-        Schema::create('container_items', static function (Blueprint $table) {
+        Schema::create('container_outer', static function (Blueprint $table) {
             $table->id();
-            $table->string('containerable_uuid');
-            $table->string('containerable_type');
-            $table->string('itemable_uuid');
-            $table->string('itemable_type');
+            $table->foreignId('container_id');
+            $table->foreignId('outer_id');
             $table->integer('quantity', false, true);
             $table->timestamps();
         });

@@ -4,8 +4,8 @@ namespace Psrearick\Containers\Computations;
 
 class Sum
 {
-    public function execute() : float
+    public function execute(?float $currentValue = 0, ?float $newValue = 0) : float
     {
-        return 0.0;
+        return $currentValue + $newValue;
     }
 }
