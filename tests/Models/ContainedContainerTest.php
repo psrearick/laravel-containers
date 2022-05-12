@@ -5,9 +5,9 @@ use Psrearick\Containers\Tests\ImplementationClasses\Item;
 use Psrearick\Containers\Tests\ImplementationClasses\Outer;
 
 test('a container can be contained by a different container model', function () {
-    $outer = Outer::factory()->create();
+    $outer     = Outer::factory()->create();
     $container = Container::factory()->create();
-    $item = Item::factory()->create();
+    $item      = Item::factory()->create();
 
     $attributes = [
         'quantity'  => 5.0,
