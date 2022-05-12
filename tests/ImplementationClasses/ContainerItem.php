@@ -4,7 +4,6 @@ namespace Psrearick\Containers\Tests\ImplementationClasses;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Psrearick\Containers\Computations\Sum;
-use Psrearick\Containers\Concerns\IsSummarized;
 use Psrearick\Containers\Contracts\Summarized;
 use Psrearick\Containers\Models\ContainerItem as Base;
 

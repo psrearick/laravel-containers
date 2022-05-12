@@ -11,9 +11,7 @@ class AddItemToContainer
 {
     public function execute(Container $container, Item $item, ?array $attributes = []) : void
     {
-        $relation       = $container->itemRelationName($item);
-        $relatedRecords = $container->itemRelationRecords($item);
-        $itemRelation   = $item->{$item->containerRelationName($container)}();
+        $relatedRecords = $item->getContainerRelationRecords($container);
 
         if (count($relatedRecords) !== 0 && ! $relatedRecords->last()->isSummarized()) {
             app(UpdateContainerItem::class)->execute($container, $item, $attributes);
@@ -21,7 +19,8 @@ class AddItemToContainer
             return;
         }
 
-        $container->$relation()->create([$itemRelation->getForeignKeyName() => $item->id]);
+        $container->getContainerItemRelationForItem($item)
+            ->create([$item->getItemForeignKeyName($container) => $item->id]);
 
         Event::dispatch(new ContainerItemWasCreated($container, $item, $attributes));
     }

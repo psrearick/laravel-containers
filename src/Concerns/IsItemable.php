@@ -3,15 +3,21 @@
 namespace Psrearick\Containers\Concerns;
 
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Event;
 use Psrearick\Containers\Actions\AddItemToContainer;
 use Psrearick\Containers\Contracts\Container;
 use Psrearick\Containers\Contracts\ContainerItem;
+use Psrearick\Containers\Contracts\Item;
 use Psrearick\Containers\Contracts\Item as ItemContract;
 use Psrearick\Containers\Events\ItemWasCreated;
 
 trait IsItemable
 {
+    use HasContainerItemRelation;
+
+    /** Add the current item to the provided container with the provided attributes */
     public function addToContainer(Container $container, ?array $attributes = []) : void
     {
         app(AddItemToContainer::class)->execute($container, $this, $attributes);
@@ -24,28 +30,45 @@ trait IsItemable
         });
     }
 
-//    public function firstContainerItem(Container $container) : ?ContainerItem
-//    {
-//        $relation = $this->relationName($container);
-//
-//        return $this->$relation->first();
-//    }
-
-    public function containerItem(Container $container) : ?ContainerItem
+    /** Get the ContainerItem relation with the provided Container */
+    public function getContainerItemRelationForContainer(Container $container) : HasMany
     {
-        return $container->itemRelationRecords($this)->last();
+        return $this->getContainerItemRelationOfType(get_class($container));
     }
 
-    public function containerRelationName(Container $container) : string
+    /**
+     * Get a collection of ContainerItem instances that relate to this item
+     * and the Container provided
+     */
+    public function getContainerRelationRecords(Container $container) : Collection
     {
-        return $this->containerItemRelations()[get_class($container)];
+        return $this->getContainerItemRelationOfType(get_class($container))->get();
     }
 
-    public function containerRelationRecords(Container $container) : Collection
+    /** Get a collection of all containers of this item */
+    public function getContainersOfType(string $class) : Collection
     {
-        $relation        = $this->{$this->containerRelationName($container)}();
-        $foreignRelation = $container->{$container->itemRelationName($this)}();
+        return $this->getRelatedRecordsForRelation($class, 'container');
+    }
 
-        return $relation->where($foreignRelation->getForeignKeyName(), '=', $container->id)->get();
+    /** Get the foreign key name for the ContainerItem relationship */
+    public function getItemForeignKeyName(Container $container) : string
+    {
+        return $this->{$this->getRelationNameForContainer($container)}()->getForeignKeyName();
+    }
+
+    /** Get the Container this item was most recently added to */
+    public function getLatestContainerOfType(string $class) : Container
+    {
+        return $this->getContainersOfType($class)->last();
+    }
+
+    /**
+     * Get the name of the relation on the ContainerItem instance
+     * that relates to this item
+     */
+    protected function getRelationNameForContainer(Container $container) : string
+    {
+        return $this->getRelationName(get_class($container));
     }
 }

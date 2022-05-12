@@ -64,7 +64,6 @@ test('an item cannot be added to a non-summarized container multiple times to cr
     $item = ItemNotSummarized::factory()->create();
 
     $item->addToContainer($container);
-    $rec = $item->containerRelationRecords($container)->last();
     $item->addToContainer($container);
 
     $this->assertDatabaseCount('container_item_not_summarizeds', 1);

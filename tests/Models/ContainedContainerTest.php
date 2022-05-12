@@ -15,10 +15,15 @@ test('a container can be contained by a different container model', function () 
     ];
 
     $item->addToContainer($container, $attributes);
-
     $container->addToContainer($outer);
 
-    ray($outer->containers->first()->items->first()->containerItemSummaries);
+    $containerForItem = $item->getLatestContainerOfType(get_class($container));
+
+    $this->assertEquals($container->id, $containerForItem->id);
+
+    $containerForContainer = $container->getLatestContainerOfType(get_class($outer));
+
+    $this->assertEquals($containerForItem->id, $containerForContainer->id);
 });
 
 //test('a container can be nested inside a container of the same model', function () {});

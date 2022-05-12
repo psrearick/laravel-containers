@@ -22,7 +22,7 @@ test('an event is emitted when an item is added to a container with attributes',
     $container->receiveItem($item, $attributes);
 
     /** @var ContainerItem $containerItem */
-    $containerItem = optional($item->containerItem($container))->refresh();
+    $containerItem = $item->getContainerItem($container);
 
     Event::assertDispatched(
         ContainerItemWasUpdated::class,

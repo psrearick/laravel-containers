@@ -41,7 +41,7 @@ test('a summary is updated for new container items that match existing container
     $container->receiveItem($item, $attributes);
     $container->receiveItem($item, $attributes);
 
-    $summary = $item->containerItem($container)->containerItemSummary;
+    $summary = $item->getContainerItem($container)->containerItemSummary;
 
     $this->assertEquals($attributes['quantity'] * 3, $summary->quantity);
     $this->assertEquals($attributes['value'] * 3, $summary->value);
