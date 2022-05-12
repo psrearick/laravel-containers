@@ -11,10 +11,13 @@ class ContainerItemWasUpdated
     use Dispatchable;
     use SerializesModels;
 
+    public array $attributes;
+
     public ContainerItem $containerItem;
 
-    public function __construct(ContainerItem $containerItem)
+    public function __construct(ContainerItem $containerItem, array $attributes)
     {
         $this->containerItem = $containerItem;
+        $this->attributes    = $attributes;
     }
 }

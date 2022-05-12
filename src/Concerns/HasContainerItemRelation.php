@@ -66,12 +66,11 @@ trait HasContainerItemRelation
     /** Get the ContainerItem relation name for the provided class */
     protected function getRelationName(string $class, string $key = '') : ?string
     {
-        $relation = $this->containerItemRelations()[$class];
-
-        if (is_array($relation)) {
-            $relation = $key === '' ? null : $relation[$key];
+        $relations = $this->containerItemRelations();
+        if (! array_key_exists($class, $relations)) {
+            $relations = $relations[$key] ?? [];
         }
 
-        return $relation ?? null;
+        return $relations[$class] ?? null;
     }
 }

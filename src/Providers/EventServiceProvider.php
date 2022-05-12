@@ -6,6 +6,7 @@ use Illuminate\Foundation\Support\Providers\EventServiceProvider as Provider;
 use Psrearick\Containers\Events\ContainerItemWasCreated;
 use Psrearick\Containers\Events\ContainerItemWasUpdated;
 use Psrearick\Containers\Listeners\UpdateContainerItemAttributesListener;
+use Psrearick\Containers\Listeners\UpdateContainerItemParentListener;
 use Psrearick\Containers\Listeners\UpdateContainerItemSummaryListener;
 
 class EventServiceProvider extends Provider
@@ -16,6 +17,7 @@ class EventServiceProvider extends Provider
         ],
         ContainerItemWasUpdated::class => [
             UpdateContainerItemSummaryListener::class,
+            UpdateContainerItemParentListener::class,
         ],
     ];
 }

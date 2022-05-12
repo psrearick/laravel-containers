@@ -27,7 +27,7 @@ class UpdateContainerItem
 
         $containerItem->update($updates);
 
-        Event::dispatch(new ContainerItemWasUpdated($containerItem));
+        Event::dispatch(new ContainerItemWasUpdated($containerItem, $attributes));
 
         return $containerItem;
     }

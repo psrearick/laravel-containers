@@ -39,11 +39,13 @@ class Container extends Model implements ContainerContract, ItemContract
     public function containerItemRelations() : array
     {
         return [
-            Item::class     => 'containerItems',
-            Outer::class    => 'containerOuters',
-            __CLASS__       => [
-                'item'      => 'containerContainersChild',
-                'container' => 'containerContainersParent',
+            'item'      => [
+                Outer::class    => 'containerOuters',
+                __CLASS__       => 'containerContainersChild',
+            ],
+            'container' => [
+                Item::class     => 'containerItems',
+                __CLASS__       => 'containerContainersParent',
             ],
         ];
     }
