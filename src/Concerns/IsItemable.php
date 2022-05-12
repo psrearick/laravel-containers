@@ -2,6 +2,7 @@
 
 namespace Psrearick\Containers\Concerns;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Event;
 use Psrearick\Containers\Actions\AddItemToContainer;
 use Psrearick\Containers\Contracts\Container;
@@ -23,22 +24,28 @@ trait IsItemable
         });
     }
 
+//    public function firstContainerItem(Container $container) : ?ContainerItem
+//    {
+//        $relation = $this->relationName($container);
+//
+//        return $this->$relation->first();
+//    }
+
     public function containerItem(Container $container) : ?ContainerItem
     {
-        $relation = $this->relationName($container);
-
-        return optional($this->$relation->first())->pivot;
+        return $container->itemRelationRecords($this)->last();
     }
 
-    public function lastContainerItem(Container $container) : ?ContainerItem
+    public function containerRelationName(Container $container) : string
     {
-        $relation = $this->relationName($container);
-
-        return optional($this->$relation->last())->pivot;
+        return $this->containerItemRelations()[get_class($container)];
     }
 
-    public function relationName(Container $container) : string
+    public function containerRelationRecords(Container $container) : Collection
     {
-        return $this->containedBy()[get_class($container)];
+        $relation        = $this->{$this->containerRelationName($container)}();
+        $foreignRelation = $container->{$container->itemRelationName($this)}();
+
+        return $relation->where($foreignRelation->getForeignKeyName(), '=', $container->id)->get();
     }
 }

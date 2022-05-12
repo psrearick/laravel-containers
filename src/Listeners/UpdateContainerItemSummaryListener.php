@@ -3,16 +3,19 @@
 namespace Psrearick\Containers\Listeners;
 
 use Psrearick\Containers\Actions\UpdateContainerItemSummary;
+use Psrearick\Containers\Contracts\Summarized;
 use Psrearick\Containers\Events\ContainerItemWasUpdated;
 
 class UpdateContainerItemSummaryListener
 {
     public function handle(ContainerItemWasUpdated $event) : void
     {
-        if (! ($event->containerItem->isSummarized ?? false)) {
+        if (! ($event->containerItem->isSummarized() ?? false)) {
             return;
         }
 
-        app(UpdateContainerItemSummary::class)->execute($event->containerItem);
+        /** @var Summarized $summarized */
+        $summarized = $event->containerItem;
+        app(UpdateContainerItemSummary::class)->execute($summarized);
     }
 }

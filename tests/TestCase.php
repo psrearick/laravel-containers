@@ -22,12 +22,13 @@ class TestCase extends Orchestra
     {
         config()->set('database.default', 'testing');
 
-        (include 'Migrations/create_container_item_table.php')->up();
-        (include 'Migrations/create_container_outer_table.php')->up();
+        (include 'Migrations/create_container_items_table.php')->up();
+        (include 'Migrations/create_container_outers_table.php')->up();
         (include 'Migrations/create_containers_table.php')->up();
         (include 'Migrations/create_items_table.php')->up();
         (include 'Migrations/create_outers_table.php')->up();
         (include 'Migrations/create_container_item_summaries_table.php')->up();
+        (include 'Migrations/create_not_summarized_tables.php')->up();
     }
 
     protected function getPackageProviders($app) : array

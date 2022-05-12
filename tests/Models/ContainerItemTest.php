@@ -1,7 +1,9 @@
 <?php
 
 use Psrearick\Containers\Tests\ImplementationClasses\Container;
+use Psrearick\Containers\Tests\ImplementationClasses\ContainerNotSummarized;
 use Psrearick\Containers\Tests\ImplementationClasses\Item;
+use Psrearick\Containers\Tests\ImplementationClasses\ItemNotSummarized;
 
 test('a container can receive an item', function () {
     /** @var Container $container */
@@ -12,7 +14,7 @@ test('a container can receive an item', function () {
 
     $container->receiveItem($item);
 
-    $this->assertDatabaseCount('container_item', 1);
+    $this->assertDatabaseCount('container_items', 1);
 });
 
 test('an item can be added to a container', function () {
@@ -24,7 +26,7 @@ test('an item can be added to a container', function () {
 
     $item->addToContainer($container);
 
-    $this->assertDatabaseCount('container_item', 1);
+    $this->assertDatabaseCount('container_items', 1);
 });
 
 test('multiple items can be added to a container', function () {
@@ -39,7 +41,7 @@ test('multiple items can be added to a container', function () {
     $item2 = Item::factory()->create();
     $item2->addToContainer($container);
 
-    $this->assertDatabaseCount('container_item', 2);
+    $this->assertDatabaseCount('container_items', 2);
 });
 
 test('an item can be added to a summarized container multiple times to create multiple container items', function () {
@@ -51,18 +53,19 @@ test('an item can be added to a summarized container multiple times to create mu
     $item->addToContainer($container);
     $item->addToContainer($container);
 
-    $this->assertDatabaseCount('container_item', 2);
+    $this->assertDatabaseCount('container_items', 2);
 });
 
 test('an item cannot be added to a non-summarized container multiple times to create multiple container items', function () {
     /** @var Container $container */
-    $container = Container::factory()->create();
+    $container = ContainerNotSummarized::factory()->create();
 
     /** @var Item $item */
-    $item = Item::factory()->create();
+    $item = ItemNotSummarized::factory()->create();
+
     $item->addToContainer($container);
-    $item->containerItem($container)->isSummarized = false;
+    $rec = $item->containerRelationRecords($container)->last();
     $item->addToContainer($container);
 
-    $this->assertDatabaseCount('container_item', 1);
+    $this->assertDatabaseCount('container_item_not_summarizeds', 1);
 });

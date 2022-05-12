@@ -17,21 +17,3 @@ test('an event is emitted when a container is created', function () {
         }
     );
 });
-
-//it('creates a new container summary when a container create event listener is triggered',
-//    function () {
-//        /** @var Container $container */
-//        $container = Container::factory()->create([
-//            'model' => null,
-//            'uuid'  => null,
-//        ]);
-//
-//        $summary = $container->summary();
-//
-//        $this->assertCount(0, $summary->quantity);
-//    }
-//);
-
-//it('creates a new container summary when a container create event is triggered',
-//    function () {}
-//);

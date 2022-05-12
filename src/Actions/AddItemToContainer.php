@@ -11,17 +11,18 @@ class AddItemToContainer
 {
     public function execute(Container $container, Item $item, ?array $attributes = []) : void
     {
-        $relationMethod = $container->containsRelationName($item);
-        $relation       = $container->$relationMethod();
-        $containerItem  = $item->containerItem($container);
+        $relation       = $container->itemRelationName($item);
+        $relatedRecords = $container->itemRelationRecords($item);
+        $itemRelation   = $item->{$item->containerRelationName($container)}();
 
-        if ($containerItem && ! ($containerItem->isSummarized ?? false)) {
+        if (count($relatedRecords) !== 0 && ! $relatedRecords->last()->isSummarized()) {
             app(UpdateContainerItem::class)->execute($container, $item, $attributes);
 
             return;
         }
 
-        $relation->attach($item->id);
-        Event::dispatch(new ContainerItemWasCreated($container->refresh(), $item->refresh(), $attributes));
+        $container->$relation()->create([$itemRelation->getForeignKeyName() => $item->id]);
+
+        Event::dispatch(new ContainerItemWasCreated($container, $item, $attributes));
     }
 }

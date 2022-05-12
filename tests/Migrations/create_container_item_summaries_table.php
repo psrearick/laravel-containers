@@ -9,10 +9,10 @@ return new class () extends Migration {
     {
         Schema::create('container_item_summaries', static function (Blueprint $table) {
             $table->id();
-            $table->foreignId('container_id');
-            $table->foreignId('item_id');
             $table->float('quantity')->nullable();
             $table->float('value')->nullable();
+            $table->unsignedBigInteger('item_id');
+            $table->unsignedBigInteger('container_id');
             $table->timestamps();
         });
     }

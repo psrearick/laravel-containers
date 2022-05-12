@@ -2,26 +2,25 @@
 
 namespace Psrearick\Containers\Tests\ImplementationClasses;
 
-use Illuminate\Database\Eloquent\Relations\Pivot;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Psrearick\Containers\Computations\Sum;
 use Psrearick\Containers\Concerns\IsSummarized;
-use Psrearick\Containers\Contracts\ContainerItem as ContainerItemContract;
 use Psrearick\Containers\Contracts\Summarized;
+use Psrearick\Containers\Models\ContainerItem as Base;
 
 /**
  * @property float $quantity
  * @property float $value
  */
-class ContainerItem extends Pivot implements ContainerItemContract, Summarized
+class ContainerItem extends Base implements Summarized
 {
-    use IsSummarized;
-
-    public $incrementing = true;
-
     protected $casts = [
         'quantity'  => 'float',
         'value'     => 'float',
     ];
+//    use IsSummarized;
+
+    protected bool $isSummarized = true;
 
     public function computations() : array
     {
@@ -31,8 +30,23 @@ class ContainerItem extends Pivot implements ContainerItemContract, Summarized
         ];
     }
 
-    public function summaryClass() : string
+    public function container() : BelongsTo
     {
-        return ContainerItemSummary::class;
+        return $this->belongsTo(Container::class);
+    }
+
+    public function containerItemSummary() : BelongsTo
+    {
+        return $this->belongsTo(ContainerItemSummary::class);
+    }
+
+    public function item() : BelongsTo
+    {
+        return $this->belongsTo(Item::class);
+    }
+
+    public function summarizedBy() : string
+    {
+        return 'containerItemSummary';
     }
 }

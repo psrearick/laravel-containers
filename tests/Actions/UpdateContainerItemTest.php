@@ -6,7 +6,7 @@ use Psrearick\Containers\Tests\ImplementationClasses\Container;
 use Psrearick\Containers\Tests\ImplementationClasses\ContainerItem;
 use Psrearick\Containers\Tests\ImplementationClasses\Item;
 
-test('A new container item can be given a quantity', function () {
+test('a new container item can be given a quantity', function () {
     Event::fake(ContainerItemWasCreated::class);
 
     /** @var Container $container */

@@ -2,19 +2,29 @@
 
 namespace Psrearick\Containers\Actions;
 
+use Illuminate\Support\Facades\Event;
 use Psrearick\Containers\Contracts\Summarized;
+use Psrearick\Containers\Events\ContainerItemSummaryWasUpdated;
 
 class UpdateContainerItemSummary
 {
     public function execute(Summarized $containerItem) : void
     {
-        $ids          = $containerItem->foreignIds();
-        $computations = $containerItem->computations();
+        $computations      = $containerItem->computations();
+        $relations         = $containerItem->containerItemRelations();
+        $containerRelation = $containerItem->{$relations['container']}();
+        $container         = $containerRelation->first();
+        $containerKey      = $containerRelation->getForeignKeyName();
+        $itemRelation      = $containerItem->{$relations['item']}();
+        $item              = $itemRelation->first();
+        $itemKey           = $itemRelation->getForeignKeyName();
 
         $containerItems = app(get_class($containerItem))::query()
-            ->where($ids['container'], '=', $containerItem[$ids['container']])
-            ->where($ids['item'], '=', $containerItem[$ids['item']])
+            ->where($containerKey, '=', $container->id)
+            ->where($itemKey, '=', $item->id)
             ->get();
+
+//        $containerItems->each
 
         $updates = $containerItems->reduce(function ($carry, $item) use ($computations) {
             return collect($computations)->map(function ($class, $field) use ($carry, $item) {
@@ -25,9 +35,19 @@ class UpdateContainerItemSummary
             })->all();
         }, array_fill_keys(array_keys($computations), 0));
 
-        app($containerItem->summaryClass())::updateOrCreate([
-            $ids['container']    => $containerItem[$ids['container']],
-            $ids['item']         => $containerItem[$ids['item']],
-        ], $updates);
+        $relation = $containerItem->summarizedBy();
+
+        $summary = app(get_class($containerItem->$relation()->getRelated()))->updateOrCreate(
+            [
+                $containerKey => $container->id,
+                $itemKey      => $item->id,
+            ],
+            $updates
+        );
+
+        $containerItem->$relation()->associate($summary);
+        $containerItem->save();
+
+        Event::dispatch(new ContainerItemSummaryWasUpdated($summary));
     }
 }

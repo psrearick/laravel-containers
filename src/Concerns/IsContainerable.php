@@ -2,6 +2,7 @@
 
 namespace Psrearick\Containers\Concerns;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Event;
 use Psrearick\Containers\Actions\AddItemToContainer;
 use Psrearick\Containers\Contracts\Container as ContainerContract;
@@ -17,9 +18,17 @@ trait IsContainerable
         });
     }
 
-    public function containsRelationName(Item $item) : string
+    public function itemRelationName(Item $item) : string
     {
-        return $this->contains()[get_class($item)];
+        return $this->containerItemRelations()[get_class($item)];
+    }
+
+    public function itemRelationRecords(Item $item) : Collection
+    {
+        $relation        = $this->{$this->itemRelationName($item)}();
+        $foreignRelation = $item->{$item->containerRelationName($this)}();
+
+        return $relation->where($foreignRelation->getForeignKeyName(), '=', $item->id)->get();
     }
 
     public function receiveItem(Item $item, ?array $attributes = []) : void

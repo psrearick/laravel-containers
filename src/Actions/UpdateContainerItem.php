@@ -12,7 +12,7 @@ class UpdateContainerItem
 {
     public function execute(Container $container, Item $item, array $attributes) : ?ContainerItem
     {
-        $containerItem = $item->lastContainerItem($container);
+        $containerItem = $item->containerRelationRecords($container)->last();
 
         if (! $attributes) {
             return null;
