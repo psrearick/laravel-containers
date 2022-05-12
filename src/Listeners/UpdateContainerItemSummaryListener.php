@@ -10,7 +10,7 @@ class UpdateContainerItemSummaryListener
 {
     public function handle(ContainerItemWasUpdated $event) : void
     {
-        if (! ($event->containerItem->isSummarized() ?? false)) {
+        if (! $event->containerItem->isSummarized()) {
             return;
         }
 
