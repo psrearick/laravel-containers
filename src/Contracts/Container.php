@@ -15,8 +15,4 @@ interface Container extends Model
     public function itemRelationName(Item $item) : string;
 
     public function itemRelationRecords(Item $item) : Collection;
-
-//    public function contains() : array;
-
-//    public function containsRelationName(Item $item) : string;
 }

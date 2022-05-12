@@ -25,11 +25,6 @@ class Item extends Model implements ItemContract
             'value'     => Sum::class,
         ];
     }
-//
-//    public function containedBy() : array
-//    {
-//        return [Container::class => 'containers'];
-//    }
 
     public function containerItemRelations() : array
     {

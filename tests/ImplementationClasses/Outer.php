@@ -23,16 +23,6 @@ class Outer extends Model implements ContainerContract
         return $this->hasMany(ContainerOuter::class);
     }
 
-//    public function containerOuters() : HasMany
-//    {
-//        return $this->hasMany(ContainerOuter::class);
-//    }
-//
-//    public function contains() : array
-//    {
-//        return [Container::class => 'containers'];
-//    }
-
     protected static function newFactory() : OuterFactory
     {
         return OuterFactory::new();

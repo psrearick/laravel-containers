@@ -18,7 +18,6 @@ class ContainerItem extends Base implements Summarized
         'quantity'  => 'float',
         'value'     => 'float',
     ];
-//    use IsSummarized;
 
     protected bool $isSummarized = true;
 

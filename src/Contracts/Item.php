@@ -16,12 +16,4 @@ interface Item extends Model
     public function containerRelationName(Container $container) : string;
 
     public function containerRelationRecords(Container $container) : Collection;
-
-//    public function containedBy() : array;
-
-//    public function containerItem(Container $container) : ?ContainerItem;
-
-//    public function lastContainerItem(Container $container) : ?ContainerItem;
-
-//    public function relationName(Container $container) : string;
 }

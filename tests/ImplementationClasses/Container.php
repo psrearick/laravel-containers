@@ -25,16 +25,6 @@ class Container extends Model implements ContainerContract, ItemContract
         ];
     }
 
-//    public function containedBy() : array
-//    {
-//        return [Outer::class => 'outers'];
-//    }
-//
-//    public function contains() : array
-//    {
-//        return [Item::class => 'items'];
-//    }
-
     public function containerItemRelations() : array
     {
         return [

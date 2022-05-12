@@ -6,8 +6,5 @@ interface Summarized extends ContainerItem
 {
     public function computations() : array;
 
-//
-//    public function foreignIds() : array;
-//
     public function summarizedBy() : string;
 }

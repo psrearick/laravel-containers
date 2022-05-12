@@ -24,8 +24,6 @@ class UpdateContainerItemSummary
             ->where($itemKey, '=', $item->id)
             ->get();
 
-//        $containerItems->each
-
         $updates = $containerItems->reduce(function ($carry, $item) use ($computations) {
             return collect($computations)->map(function ($class, $field) use ($carry, $item) {
                 return app($class)->execute(
