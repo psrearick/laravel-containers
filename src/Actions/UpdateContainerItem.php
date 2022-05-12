@@ -12,7 +12,7 @@ class UpdateContainerItem
 {
     public function execute(Container $container, Item $item, array $attributes) : ?ContainerItem
     {
-        $containerItem = $item->getContainerItem($container);
+        $containerItem = $item->getContainerItem($container, 'item');
 
         if (! $attributes) {
             return null;

@@ -7,9 +7,12 @@ use Illuminate\Support\Facades\Schema;
 return new class () extends Migration {
     public function up() : void
     {
-        Schema::create('outers', static function (Blueprint $table) {
+        Schema::create('container_containers', static function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->foreignId('parent_id');
+            $table->foreignId('child_id');
+            $table->float('quantity')->nullable();
+            $table->float('value')->nullable();
             $table->timestamps();
         });
     }

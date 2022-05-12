@@ -33,7 +33,7 @@ trait IsItemable
     /** Get the ContainerItem relation with the provided Container */
     public function getContainerItemRelationForContainer(Container $container) : HasMany
     {
-        return $this->getContainerItemRelationOfType(get_class($container));
+        return $this->getContainerItemRelationOfType(get_class($container), 'item');
     }
 
     /**
@@ -42,13 +42,13 @@ trait IsItemable
      */
     public function getContainerRelationRecords(Container $container) : Collection
     {
-        return $this->getContainerItemRelationOfType(get_class($container))->get();
+        return $this->getContainerItemRelationForContainer($container)->get();
     }
 
     /** Get a collection of all containers of this item */
     public function getContainersOfType(string $class) : Collection
     {
-        return $this->getRelatedRecordsForRelation($class, 'container');
+        return $this->getRelatedRecordsForRelation($class, 'container', 'item');
     }
 
     /** Get the foreign key name for the ContainerItem relationship */
@@ -58,7 +58,7 @@ trait IsItemable
     }
 
     /** Get the Container this item was most recently added to */
-    public function getLatestContainerOfType(string $class) : Container
+    public function getLatestContainerOfType(string $class) : ?Container
     {
         return $this->getContainersOfType($class)->last();
     }
@@ -67,8 +67,8 @@ trait IsItemable
      * Get the name of the relation on the ContainerItem instance
      * that relates to this item
      */
-    protected function getRelationNameForContainer(Container $container) : string
+    protected function getRelationNameForContainer(Container $container) : ?string
     {
-        return $this->getRelationName(get_class($container));
+        return $this->getRelationName(get_class($container), 'item');
     }
 }

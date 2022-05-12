@@ -8,6 +8,7 @@ use Psrearick\Containers\Contracts\Container;
 use Psrearick\Containers\Contracts\ContainerItem;
 use Psrearick\Containers\Contracts\Item;
 use Psrearick\Containers\Exceptions\ContainerItemNotFoundException;
+use Psrearick\Containers\Exceptions\MissingRelationshipException;
 
 trait HasContainerItemRelation
 {
@@ -15,9 +16,9 @@ trait HasContainerItemRelation
      * Get the most recent ContainerItem relating this record with its
      * corresponding Container / Item
      */
-    public function getContainerItem(Container|Item $record) : ContainerItem
+    public function getContainerItem(Container|Item $record, string $key = '') : ContainerItem
     {
-        $containerItem = $this->getContainerItemRelationOfType(get_class($record))->latest()->first();
+        $containerItem = $this->getContainerItemRelationOfType(get_class($record), $key)->latest()->first();
 
         if (! $containerItem instanceof ContainerItem) {
             throw new ContainerItemNotFoundException();
@@ -30,9 +31,15 @@ trait HasContainerItemRelation
      * Get the ContainerItem relation for the current record that
      * corresponds to the provided Container / Item class
      */
-    protected function getContainerItemRelationOfType(string $relationClass) : HasMany
+    protected function getContainerItemRelationOfType(string $relationClass, string $key = '') : HasMany
     {
-        return $this->{$this->getRelationName($relationClass)}();
+        $method = $this->getRelationName($relationClass, $key);
+
+        if (! is_string($method)) {
+            throw new MissingRelationshipException();
+        }
+
+        return $this->{$method}();
     }
 
     /**
@@ -40,9 +47,9 @@ trait HasContainerItemRelation
      *
      * For example: for this Item, get all related Containers
      */
-    protected function getRelatedRecordsForRelation(string $relationClass, string $relationType) : Collection
+    protected function getRelatedRecordsForRelation(string $relationClass, string $relationType, string $key = '') : Collection
     {
-        $relation = $this->getContainerItemRelationOfType($relationClass);
+        $relation = $this->getContainerItemRelationOfType($relationClass, $key);
         $model    = $relation->getRelated();
 
         if (! method_exists($model, 'containerItemRelations')) {
@@ -57,8 +64,14 @@ trait HasContainerItemRelation
     }
 
     /** Get the ContainerItem relation name for the provided class */
-    protected function getRelationName(string $class) : ?string
+    protected function getRelationName(string $class, string $key = '') : ?string
     {
-        return $this->containerItemRelations()[$class] ?? null;
+        $relation = $this->containerItemRelations()[$class];
+
+        if (is_array($relation)) {
+            $relation = $key === '' ? null : $relation[$key];
+        }
+
+        return $relation ?? null;
     }
 }

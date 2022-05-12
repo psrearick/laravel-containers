@@ -30,7 +30,7 @@ trait IsContainerable
     /** Get the ContainerItem relation with the provided Item */
     public function getContainerItemRelationForItem(Item $item) : HasMany
     {
-        return $this->getContainerItemRelationOfType(get_class($item));
+        return $this->getContainerItemRelationOfType(get_class($item), 'container');
     }
 
     /**
@@ -45,7 +45,7 @@ trait IsContainerable
     /** Get a collection of all items in this container */
     public function getItemsOfType(string $class) : Collection
     {
-        return $this->getRelatedRecordsForRelation($class, 'item');
+        return $this->getRelatedRecordsForRelation($class, 'item', 'container');
     }
 
     /** Get the item most recently added to this container */
@@ -66,6 +66,6 @@ trait IsContainerable
      */
     protected function getRelationNameForItem(Item $item) : string
     {
-        return $this->getRelationName(get_class($item));
+        return $this->getRelationName(get_class($item), 'container');
     }
 }

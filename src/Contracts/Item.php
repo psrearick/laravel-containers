@@ -20,7 +20,7 @@ interface Item extends Model
      * Get the most recent ContainerItem relating this record with its
      * corresponding Container
      */
-    public function getContainerItem(Container|Item $record) : ContainerItem;
+    public function getContainerItem(Container|Item $record, string $key) : ContainerItem;
 
     /** Get the ContainerItem relation with the provided Container */
     public function getContainerItemRelationForContainer(Container $container) : HasMany;
@@ -38,5 +38,5 @@ interface Item extends Model
     public function getItemForeignKeyName(Container $container) : string;
 
     /** Get the Container this item was most recently added to */
-    public function getLatestContainerOfType(string $class) : Container;
+    public function getLatestContainerOfType(string $class) : ?Container;
 }

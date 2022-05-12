@@ -26,4 +26,17 @@ test('a container can be contained by a different container model', function () 
     $this->assertEquals($containerForItem->id, $containerForContainer->id);
 });
 
-//test('a container can be nested inside a container of the same model', function () {});
+test('a container can be nested inside a container of the same model', function () {
+    /** @var \Psrearick\Containers\Contracts\Container $parentContainer */
+    $parentContainer = Container::factory()->create();
+
+    /** @var \Psrearick\Containers\Contracts\Item $childContainer */
+    $childContainer = Container::factory()->create();
+
+    $childContainer->addToContainer($parentContainer);
+
+    $this->assertEquals($parentContainer->id, $childContainer->getLatestContainerOfType(Container::class)->id);
+    $this->assertNull($parentContainer->getLatestContainerOfType(Container::class));
+
+    $this->assertEquals($childContainer->id, $parentContainer->getLatestItemOfType(Container::class)->id);
+});
