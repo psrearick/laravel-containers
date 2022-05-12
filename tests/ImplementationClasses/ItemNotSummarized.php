@@ -11,8 +11,8 @@ use Psrearick\Containers\Tests\Factories\ItemNotSummarizedFactory;
 
 class ItemNotSummarized extends Model implements Contract
 {
-    use IsItemable;
     use HasFactory;
+    use IsItemable;
 
     public function computations() : array
     {
