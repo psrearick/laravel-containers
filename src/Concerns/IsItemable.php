@@ -24,12 +24,6 @@ trait IsItemable
         app(AddItemToContainer::class)->execute($container, $this, $attributes);
     }
 
-    /** Remove the current item from the provided container */
-    public function removeFromContainer(Container $container) : void
-    {
-        app(RemoveItemFromContainer::class)->execute($this, $container);
-    }
-
     public static function bootIsItemable() : void
     {
         static::created(static function (ItemContract $item) {
@@ -68,6 +62,12 @@ trait IsItemable
     public function getLatestContainerOfType(string $class) : ?Container
     {
         return $this->getContainersOfType($class)->last();
+    }
+
+    /** Remove the current item from the provided container */
+    public function removeFromContainer(Container $container) : void
+    {
+        app(RemoveItemFromContainer::class)->execute($this, $container);
     }
 
     /**

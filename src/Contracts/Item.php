@@ -16,9 +16,6 @@ interface Item extends Model
     /** provide an array that maps related classes to their ContainerItem relation */
     public function containerItemRelations() : array;
 
-    /** Remove the current item from the provided container */
-    public function removeFromContainer(Container $container) : void;
-
     /**
      * Get the most recent ContainerItem relating this record with its
      * corresponding Container
@@ -42,4 +39,7 @@ interface Item extends Model
 
     /** Get the Container this item was most recently added to */
     public function getLatestContainerOfType(string $class) : ?Container;
+
+    /** Remove the current item from the provided container */
+    public function removeFromContainer(Container $container) : void;
 }

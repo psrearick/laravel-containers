@@ -22,7 +22,8 @@ test('an event is emitted when a container discards an item', function () {
 
     $container->discardItem($item);
 
-    Event::assertDispatched(ItemWasRemovedFromContainer::class,
+    Event::assertDispatched(
+        ItemWasRemovedFromContainer::class,
         static function (ItemWasRemovedFromContainer $event) use ($container, $item) {
             return $event->container->id === $container->id && $event->item->id === $item->id;
         }
@@ -44,7 +45,8 @@ test('an event is emitted when an item is removed from a container', function ()
 
     $item->removeFromContainer($container);
 
-    Event::assertDispatched(ItemWasRemovedFromContainer::class,
+    Event::assertDispatched(
+        ItemWasRemovedFromContainer::class,
         static function (ItemWasRemovedFromContainer $event) use ($container, $item) {
             return $event->container->id === $container->id && $event->item->id === $item->id;
         }

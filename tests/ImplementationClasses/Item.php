@@ -15,7 +15,8 @@ use Psrearick\Containers\Tests\Factories\ItemFactory;
  */
 class Item extends Model implements SummarizableItem
 {
-    use HasFactory, IsItemable;
+    use HasFactory;
+    use IsItemable;
 
     public function computations() : array
     {
