@@ -48,10 +48,10 @@ test('a nested container item summary can be generated', function () {
 
     $item->addToContainer($childContainer, $attributes);
 
-    $containerItem = $childContainer->getContainerItem($item, 'container');
+    $containerItem        = $childContainer->getContainerItem($item, 'container');
     $containerItemSummary = $containerItem->{$containerItem->summarizedBy()};
 
-    $parentItem = $parentContainer->getContainerItem($childContainer, 'container');
+    $parentItem        = $parentContainer->getContainerItem($childContainer, 'container');
     $parentItemSummary = $parentItem->{$parentItem->summarizedBy()};
 
     $this->assertEquals($attributes['value'], $containerItemSummary->value);
