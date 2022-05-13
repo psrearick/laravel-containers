@@ -100,3 +100,33 @@ test('a container can discard an item', function () {
 
     app(GetContainerItemTotals::class)->execute($container, $item);
 });
+
+test('an non-summarized item can be removed from a container', function () {
+    /** @var Container $container */
+    $container = ContainerNotSummarized::factory()->create();
+
+    /** @var Item $item */
+    $item = ItemNotSummarized::factory()->create();
+    $item->addToContainer($container, ['quantity' => 5]);
+
+    $item->removeFromContainer($container);
+
+    $this->expectException(ContainerItemNotFoundException::class);
+
+    app(GetContainerItemTotals::class)->execute($container, $item);
+});
+
+test('a non-summarized container can discard an item', function () {
+    /** @var Container $container */
+    $container = ContainerNotSummarized::factory()->create();
+
+    /** @var Item $item */
+    $item = ItemNotSummarized::factory()->create();
+    $item->addToContainer($container, ['quantity' => 5]);
+
+    $container->discardItem($item);
+
+    $this->expectException(ContainerItemNotFoundException::class);
+
+    app(GetContainerItemTotals::class)->execute($container, $item);
+});
