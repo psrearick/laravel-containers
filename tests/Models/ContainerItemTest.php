@@ -1,5 +1,6 @@
 <?php
 
+use Psrearick\Containers\Actions\GetContainerItemTotals;
 use Psrearick\Containers\Exceptions\ContainerItemNotFoundException;
 use Psrearick\Containers\Tests\ImplementationClasses\Container;
 use Psrearick\Containers\Tests\ImplementationClasses\ContainerNotSummarized;
@@ -78,19 +79,11 @@ test('an item can be removed from a container', function () {
     $item = Item::factory()->create();
     $item->addToContainer($container, ['quantity' => 5]);
 
-
-//    ray(app(\Psrearick\Containers\Actions\GetContainerItemTotals::class)->execute($container, $item));
-
-
     $item->removeFromContainer($container);
-
-    ray(\Psrearick\Containers\Tests\ImplementationClasses\ContainerItem::all());
-
-    ray(\Psrearick\Containers\Tests\ImplementationClasses\ContainerItemSummary::all());
 
     $this->expectException(ContainerItemNotFoundException::class);
 
-    $item->getContainerItem($container, 'item');
+    app(GetContainerItemTotals::class)->execute($container, $item);
 });
 
 test('a container can discard an item', function () {
@@ -105,5 +98,5 @@ test('a container can discard an item', function () {
 
     $this->expectException(ContainerItemNotFoundException::class);
 
-    $item->getContainerItem($container, 'item');
+    app(GetContainerItemTotals::class)->execute($container, $item);
 });

@@ -22,7 +22,7 @@ class GetContainerItemTotals
         if ($item instanceof SummarizableItem && $container instanceof SummarizableContainer && $model->isSummarized()) {
             /** @var Summarized $model */
             $this->model = $model;
-            return $this->getSummarizedTotals($item, $container);
+            return $this->validateQuantity($this->getSummarizedTotals($item, $container));
         }
 
         $containerItem = $item->getContainerItem($container);
@@ -36,6 +36,19 @@ class GetContainerItemTotals
                 $value = $containerItem->$key;
             }
         });
+
+        return $this->validateQuantity($attributes);
+    }
+
+    private function validateQuantity(array $attributes) : array
+    {
+        if (!array_key_exists('quantity',  $attributes)) {
+            return $attributes;
+        }
+
+        if ((float) $attributes['quantity'] === 0.0) {
+            throw new ContainerItemNotFoundException();
+        }
 
         return $attributes;
     }
