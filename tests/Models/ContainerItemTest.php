@@ -1,5 +1,6 @@
 <?php
 
+use Psrearick\Containers\Exceptions\ContainerItemNotFoundException;
 use Psrearick\Containers\Tests\ImplementationClasses\Container;
 use Psrearick\Containers\Tests\ImplementationClasses\ContainerNotSummarized;
 use Psrearick\Containers\Tests\ImplementationClasses\Item;
@@ -67,4 +68,42 @@ test('an item cannot be added to a non-summarized container multiple times to cr
     $item->addToContainer($container);
 
     $this->assertDatabaseCount('container_item_not_summarizeds', 1);
+});
+
+test('an item can be removed from a container', function () {
+    /** @var Container $container */
+    $container = Container::factory()->create();
+
+    /** @var Item $item */
+    $item = Item::factory()->create();
+    $item->addToContainer($container, ['quantity' => 5]);
+
+
+//    ray(app(\Psrearick\Containers\Actions\GetContainerItemTotals::class)->execute($container, $item));
+
+
+    $item->removeFromContainer($container);
+
+    ray(\Psrearick\Containers\Tests\ImplementationClasses\ContainerItem::all());
+
+    ray(\Psrearick\Containers\Tests\ImplementationClasses\ContainerItemSummary::all());
+
+    $this->expectException(ContainerItemNotFoundException::class);
+
+    $item->getContainerItem($container, 'item');
+});
+
+test('a container can discard an item', function () {
+    /** @var Container $container */
+    $container = Container::factory()->create();
+
+    /** @var Item $item */
+    $item = Item::factory()->create();
+    $item->addToContainer($container, ['quantity' => 5]);
+
+    $container->discardItem($item);
+
+    $this->expectException(ContainerItemNotFoundException::class);
+
+    $item->getContainerItem($container, 'item');
 });

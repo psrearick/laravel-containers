@@ -18,7 +18,7 @@ trait HasContainerItemRelation
      */
     public function getContainerItem(Container|Item $record, string $key = '') : ContainerItem
     {
-        $containerItem = $this->getContainerItemRelationOfType(get_class($record), $key)->latest()->first();
+        $containerItem = $this->getContainerItemRelationOfType(get_class($record), $key)->orderByDesc('id')->first();
 
         if (! $containerItem instanceof ContainerItem) {
             throw new ContainerItemNotFoundException();

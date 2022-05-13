@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Event;
 use Psrearick\Containers\Actions\AddItemToContainer;
+use Psrearick\Containers\Actions\RemoveItemFromContainer;
 use Psrearick\Containers\Contracts\Container as ContainerContract;
 use Psrearick\Containers\Contracts\Item;
 use Psrearick\Containers\Events\ContainerWasCreated;
@@ -19,6 +20,12 @@ trait IsContainerable
         static::created(function (ContainerContract $container) {
             Event::dispatch(new ContainerWasCreated($container));
         });
+    }
+
+    /** Remove the provided item from the current container */
+    public function discardItem(Item $item) : void
+    {
+        app(RemoveItemFromContainer::class)->execute($item, $this);
     }
 
     /** Get the foreign key name for the ContainerItem relationship */

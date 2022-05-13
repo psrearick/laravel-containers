@@ -13,7 +13,6 @@ class UpdateContainerItem
     public function execute(Container $container, Item $item, array $attributes) : ?ContainerItem
     {
         $containerItem = $item->getContainerItem($container, 'item');
-        ray($attributes);
 
         if (! $attributes) {
             return null;

@@ -7,16 +7,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Psrearick\Containers\Computations\Sum;
 use Psrearick\Containers\Concerns\IsItemable;
-use Psrearick\Containers\Contracts\Item as ItemContract;
+use Psrearick\Containers\Contracts\SummarizableItem;
 use Psrearick\Containers\Tests\Factories\ItemFactory;
 
 /**
  * @property Collection containerItemSummaries
  */
-class Item extends Model implements ItemContract
+class Item extends Model implements SummarizableItem
 {
-    use HasFactory;
-    use IsItemable;
+    use HasFactory, IsItemable;
 
     public function computations() : array
     {
@@ -34,6 +33,16 @@ class Item extends Model implements ItemContract
     public function containerItems() : HasMany
     {
         return $this->hasMany(ContainerItem::class);
+    }
+
+    public function containerItemSummaries() : HasMany
+    {
+        return $this->hasMany(ContainerItemSummary::class);
+    }
+
+    public function containerItemSummaryRelations() : array
+    {
+        return [ContainerItem::class => 'containerItemSummaries'];
     }
 
     protected static function newFactory() : ItemFactory

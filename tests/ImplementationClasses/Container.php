@@ -8,11 +8,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Psrearick\Containers\Computations\Sum;
 use Psrearick\Containers\Concerns\IsContainerable;
 use Psrearick\Containers\Concerns\IsItemable;
-use Psrearick\Containers\Contracts\Container as ContainerContract;
-use Psrearick\Containers\Contracts\Item as ItemContract;
+use Psrearick\Containers\Contracts\SummarizableContainer;
+use Psrearick\Containers\Contracts\SummarizableItem;
 use Psrearick\Containers\Tests\Factories\ContainerFactory;
 
-class Container extends Model implements ContainerContract, ItemContract
+class Container extends Model implements SummarizableItem, SummarizableContainer
 {
     use HasFactory;
     use IsContainerable;
@@ -53,6 +53,16 @@ class Container extends Model implements ContainerContract, ItemContract
     public function containerItems() : HasMany
     {
         return $this->hasMany(ContainerItem::class);
+    }
+
+    public function containerItemSummaries() : HasMany
+    {
+        return $this->hasMany(ContainerItemSummary::class);
+    }
+
+    public function containerItemSummaryRelations() : array
+    {
+        return [ContainerItem::class => 'containerItemSummaries'];
     }
 
     public function containerOuters() : HasMany

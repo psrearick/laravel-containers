@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Event;
 use Psrearick\Containers\Actions\AddItemToContainer;
+use Psrearick\Containers\Actions\RemoveItemFromContainer;
 use Psrearick\Containers\Contracts\Container;
 use Psrearick\Containers\Contracts\ContainerItem;
 use Psrearick\Containers\Contracts\Item;
@@ -21,6 +22,12 @@ trait IsItemable
     public function addToContainer(Container $container, ?array $attributes = []) : void
     {
         app(AddItemToContainer::class)->execute($container, $this, $attributes);
+    }
+
+    /** Remove the current item from the provided container */
+    public function removeFromContainer(Container $container) : void
+    {
+        app(RemoveItemFromContainer::class)->execute($this, $container);
     }
 
     public static function bootIsItemable() : void

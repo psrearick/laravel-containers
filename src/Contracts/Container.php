@@ -14,6 +14,9 @@ interface Container extends Model
     /** provide an array that maps related classes to their ContainerItem relation */
     public function containerItemRelations() : array;
 
+    /** Remove the provided item from the current container */
+    public function discardItem(Item $item) : void;
+
     /** Get the foreign key name for the ContainerItem relationship */
     public function getContainerForeignKeyName(Item $item) : string;
 
