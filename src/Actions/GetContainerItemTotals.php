@@ -26,7 +26,7 @@ class GetContainerItemTotals
             return $this->validateQuantity($this->getSummarizedTotals($item, $container));
         }
 
-        $containerItem = $item->getContainerItem($container);
+        $containerItem = $item->getContainerItem($container, 'item');
 
         $attributes = array_filter(
             $item->computations(),
