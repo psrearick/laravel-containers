@@ -5,6 +5,10 @@ namespace Psrearick\Containers\Tests\ImplementationClasses;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Psrearick\Containers\Models\ContainerItem as Base;
 
+/**
+ * @property float $quantity
+ * @property float $value
+ */
 class ContainerItemNotSummarized extends Base
 {
     protected $casts = [
@@ -12,13 +16,12 @@ class ContainerItemNotSummarized extends Base
         'value'     => 'float',
     ];
 
-    public function containerItemRelations() : array
-    {
-        return [
-            'container' => 'containerNotSummarized',
-            'item'      => 'itemNotSummarized',
-        ];
-    }
+    protected array $computeAttributes = ['quantity', 'value'];
+
+    protected array $containerItemRelations = [
+        'container' => 'containerNotSummarized',
+        'item'      => 'itemNotSummarized',
+    ];
 
     public function containerNotSummarized() : BelongsTo
     {

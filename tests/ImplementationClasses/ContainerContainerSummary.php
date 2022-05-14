@@ -4,9 +4,13 @@ namespace Psrearick\Containers\Tests\ImplementationClasses;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Psrearick\Containers\Contracts\Summary;
+use Psrearick\Containers\Models\Summary as Base;
 
-class ContainerContainerSummary extends Model implements Summary
+/**
+ * @property float $value
+ * @property float $quantity
+ */
+class ContainerContainerSummary extends Base
 {
     public function container() : BelongsTo
     {

@@ -3,7 +3,6 @@
 namespace Psrearick\Containers\Tests\ImplementationClasses;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Psrearick\Containers\Computations\Sum;
 use Psrearick\Containers\Contracts\Summarized;
 use Psrearick\Containers\Models\ContainerItem as Base;
 
@@ -18,15 +17,11 @@ class ContainerItem extends Base implements Summarized
         'value'     => 'float',
     ];
 
+    protected array $computeAttributes = ['quantity', 'value'];
+
     protected bool $isSummarized = true;
 
-    public function computations() : array
-    {
-        return [
-            'quantity'  => Sum::class,
-            'value'     => Sum::class,
-        ];
-    }
+    protected string $summarizedBy = 'containerItemSummary';
 
     public function container() : BelongsTo
     {
@@ -41,10 +36,5 @@ class ContainerItem extends Base implements Summarized
     public function item() : BelongsTo
     {
         return $this->belongsTo(Item::class);
-    }
-
-    public function summarizedBy() : string
-    {
-        return 'containerItemSummary';
     }
 }

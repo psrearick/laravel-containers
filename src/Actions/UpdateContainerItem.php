@@ -19,7 +19,7 @@ class UpdateContainerItem
         }
 
         $updates = collect($attributes)->map(function ($value, $key) use ($item, $containerItem) {
-            return app($item->computations()[$key])->execute(
+            return app($item->computations()[$key]['add'])->execute(
                 $containerItem->$key ?? null,
                 $value
             );

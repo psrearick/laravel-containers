@@ -4,19 +4,14 @@ namespace Psrearick\Containers\Tests\ImplementationClasses;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Psrearick\Containers\Concerns\IsContainerable;
-use Psrearick\Containers\Contracts\Container as ContainerContract;
+use Psrearick\Containers\Models\Container as Base;
 use Psrearick\Containers\Tests\Factories\OuterFactory;
 
-class Outer extends Model implements ContainerContract
+class Outer extends Base
 {
     use HasFactory;
-    use IsContainerable;
 
-    public function containerItemRelations() : array
-    {
-        return [Container::class => 'containerOuters'];
-    }
+    protected array $containerItemRelations = [Container::class => 'containerOuters'];
 
     public function containerOuters() : HasMany
     {

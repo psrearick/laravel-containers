@@ -26,7 +26,7 @@ class UpdateContainerItemSummary
 
         $updates = $containerItems->reduce(function ($carry, $item) use ($computations) {
             return collect($computations)->map(function ($class, $field) use ($carry, $item) {
-                return app($class)->execute(
+                return app($class['add'])->execute(
                     $carry[$field],
                     $item[$field],
                 );

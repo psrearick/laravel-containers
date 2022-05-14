@@ -42,4 +42,7 @@ interface Item extends Model
 
     /** Remove the current item from the provided container */
     public function removeFromContainer(Container $container) : void;
+
+    /** Adjust container item attributes based on provided change */
+    public function removePartial(Container $container, array $changes) : void;
 }

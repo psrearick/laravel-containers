@@ -4,28 +4,22 @@ namespace Psrearick\Containers\Tests\ImplementationClasses;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Psrearick\Containers\Computations\Sum;
-use Psrearick\Containers\Concerns\IsItemable;
-use Psrearick\Containers\Contracts\Item as Contract;
+use Psrearick\Containers\Models\Item as Base;
 use Psrearick\Containers\Tests\Factories\ItemNotSummarizedFactory;
 
-class ItemNotSummarized extends Model implements Contract
+/**
+ * @property float $quantity
+ * @property float $value
+ */
+class ItemNotSummarized extends Base
 {
     use HasFactory;
-    use IsItemable;
 
-    public function computations() : array
-    {
-        return [
-            'quantity'  => Sum::class,
-            'value'     => Sum::class,
-        ];
-    }
+    protected array $computeAttributes = ['quantity', 'value'];
 
-    public function containerItemRelations() : array
-    {
-        return [ContainerNotSummarized::class => 'containerItemsNotSummarized'];
-    }
+    protected array $containerItemRelations = [
+        ContainerNotSummarized::class => 'containerItemsNotSummarized',
+    ];
 
     public function containerItemsNotSummarized() : HasMany
     {

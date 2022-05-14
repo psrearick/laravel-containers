@@ -5,31 +5,30 @@ namespace Psrearick\Containers\Tests\ImplementationClasses;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Psrearick\Containers\Computations\Sum;
-use Psrearick\Containers\Concerns\IsItemable;
+use Psrearick\Containers\Concerns\IsSummarizable;
 use Psrearick\Containers\Contracts\SummarizableItem;
+use Psrearick\Containers\Models\Item as Base;
 use Psrearick\Containers\Tests\Factories\ItemFactory;
 
 /**
+ * @property float $quantity
+ * @property float $value
  * @property Collection containerItemSummaries
  */
-class Item extends Model implements SummarizableItem
+class Item extends Base implements SummarizableItem
 {
     use HasFactory;
-    use IsItemable;
+    use IsSummarizable;
 
-    public function computations() : array
-    {
-        return [
-            'quantity'  => Sum::class,
-            'value'     => Sum::class,
-        ];
-    }
+    protected array $computeAttributes = ['quantity', 'value'];
 
-    public function containerItemRelations() : array
-    {
-        return [Container::class => 'containerItems'];
-    }
+    protected array $containerItemRelations = [
+        Container::class => 'containerItems',
+    ];
+
+    protected array $containerItemSummaryRelations = [
+        ContainerItem::class => 'containerItemSummaries',
+    ];
 
     public function containerItems() : HasMany
     {
@@ -39,11 +38,6 @@ class Item extends Model implements SummarizableItem
     public function containerItemSummaries() : HasMany
     {
         return $this->hasMany(ContainerItemSummary::class);
-    }
-
-    public function containerItemSummaryRelations() : array
-    {
-        return [ContainerItem::class => 'containerItemSummaries'];
     }
 
     protected static function newFactory() : ItemFactory

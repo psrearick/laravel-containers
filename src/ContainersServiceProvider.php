@@ -11,6 +11,7 @@ class ContainersServiceProvider extends PackageServiceProvider
     public function configurePackage(Package $package) : void
     {
         $package
+            ->hasConfigFile('containers')
             ->name('laravel-containers');
     }
 

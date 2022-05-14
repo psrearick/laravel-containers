@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Event;
 use Psrearick\Containers\Actions\AddItemToContainer;
 use Psrearick\Containers\Actions\RemoveItemFromContainer;
+use Psrearick\Containers\Actions\RemoveItemPartialFromContainer;
 use Psrearick\Containers\Contracts\Container;
 use Psrearick\Containers\Contracts\ContainerItem;
 use Psrearick\Containers\Contracts\Item;
@@ -68,6 +69,12 @@ trait IsItemable
     public function removeFromContainer(Container $container) : void
     {
         app(RemoveItemFromContainer::class)->execute($this, $container);
+    }
+
+    /** Adjust container item attributes based on provided change */
+    public function removePartial(Container $container, array $changes) : void
+    {
+        app(RemoveItemPartialFromContainer::class)->execute($container, $this, $changes);
     }
 
     /**

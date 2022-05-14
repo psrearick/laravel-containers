@@ -5,26 +5,44 @@ namespace Psrearick\Containers\Tests\ImplementationClasses;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Psrearick\Containers\Computations\Sum;
-use Psrearick\Containers\Concerns\IsContainerable;
 use Psrearick\Containers\Concerns\IsItemable;
+use Psrearick\Containers\Concerns\IsSummarizable;
 use Psrearick\Containers\Contracts\SummarizableContainer;
 use Psrearick\Containers\Contracts\SummarizableItem;
+use Psrearick\Containers\Models\Container as Base;
 use Psrearick\Containers\Tests\Factories\ContainerFactory;
 
-class Container extends Model implements SummarizableItem, SummarizableContainer
+/**
+ * @property float $quantity
+ * @property float $value
+ */
+class Container extends Base implements SummarizableItem, SummarizableContainer
 {
     use HasFactory;
-    use IsContainerable;
     use IsItemable;
+    use IsSummarizable;
 
-    public function computations() : array
-    {
-        return [
-            'quantity'  => Sum::class,
-            'value'     => Sum::class,
-        ];
-    }
+    protected $casts = [
+        'quantity'  => 'float',
+        'value'     => 'float',
+    ];
+
+    protected array $computeAttributes = ['quantity', 'value'];
+
+    protected array $containerItemRelations = [
+        'item'      => [
+            Outer::class    => 'containerOuters',
+            __CLASS__       => 'containerContainersChild',
+        ],
+        'container' => [
+            Item::class     => 'containerItems',
+            __CLASS__       => 'containerContainersParent',
+        ],
+    ];
+
+    protected array $containerItemSummaryRelations = [
+        ContainerItem::class => 'containerItemSummaries',
+    ];
 
     public function containerContainersChild() : HasMany
     {
@@ -36,20 +54,6 @@ class Container extends Model implements SummarizableItem, SummarizableContainer
         return $this->hasMany(ContainerContainer::class, 'parent_id');
     }
 
-    public function containerItemRelations() : array
-    {
-        return [
-            'item'      => [
-                Outer::class    => 'containerOuters',
-                __CLASS__       => 'containerContainersChild',
-            ],
-            'container' => [
-                Item::class     => 'containerItems',
-                __CLASS__       => 'containerContainersParent',
-            ],
-        ];
-    }
-
     public function containerItems() : HasMany
     {
         return $this->hasMany(ContainerItem::class);
@@ -58,11 +62,6 @@ class Container extends Model implements SummarizableItem, SummarizableContainer
     public function containerItemSummaries() : HasMany
     {
         return $this->hasMany(ContainerItemSummary::class);
-    }
-
-    public function containerItemSummaryRelations() : array
-    {
-        return [ContainerItem::class => 'containerItemSummaries'];
     }
 
     public function containerOuters() : HasMany
