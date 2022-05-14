@@ -2,8 +2,8 @@
 
 namespace Psrearick\Containers\Concerns;
 
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Event;
 use Psrearick\Containers\Actions\AddItemToContainer;
 use Psrearick\Containers\Actions\RemoveItemFromContainer;
