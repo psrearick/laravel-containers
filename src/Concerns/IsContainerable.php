@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Event;
 use Psrearick\Containers\Actions\AddItemToContainer;
 use Psrearick\Containers\Actions\RemoveItemFromContainer;
+use Psrearick\Containers\Actions\RemoveItemPartialFromContainer;
 use Psrearick\Containers\Contracts\Container as ContainerContract;
 use Psrearick\Containers\Contracts\Item;
 use Psrearick\Containers\Events\ContainerWasCreated;
@@ -26,6 +27,12 @@ trait IsContainerable
     public function discardItem(Item $item) : void
     {
         app(RemoveItemFromContainer::class)->execute($item, $this);
+    }
+
+    /** decrease the quantity of an item in the current container by the specified amount */
+    public function discardPartialItem(Item $item, array $changes) : void
+    {
+        app(RemoveItemPartialFromContainer::class)->execute($this, $item, $changes);
     }
 
     /** Get the foreign key name for the ContainerItem relationship */
