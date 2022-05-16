@@ -18,10 +18,10 @@ class UpdateContainerItem
             return null;
         }
 
-        $updates = collect($attributes)->map(function ($value, $key) use ($item, $containerItem) {
+        $updates = collect($attributes)->map(function ($value, $key) use ($containerItem) {
             $action = $value > 0 ? 'add' : 'remove';
 
-            return app($item->computations()[$key][$action])->execute(
+            return app($containerItem->computations()[$key][$action])->execute(
                 $containerItem->$key ?? null,
                 $value
             );

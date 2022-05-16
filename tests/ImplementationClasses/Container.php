@@ -5,6 +5,7 @@ namespace Psrearick\Containers\Tests\ImplementationClasses;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Psrearick\Containers\Concerns\HasComputations;
 use Psrearick\Containers\Concerns\IsItemable;
 use Psrearick\Containers\Concerns\IsSummarizable;
 use Psrearick\Containers\Contracts\SummarizableContainer;
@@ -18,6 +19,7 @@ use Psrearick\Containers\Tests\Factories\ContainerFactory;
  */
 class Container extends Base implements SummarizableItem, SummarizableContainer
 {
+    use HasComputations;
     use HasFactory;
     use IsItemable;
     use IsSummarizable;

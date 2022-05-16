@@ -15,9 +15,8 @@ class ContainerItemWasUpdated
 
     public ContainerItem $containerItem;
 
-    public function __construct(ContainerItem $containerItem, array $attributes)
+    public function __construct(ContainerItem $containerItem)
     {
         $this->containerItem = $containerItem;
-        $this->attributes    = $attributes;
     }
 }

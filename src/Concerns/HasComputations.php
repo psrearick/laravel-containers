@@ -2,12 +2,14 @@
 
 namespace Psrearick\Containers\Concerns;
 
+use Psrearick\Containers\Exceptions\PropertyNotDefinedException;
+
 trait HasComputations
 {
     public function computations() : array
     {
         if (! property_exists(__CLASS__, 'computeAttributes')) {
-            return [];
+            throw new PropertyNotDefinedException('The computeAttributes property does not exist on this instance');
         }
 
         $computations = [];

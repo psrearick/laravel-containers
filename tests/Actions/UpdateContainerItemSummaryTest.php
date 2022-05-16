@@ -1,5 +1,6 @@
 <?php
 
+use Psrearick\Containers\Actions\AddItemToContainer;
 use Psrearick\Containers\Actions\UpdateContainerItemSummary;
 use Psrearick\Containers\Events\ContainerItemWasUpdated;
 use Psrearick\Containers\Tests\ImplementationClasses\Container;
@@ -18,7 +19,8 @@ test('a new container item summary can be generated', function () {
         'value'     => 1.5,
     ];
 
-    $item->addToContainer($container, $attributes);
+    app(AddItemToContainer::class)
+        ->execute($container, $item, $attributes);
 
     $containerItem = $container->getContainerItem($item, 'container');
 
@@ -36,7 +38,8 @@ test('a nested container item summary can be generated', function () {
     /** @var Container $childContainer */
     $childContainer = Container::factory()->create();
 
-    $childContainer->addToContainer($parentContainer);
+    app(AddItemToContainer::class)
+        ->execute($parentContainer, $childContainer);
 
     /** @var Item $item */
     $item = Item::factory()->create();
@@ -46,7 +49,8 @@ test('a nested container item summary can be generated', function () {
         'value'     => 1.5,
     ];
 
-    $item->addToContainer($childContainer, $attributes);
+    app(AddItemToContainer::class)
+        ->execute($childContainer, $item, $attributes);
 
     $containerItem        = $childContainer->getContainerItem($item, 'container');
     $containerItemSummary = $containerItem->{$containerItem->summarizedBy()};

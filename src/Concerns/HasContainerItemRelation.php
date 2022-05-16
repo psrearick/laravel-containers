@@ -9,9 +9,15 @@ use Psrearick\Containers\Contracts\ContainerItem;
 use Psrearick\Containers\Contracts\Item;
 use Psrearick\Containers\Exceptions\ContainerItemNotFoundException;
 use Psrearick\Containers\Exceptions\MissingRelationshipException;
+use Psrearick\Containers\Exceptions\PropertyNotDefinedException;
 
 trait HasContainerItemRelation
 {
+    public function containerItemExists(Container|Item $record, string $key = '') : bool
+    {
+        return $this->getContainerItemRelationOfType(get_class($record), $key)->exists();
+    }
+
     /**
      * Get the most recent ContainerItem relating this record with its
      * corresponding Container / Item
@@ -25,6 +31,27 @@ trait HasContainerItemRelation
         }
 
         return $containerItem;
+    }
+
+    /** Get the key in the relations array used to define this relationship */
+    protected function getContainerItemRelationKey(string $key = '') : string
+    {
+        if ($key) {
+            return $key;
+        }
+
+        $isContainer = $this instanceof Container;
+        $isItem      = $this instanceof Item;
+
+        if ($isContainer && $isItem) {
+            return $key;
+        }
+
+        if ($isContainer) {
+            return 'container';
+        }
+
+        return 'item';
     }
 
     /**
@@ -64,13 +91,28 @@ trait HasContainerItemRelation
     }
 
     /** Get the ContainerItem relation name for the provided class */
-    protected function getRelationName(string $class, string $key = '') : ?string
+    protected function getRelationName(string $class, string $key = '') : string
     {
         $relations = $this->containerItemRelations();
-        if (! array_key_exists($class, $relations)) {
-            $relations = $relations[$key] ?? [];
+
+        if (array_key_exists($class, $relations)) {
+            return $relations[$class];
         }
 
-        return $relations[$class] ?? null;
+        $relationKey = $this->getContainerItemRelationKey($key);
+
+        if (! $relationKey) {
+            return '';
+        }
+
+        if (array_key_exists($relationKey, $relations)) {
+            $relations = $relations[$relationKey];
+        }
+
+        if (is_array($relations)) {
+            return $relations[$class];
+        }
+
+        throw new PropertyNotDefinedException('The relation property is not defined');
     }
 }

@@ -10,9 +10,9 @@ class UpdateContainerItemParentListener
 {
     public function handle(ContainerItemWasUpdated $event) : void
     {
-        $containerItem = $event->containerItem;
-        $attributes    = $event->attributes;
-        $container     = $containerItem->{$containerItem->containerItemRelations()['container']};
+        $containerItem  = $event->containerItem;
+        $container      = $containerItem->{$containerItem->containerItemRelations()['container']};
+        $item           = $containerItem->{$containerItem->containerItemRelations()['item']};
 
         if (! $container instanceof Item) {
             return;
@@ -24,15 +24,15 @@ class UpdateContainerItemParentListener
             return;
         }
 
-        foreach (array_keys($relations['item']) as $relation) {
-            $parents = $container->getContainersOfType($relation);
-            if ($parents->count() === 0) {
-                continue;
-            }
-
-            $parents->each(function ($parent) use ($container, $attributes) {
-                app(UpdateContainerItem::class)->execute($parent, $container, $attributes);
-            });
-        }
+//        foreach (array_keys($relations['item']) as $relation) {
+//            $parents = $container->getContainersOfType($relation);
+//            if ($parents->count() === 0) {
+//                continue;
+//            }
+//
+//            $parents->each(function ($parent) use ($container, $attributes) {
+//                app(UpdateContainerItem::class)->execute($parent, $container, $attributes);
+//            });
+//        }
     }
 }

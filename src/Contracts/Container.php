@@ -11,6 +11,9 @@ use Illuminate\Support\Collection;
  */
 interface Container extends Model
 {
+    /** check if there is a container item for the provided container */
+    public function containerItemExists(Container|Item $record, string $key = '') : bool;
+
     /** provide an array that maps related classes to their ContainerItem relation */
     public function containerItemRelations() : array;
 

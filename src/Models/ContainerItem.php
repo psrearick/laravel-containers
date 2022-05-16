@@ -4,11 +4,13 @@ namespace Psrearick\Containers\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Psrearick\Containers\Concerns\HasComputations;
+use Psrearick\Containers\Concerns\HasQuantity;
 use Psrearick\Containers\Contracts\ContainerItem as ContainerItemContract;
 
 class ContainerItem extends Model implements ContainerItemContract
 {
     use HasComputations;
+    use HasQuantity;
 
     protected array $computeAttributes = ['quantity'];
 
@@ -20,6 +22,8 @@ class ContainerItem extends Model implements ContainerItemContract
     protected $guarded = ['id'];
 
     protected bool $isSummarized = false;
+
+    protected string $quantityFieldName = 'quantity';
 
     protected string $summarizedBy = '';
 

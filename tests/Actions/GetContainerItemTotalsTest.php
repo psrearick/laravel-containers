@@ -1,5 +1,6 @@
 <?php
 
+use Psrearick\Containers\Actions\AddItemToContainer;
 use Psrearick\Containers\Actions\GetContainerItemTotals;
 use Psrearick\Containers\Tests\ImplementationClasses\Container;
 use Psrearick\Containers\Tests\ImplementationClasses\ContainerNotSummarized;
@@ -12,14 +13,16 @@ test('the class returns the correct total for the container', function () {
 
     /** @var Item $item */
     $item = Item::factory()->create();
-    $item->addToContainer($container, ['quantity' => 5, 'value' => 2.5]);
+    app(AddItemToContainer::class)
+        ->execute($container, $item, ['quantity' => 5, 'value' => 2.5]);
 
     $totals = app(GetContainerItemTotals::class)->execute($container, $item);
 
     $this->assertEquals(5, $totals['quantity']);
     $this->assertEquals(2.5, $totals['value']);
 
-    $item->addToContainer($container, ['quantity' => 5, 'value' => 2.5]);
+    app(AddItemToContainer::class)
+        ->execute($container, $item, ['quantity' => 5, 'value' => 2.5]);
 
     $totals = app(GetContainerItemTotals::class)->execute($container, $item);
 
@@ -28,7 +31,8 @@ test('the class returns the correct total for the container', function () {
 
     /** @var Item $item */
     $item2 = Item::factory()->create();
-    $item2->addToContainer($container, ['quantity' => 5, 'value' => 2.5]);
+    app(AddItemToContainer::class)
+        ->execute($container, $item2, ['quantity' => 5, 'value' => 2.5]);
 
     $totals2 = app(GetContainerItemTotals::class)->execute($container, $item2);
 
@@ -47,14 +51,16 @@ test('the class returns the correct total for the non-summarized container', fun
 
     /** @var ItemNotSummarized $item */
     $item = ItemNotSummarized::factory()->create();
-    $item->addToContainer($container, ['quantity' => 5, 'value' => 2.5]);
+    app(AddItemToContainer::class)
+        ->execute($container, $item, ['quantity' => 5, 'value' => 2.5]);
 
     $totals = app(GetContainerItemTotals::class)->execute($container, $item);
 
     $this->assertEquals(5, $totals['quantity']);
     $this->assertEquals(2.5, $totals['value']);
 
-    $item->addToContainer($container, ['quantity' => 5, 'value' => 2.5]);
+    app(AddItemToContainer::class)
+        ->execute($container, $item, ['quantity' => 5, 'value' => 2.5]);
 
     $totals = app(GetContainerItemTotals::class)->execute($container, $item);
 
@@ -63,7 +69,8 @@ test('the class returns the correct total for the non-summarized container', fun
 
     /** @var ItemNotSummarized $item */
     $item2 = ItemNotSummarized::factory()->create();
-    $item2->addToContainer($container, ['quantity' => 5, 'value' => 2.5]);
+    app(AddItemToContainer::class)
+        ->execute($container, $item2, ['quantity' => 5, 'value' => 2.5]);
 
     $totals2 = app(GetContainerItemTotals::class)->execute($container, $item2);
 

@@ -7,13 +7,15 @@ use Psrearick\Containers\Contracts\Item;
 
 class RemoveItemPartialFromContainer
 {
-    public function execute(Container $container, Item $item, array $attributeChange) : void
+    public function execute(Container $container, Item $item, array $attributes) : void
     {
-        $attributes = array_map(
-            fn ($value) => -1 * $value,
-            $attributeChange
-        );
+        $containerItem  = $item->getContainerItem($container);
+        $quantityField  = $containerItem->quantityFieldName();
+        $computations   = $containerItem->computations();
+        $removeClass    = $computations[$quantityField]['remove'];
 
-        app(AddItemToContainer::class)->execute($container, $item, $attributes);
+        $attributes[$quantityField] = app($removeClass)->execute($containerItem[$quantityField], $attributes[$quantityField]);
+
+        app(SetContainerItemAttributes::class)->execute($container, $item, $attributes);
     }
 }

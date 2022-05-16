@@ -9,7 +9,6 @@ return new class () extends Migration {
     {
         Schema::create('container_container_summaries', static function (Blueprint $table) {
             $table->id();
-            $table->float('quantity')->nullable();
             $table->float('value')->nullable();
             $table->unsignedBigInteger('parent_id');
             $table->unsignedBigInteger('child_id');

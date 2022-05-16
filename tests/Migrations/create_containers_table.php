@@ -10,6 +10,7 @@ return new class () extends Migration {
         Schema::create('containers', static function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->float('value')->nullable();
             $table->timestamps();
         });
     }

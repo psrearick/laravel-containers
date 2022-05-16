@@ -12,6 +12,8 @@ use Psrearick\Containers\Models\Summary as Base;
  */
 class ContainerContainerSummary extends Base
 {
+    protected array $computeAttributes = ['quantity', 'value'];
+
     public function container() : BelongsTo
     {
         return $this->belongsTo(Container::class, 'parent_id');

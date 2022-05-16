@@ -15,8 +15,6 @@ class ItemNotSummarized extends Base
 {
     use HasFactory;
 
-    protected array $computeAttributes = ['quantity', 'value'];
-
     protected array $containerItemRelations = [
         ContainerNotSummarized::class => 'containerItemsNotSummarized',
     ];

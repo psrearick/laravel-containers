@@ -4,11 +4,11 @@ namespace Psrearick\Containers\Listeners;
 
 use Psrearick\Containers\Actions\UpdateContainerItemSummary;
 use Psrearick\Containers\Contracts\Summarized;
-use Psrearick\Containers\Events\ContainerItemWasUpdated;
+use Psrearick\Containers\Events\ContainerItemWasCreated;
 
-class UpdateContainerItemSummaryListener
+class UpdateContainerWithNewContainerItemListener
 {
-    public function handle(ContainerItemWasUpdated $event) : void
+    public function handle(ContainerItemWasCreated $event) : void
     {
         if (! $event->containerItem->isSummarized()) {
             return;

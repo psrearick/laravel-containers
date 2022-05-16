@@ -1,5 +1,6 @@
 <?php
 
+use Psrearick\Containers\Actions\AddItemToContainer;
 use Psrearick\Containers\Actions\GetContainerItemTotals;
 use Psrearick\Containers\Tests\ImplementationClasses\Container;
 use Psrearick\Containers\Tests\ImplementationClasses\ContainerNotSummarized;
@@ -12,28 +13,28 @@ test('an item can remove part of is container quantity', function () {
 
     /** @var Item $item */
     $item = Item::factory()->create();
-    $item->addToContainer($container, ['quantity' => 5, 'value' => 2.5]);
-    $item->removePartial($container, ['quantity' => 2, 'value' => 1.25]);
+    app(AddItemToContainer::class)
+        ->execute($container, $item, ['quantity' => 5]);
+    $item->removePartial($container, ['quantity' => 2]);
 
     $totals = app(GetContainerItemTotals::class)->execute($container, $item);
 
     $this->assertEquals(3, $totals['quantity']);
-    $this->assertEquals(1.25, $totals['value']);
 });
 
-test('an container can remove part of its children quantity', function () {
+test('a container can remove part of its children quantity', function () {
     /** @var Container $container */
     $container = Container::factory()->create();
 
     /** @var Item $item */
     $item = Item::factory()->create();
-    $item->addToContainer($container, ['quantity' => 5, 'value' => 2.5]);
-    $container->discardPartialItem($item, ['quantity' => 2, 'value' => 1.25]);
+    app(AddItemToContainer::class)
+        ->execute($container, $item, ['quantity' => 5]);
+    $container->discardPartialItem($item, ['quantity' => 2]);
 
     $totals = app(GetContainerItemTotals::class)->execute($container, $item);
 
     $this->assertEquals(3, $totals['quantity']);
-    $this->assertEquals(1.25, $totals['value']);
 });
 
 test('a non-summarized item can remove part of is container quantity', function () {
@@ -42,13 +43,13 @@ test('a non-summarized item can remove part of is container quantity', function 
 
     /** @var ItemNotSummarized $item */
     $item = ItemNotSummarized::factory()->create();
-    $item->addToContainer($container, ['quantity' => 5, 'value' => 2.5]);
-    $item->removePartial($container, ['quantity' => 2, 'value' => 1.25]);
+    app(AddItemToContainer::class)
+        ->execute($container, $item, ['quantity' => 5]);
+    $item->removePartial($container, ['quantity' => 2]);
 
     $totals = app(GetContainerItemTotals::class)->execute($container, $item);
 
     $this->assertEquals(3, $totals['quantity']);
-    $this->assertEquals(1.25, $totals['value']);
 });
 
 test('a non-summarized container can remove part of its children quantity', function () {
@@ -57,11 +58,11 @@ test('a non-summarized container can remove part of its children quantity', func
 
     /** @var ItemNotSummarized $item */
     $item = ItemNotSummarized::factory()->create();
-    $item->addToContainer($container, ['quantity' => 5, 'value' => 2.5]);
-    $container->discardPartialItem($item, ['quantity' => 2, 'value' => 1.25]);
+    app(AddItemToContainer::class)
+        ->execute($container, $item, ['quantity' => 5]);
+    $container->discardPartialItem($item, ['quantity' => 2]);
 
     $totals = app(GetContainerItemTotals::class)->execute($container, $item);
 
     $this->assertEquals(3, $totals['quantity']);
-    $this->assertEquals(1.25, $totals['value']);
 });

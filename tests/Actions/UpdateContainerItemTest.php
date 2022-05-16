@@ -1,5 +1,6 @@
 <?php
 
+use Psrearick\Containers\Actions\AddItemToContainer;
 use Psrearick\Containers\Actions\UpdateContainerItem;
 use Psrearick\Containers\Events\ContainerItemWasCreated;
 use Psrearick\Containers\Tests\ImplementationClasses\Container;
@@ -20,7 +21,7 @@ test('a new container item can be given a quantity', function () {
         'value'     => 1.5,
     ];
 
-    $item->addToContainer($container, $attributes);
+    app(AddItemToContainer::class)->execute($container, $item, $attributes);
 
     /** @var ContainerItem $containerItem */
     $containerItem = app(UpdateContainerItem::class)->execute($container, $item, $attributes);
@@ -47,7 +48,7 @@ test('a nested container item parent can be given a quantity', function () {
         'value'     => 1.5,
     ];
 
-    $item->addToContainer($container, $attributes);
+    app(AddItemToContainer::class)->execute($container, $item, $attributes);
 
     /** @var ContainerItem $containerItem */
     $containerItem = app(UpdateContainerItem::class)->execute($container, $item, $attributes);
