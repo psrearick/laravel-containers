@@ -65,7 +65,7 @@ trait IsItemable
     /** Remove the current item from the provided container */
     public function removeFromContainer(Container $container) : void
     {
-        app(RemoveItemFromContainer::class)->execute($this, $container);
+        app(RemoveItemFromContainer::class)->execute($container, $this);
     }
 
     /** Adjust container item attributes based on provided change */

@@ -8,6 +8,7 @@ use Psrearick\Containers\Contracts\ContainerItem;
 use Psrearick\Containers\Contracts\Item;
 use Psrearick\Containers\Events\ContainerItemWasCreated;
 use Psrearick\Containers\Events\ContainerItemWasUpdated;
+use Psrearick\Containers\Events\ItemWasRemovedFromContainer;
 
 class SetContainerItemAttributes
 {
@@ -36,12 +37,24 @@ class SetContainerItemAttributes
         if ($this->containerItem->isSummarized()) {
             $this->getChange();
             $this->createNewContainerItem();
+            $this->checkForItemRemoval();
 
             return;
         }
 
         $this->containerItem->update($attributes);
         Event::dispatch(new ContainerItemWasUpdated($this->containerItem));
+        $this->checkForItemRemoval();
+    }
+
+    private function checkForItemRemoval() : void
+    {
+        $quantityField = $this->containerItem->quantityFieldName();
+        if ($this->attributes[$quantityField] === 0) {
+            return;
+        }
+
+        Event::dispatch(new ItemWasRemovedFromContainer($this->container, $this->item));
     }
 
     private function createNewContainerItem() : void

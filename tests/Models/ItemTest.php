@@ -2,6 +2,7 @@
 
 use Psrearick\Containers\Actions\AddItemToContainer;
 use Psrearick\Containers\Actions\GetContainerItemTotals;
+use Psrearick\Containers\Exceptions\ContainerItemNotFoundException;
 use Psrearick\Containers\Tests\ImplementationClasses\Container;
 use Psrearick\Containers\Tests\ImplementationClasses\Item;
 
@@ -37,4 +38,19 @@ test('an item can remove part of is container quantity', function () {
     $totals = app(GetContainerItemTotals::class)->execute($container, $item);
 
     $this->assertEquals(3, $totals['quantity']);
+});
+
+test('an item can be removed from a container', function () {
+    /** @var Container $container */
+    $container = Container::factory()->create();
+
+    /** @var Item $item */
+    $item = Item::factory()->create();
+    $item->addToContainer($container, ['quantity' => 5]);
+
+    $item->removeFromContainer($container);
+
+    $this->expectException(ContainerItemNotFoundException::class);
+
+    app(GetContainerItemTotals::class)->execute($container, $item);
 });

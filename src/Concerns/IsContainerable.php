@@ -26,7 +26,7 @@ trait IsContainerable
     /** Remove the provided item from the current container */
     public function discardItem(Item $item) : void
     {
-        app(RemoveItemFromContainer::class)->execute($item, $this);
+        app(RemoveItemFromContainer::class)->execute($this, $item);
     }
 
     /** decrease the quantity of an item in the current container by the specified amount */

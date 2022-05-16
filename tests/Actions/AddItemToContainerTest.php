@@ -67,10 +67,10 @@ test('an item can be added to a summarized container multiples times to create m
 });
 
 test('an item added to a non-summarized container multiple times does not create multiple container item records', function () {
-    /** @var Container $container */
+    /** @var ContainerNotSummarized $container */
     $container = ContainerNotSummarized::factory()->create();
 
-    /** @var Item $item */
+    /** @var ItemNotSummarized $item */
     $item = ItemNotSummarized::factory()->create();
 
     app(AddItemToContainer::class)->execute($container, $item, ['quantity' => 1]);
