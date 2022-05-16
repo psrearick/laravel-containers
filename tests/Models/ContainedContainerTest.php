@@ -11,7 +11,6 @@ test('a container can be contained by a different container model', function () 
 
     $attributes = [
         'quantity'  => 5.0,
-        'value'     => 1.5,
     ];
 
     $item->addToContainer($container, $attributes);
@@ -27,10 +26,10 @@ test('a container can be contained by a different container model', function () 
 });
 
 test('a container can be nested inside a container of the same model', function () {
-    /** @var \Psrearick\Containers\Contracts\Container $parentContainer */
+    /** @var Container $parentContainer */
     $parentContainer = Container::factory()->create();
 
-    /** @var \Psrearick\Containers\Contracts\Item $childContainer */
+    /** @var Container $childContainer */
     $childContainer = Container::factory()->create();
 
     $childContainer->addToContainer($parentContainer);

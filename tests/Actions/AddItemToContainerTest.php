@@ -5,6 +5,7 @@ use Psrearick\Containers\Tests\ImplementationClasses\Container;
 use Psrearick\Containers\Tests\ImplementationClasses\ContainerNotSummarized;
 use Psrearick\Containers\Tests\ImplementationClasses\Item;
 use Psrearick\Containers\Tests\ImplementationClasses\ItemNotSummarized;
+use Psrearick\Containers\Tests\ImplementationClasses\Outer;
 
 test('an item cannot be added to a container without a quantity', function () {
     /** @var Container $container */
@@ -16,6 +17,18 @@ test('an item cannot be added to a container without a quantity', function () {
     app(AddItemToContainer::class)->execute($container, $item);
 
     $this->assertDatabaseCount('container_items', 0);
+});
+
+test('a singleton item can be added to a container without a quantity', function () {
+    /** @var Outer $container */
+    $container = Outer::factory()->create();
+
+    /** @var Container $item */
+    $item = Container::factory()->create();
+
+    app(AddItemToContainer::class)->execute($container, $item);
+
+    $this->assertDatabaseCount('container_outers', 1);
 });
 
 test('an item can be added to a container at least once', function () {

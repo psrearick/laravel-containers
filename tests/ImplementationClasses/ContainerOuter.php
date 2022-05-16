@@ -9,6 +9,8 @@ class ContainerOuter extends Base
 {
     protected array $computeAttributes = ['quantity', 'value'];
 
+    protected bool $isSingleton = true;
+
     public function container() : BelongsTo
     {
         return $this->belongsTo(Outer::class, 'outer_id');

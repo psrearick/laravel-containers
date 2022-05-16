@@ -19,7 +19,16 @@ interface ContainerItem extends Model
 
     public function containerItemRelations() : array;
 
+    /**
+     * Specify if the container item is summarized. Summarized container items have multiple container item
+     * records for each container item relationship and the record values are summarized in a separate table.
+     * A non-summarized container item is updated each time a value changes and is used to get the totals.
+     */
     public function isSummarized() : bool;
+
+
+    /** specify if the container item quantity must be no more than one  */
+    public function isSingleton() : bool;
 
     /** The name of the field use to define the container item quantity */
     public function quantityFieldName() : string;

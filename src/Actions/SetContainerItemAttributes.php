@@ -26,13 +26,13 @@ class SetContainerItemAttributes
         $this->container  = $container;
         $this->item       = $item;
 
-        if (! $item->containerItemExists($container)) {
+        if (! $item->containerItemExists($container, 'item')) {
             $this->createNewContainerItem();
 
             return;
         }
 
-        $this->containerItem = $item->getContainerItem($container);
+        $this->containerItem = $item->getContainerItem($container, 'item');
 
         if ($this->containerItem->isSummarized()) {
             $this->getChange();

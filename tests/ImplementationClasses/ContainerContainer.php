@@ -12,6 +12,8 @@ class ContainerContainer extends Base implements Summarized
 
     protected bool $isSummarized = true;
 
+    protected bool $isSingleton = true;
+
     protected string $summarizedBy = 'containerContainerSummary';
 
     public function container() : BelongsTo

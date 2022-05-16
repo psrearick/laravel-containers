@@ -16,7 +16,7 @@ class AddItemToContainer
         $computations   = $model->computations();
         $additionClass  = $computations[$quantityField]['add'];
 
-        if (($attributes[$quantityField] ?? 0) === 0) {
+        if (($attributes[$quantityField] ?? 0) === 0 && ! $model->isSingleton()) {
             return;
         }
 
@@ -25,7 +25,7 @@ class AddItemToContainer
                 ->execute($container, $item)[$quantityField];
 
         $attributes[$quantityField] = app($additionClass)
-            ->execute($quantity, $attributes[$quantityField]);
+            ->execute($quantity, $attributes[$quantityField] ?? 0);
 
         app(SetContainerItemAttributes::class)->execute($container, $item, $attributes);
 

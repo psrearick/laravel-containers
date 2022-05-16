@@ -5,12 +5,14 @@ namespace Psrearick\Containers\Models;
 use Illuminate\Database\Eloquent\Model;
 use Psrearick\Containers\Concerns\HasComputations;
 use Psrearick\Containers\Concerns\HasQuantity;
+use Psrearick\Containers\Concerns\IsContainerItemable;
 use Psrearick\Containers\Contracts\ContainerItem as ContainerItemContract;
 
 class ContainerItem extends Model implements ContainerItemContract
 {
     use HasComputations;
     use HasQuantity;
+    use IsContainerItemable;
 
     protected array $computeAttributes = ['quantity'];
 
@@ -21,24 +23,11 @@ class ContainerItem extends Model implements ContainerItemContract
 
     protected $guarded = ['id'];
 
+    protected bool $isSingleton = false;
+
     protected bool $isSummarized = false;
 
     protected string $quantityFieldName = 'quantity';
 
     protected string $summarizedBy = '';
-
-    public function containerItemRelations() : array
-    {
-        return $this->containerItemRelations;
-    }
-
-    public function isSummarized() : bool
-    {
-        return $this->isSummarized;
-    }
-
-    public function summarizedBy() : string
-    {
-        return $this->summarizedBy;
-    }
 }
