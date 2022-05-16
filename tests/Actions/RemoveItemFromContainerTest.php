@@ -33,7 +33,6 @@ test('an item can be removed from a container', function () {
     app(RemoveItemFromContainer::class)->execute($container, $item);
     $this->assertEquals(-5, $item->getContainerItem($container, 'item')->quantity);
 
-
     $this->assertDatabaseCount('container_items', 2);
     $this->expectException(ContainerItemNotFoundException::class);
     app(GetContainerItemTotals::class)->execute($container, $item);
@@ -51,7 +50,6 @@ test('an item removed from a non-summarized container has only one container ite
 
     app(RemoveItemFromContainer::class)->execute($container, $item);
     $this->assertEquals(0, $item->getContainerItem($container, 'item')->quantity);
-
 
     $this->assertDatabaseCount('container_item_not_summarizeds', 1);
     $this->expectException(ContainerItemNotFoundException::class);

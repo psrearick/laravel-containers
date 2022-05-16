@@ -10,9 +10,9 @@ class ContainerContainer extends Base implements Summarized
 {
     protected array $computeAttributes = ['quantity', 'value'];
 
-    protected bool $isSummarized = true;
-
     protected bool $isSingleton = true;
+
+    protected bool $isSummarized = true;
 
     protected string $summarizedBy = 'containerContainerSummary';
 

@@ -4,7 +4,7 @@ use Psrearick\Containers\Tests\ImplementationClasses\Container;
 use Psrearick\Containers\Tests\ImplementationClasses\Item;
 use Psrearick\Containers\Tests\ImplementationClasses\Outer;
 
-test('a container can be contained by a different container model', function () {
+test('a container can be contained by a different container model class', function () {
     $outer     = Outer::factory()->create();
     $container = Container::factory()->create();
     $item      = Item::factory()->create();
@@ -25,7 +25,7 @@ test('a container can be contained by a different container model', function () 
     $this->assertEquals($containerForItem->id, $containerForContainer->id);
 });
 
-test('a container can be nested inside a container of the same model', function () {
+test('a container can be nested inside a container of the same model class', function () {
     /** @var Container $parentContainer */
     $parentContainer = Container::factory()->create();
 
