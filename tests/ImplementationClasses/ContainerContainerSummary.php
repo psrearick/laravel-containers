@@ -5,6 +5,7 @@ namespace Psrearick\Containers\Tests\ImplementationClasses;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Psrearick\Containers\Models\Summary as Base;
+use Psrearick\Containers\Tests\ImplementationClasses\Traits\ItemComputation;
 
 /**
  * @property float $value
@@ -12,7 +13,12 @@ use Psrearick\Containers\Models\Summary as Base;
  */
 class ContainerContainerSummary extends Base
 {
-    protected array $computeAttributes = ['quantity', 'value'];
+    use ItemComputation;
+
+    public function computations() : array
+    {
+        return $this->itemComputations;
+    }
 
     public function container() : BelongsTo
     {

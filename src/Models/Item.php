@@ -9,10 +9,10 @@ use Psrearick\Containers\Contracts\Item as ItemContract;
 
 class Item extends Model implements ItemContract
 {
-    use HasComputations;
+//    use HasComputations;
     use IsItemable;
 
-    protected array $computeAttributes = ['quantity'];
+//    protected array $computeAttributes = ['quantity'];
 
     protected array $containerItemRelations = [];
 

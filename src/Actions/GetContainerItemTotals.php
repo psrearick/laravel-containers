@@ -28,7 +28,7 @@ class GetContainerItemTotals
 
         $containerItem  = $item->getContainerItem($container, 'item');
         $attributes     = array_filter(
-            $containerItem->computations(),
+            $containerItem->computations()[get_class($item)],
             fn ($value, $key) => array_key_exists($key, $containerItem->toArray()),
             ARRAY_FILTER_USE_BOTH
         );
@@ -60,7 +60,7 @@ class GetContainerItemTotals
         }
 
         $attributes = array_filter(
-            $this->model->computations(),
+            $this->model->computations()[get_class($item)],
             fn ($value, $key) => array_key_exists($key, $summary->toArray()),
             ARRAY_FILTER_USE_BOTH
         );

@@ -12,6 +12,7 @@ use Psrearick\Containers\Contracts\SummarizableContainer;
 use Psrearick\Containers\Contracts\SummarizableItem;
 use Psrearick\Containers\Models\Container as Base;
 use Psrearick\Containers\Tests\Factories\ContainerFactory;
+use Psrearick\Containers\Tests\ImplementationClasses\Traits\ContainerComputation;
 
 /**
  * @property float $quantity
@@ -19,6 +20,7 @@ use Psrearick\Containers\Tests\Factories\ContainerFactory;
  */
 class Container extends Base implements SummarizableItem, SummarizableContainer
 {
+    use ContainerComputation;
     use HasComputations;
     use HasFactory;
     use IsItemable;
@@ -28,8 +30,6 @@ class Container extends Base implements SummarizableItem, SummarizableContainer
         'quantity'  => 'float',
         'value'     => 'float',
     ];
-
-    protected array $computeAttributes = ['quantity', 'value'];
 
     protected array $containerItemRelations = [
         'item'      => [
@@ -52,6 +52,16 @@ class Container extends Base implements SummarizableItem, SummarizableContainer
         ],
     ];
 
+    public function childContainerContainerSummaries() : HasMany
+    {
+        return $this->hasMany(ContainerContainerSummary::class, 'child_id');
+    }
+
+    public function computations() : array
+    {
+        return $this->containerComputations;
+    }
+
     public function containerContainersChild() : HasMany
     {
         return $this->hasMany(ContainerContainer::class, 'child_id');
@@ -60,16 +70,6 @@ class Container extends Base implements SummarizableItem, SummarizableContainer
     public function containerContainersParent() : HasMany
     {
         return $this->hasMany(ContainerContainer::class, 'parent_id');
-    }
-
-    public function parentContainerContainerSummaries() : HasMany
-    {
-        return $this->hasMany(ContainerContainerSummary::class, 'parent_id');
-    }
-
-    public function childContainerContainerSummaries() : HasMany
-    {
-        return $this->hasMany(ContainerContainerSummary::class, 'child_id');
     }
 
     public function containerItems() : HasMany
@@ -90,6 +90,11 @@ class Container extends Base implements SummarizableItem, SummarizableContainer
     public function parent() : BelongsTo
     {
         return $this->belongsTo(__CLASS__, 'parent_id');
+    }
+
+    public function parentContainerContainerSummaries() : HasMany
+    {
+        return $this->hasMany(ContainerContainerSummary::class, 'parent_id');
     }
 
     protected static function newFactory() : ContainerFactory

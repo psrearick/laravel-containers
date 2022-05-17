@@ -25,8 +25,6 @@ test('a non-summarized item can be added to a container', function () {
     $this->assertDatabaseCount('container_item_not_summarizeds', 1);
 });
 
-
-
 test('a non-summarized item can remove part of is container quantity', function () {
     /** @var ContainerNotSummarized $container */
     $container = ContainerNotSummarized::factory()->create();

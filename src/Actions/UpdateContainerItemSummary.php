@@ -3,7 +3,6 @@
 namespace Psrearick\Containers\Actions;
 
 use Illuminate\Support\Facades\Event;
-use Psrearick\Containers\Contracts\ContainerItem;
 use Psrearick\Containers\Contracts\Summarized;
 use Psrearick\Containers\Events\ContainerItemSummaryWasUpdated;
 
@@ -11,7 +10,6 @@ class UpdateContainerItemSummary
 {
     public function execute(Summarized $containerItem) : void
     {
-        $computations      = $containerItem->computations();
         $relations         = $containerItem->containerItemRelations();
         $containerRelation = $containerItem->{$relations['container']}();
         $container         = $containerRelation->first();
@@ -19,6 +17,7 @@ class UpdateContainerItemSummary
         $itemRelation      = $containerItem->{$relations['item']}();
         $item              = $itemRelation->first();
         $itemKey           = $itemRelation->getForeignKeyName();
+        $computations      = $containerItem->computations()[get_class($item)];
 
         $containerItems = app(get_class($containerItem))::query()
             ->where($containerKey, '=', $container->id)

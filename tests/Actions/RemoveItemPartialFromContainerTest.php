@@ -51,10 +51,10 @@ test('non-quantity fields can be updated when removing partial quantities', func
     app(AddItemToContainer::class)
         ->execute($container, $item, ['quantity' => 5, 'value' => 2.5]);
 
-    $item->removePartial($container, ['quantity' => 2, 'value' => 1]);
+    $item->removePartial($container, ['quantity' => 2, 'value' => 2.5]);
 
     $totals = app(GetContainerItemTotals::class)->execute($container, $item);
 
     $this->assertEquals(3, $totals['quantity']);
-    $this->assertEquals(1, $totals['value']);
+    $this->assertEquals(2.5, $totals['value']);
 });

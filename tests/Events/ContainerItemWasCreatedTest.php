@@ -20,9 +20,9 @@ test('an event is emitted when a container receives an item', function () {
     Event::assertDispatched(
         ContainerItemWasCreated::class,
         static function (ContainerItemWasCreated $event) use ($container, $item, $attributes) {
-            return $event->container->id === $container->id
-                && $event->item->id === $item->id
-                && $event->attributes['quantity'] === $attributes['quantity'];
+            return $event->containerItem->container->id === $container->id
+                && $event->containerItem->item->id === $item->id
+                && $event->containerItem->quantity === (float) $attributes['quantity'];
         }
     );
 });
@@ -43,9 +43,9 @@ test('an event is emitted when an item is added to a container', function () {
     Event::assertDispatched(
         ContainerItemWasCreated::class,
         static function (ContainerItemWasCreated $event) use ($container, $item, $attributes) {
-            return $event->container->id === $container->id
-                && $event->item->id === $item->id
-                && $event->attributes['quantity'] === $attributes['quantity'];
+            return $event->containerItem->container->id === $container->id
+                && $event->containerItem->item->id === $item->id
+                && $event->containerItem->quantity === (float) $attributes['quantity'];
         }
     );
 });

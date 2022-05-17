@@ -11,7 +11,7 @@ use Illuminate\Support\Collection;
 interface Item extends Model
 {
     /** provide an array of computation classes available to this item */
-    public function computations() : array;
+//    public function computations() : array;
 
     /** check if there is a container item for the provided container */
     public function containerItemExists(Container|Item $record, string $key = '') : bool;

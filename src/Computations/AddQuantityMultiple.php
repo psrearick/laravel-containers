@@ -7,7 +7,7 @@ use Psrearick\Containers\Contracts\Computation;
 
 class AddQuantityMultiple implements Computation
 {
-    public function execute(?float $currentValue = 0, ?float $newValue = 0, ?array $ref = []): float
+    public function execute(?float $currentValue = 0, ?float $newValue = 0, ?array $ref = []) : float
     {
         return $currentValue + app(GetQuantityMultipleResult::class)->execute($ref, $newValue);
     }

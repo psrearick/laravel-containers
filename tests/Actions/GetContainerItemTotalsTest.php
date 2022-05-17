@@ -58,8 +58,6 @@ test('the class returns the correct total for the non-summarized container', fun
 
     $totals = app(GetContainerItemTotals::class)->execute($container, $item);
 
-    ray($totals);
-
     $this->assertEquals(5, $totals['quantity']);
     $this->assertEquals(12.5, $totals['value']);
 

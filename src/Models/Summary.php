@@ -16,13 +16,13 @@ class Summary extends Model implements SummaryContract
 
     protected array $computeAttributes = ['quantity'];
 
-    protected $guarded = ['id'];
-
-    protected string $quantityFieldName = 'quantity';
-
     protected array $containerItemSummaryRelations = [
         'container'         => 'container',
         'containerItems'    => 'containerItems',
         'item'              => 'item',
     ];
+
+    protected $guarded = ['id'];
+
+    protected string $quantityFieldName = 'quantity';
 }

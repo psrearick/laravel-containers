@@ -20,24 +20,26 @@ class ContainerItemNotSummarized extends Base
         'value'     => 'float',
     ];
 
-    public function computations(): array
-    {
-        return [
-            'quantity' => [
-                'add'       => Sum::class,
-                'remove'    => Subtract::class,
-            ],
-            'value'     => [
-                'add'       => AddQuantityMultiple::class,
-                'remove'    => SubtractQuantityMultiple::class,
-            ],
-        ];
-    }
-
     protected array $containerItemRelations = [
         'container' => 'containerNotSummarized',
         'item'      => 'itemNotSummarized',
     ];
+
+    public function computations() : array
+    {
+        return [
+            ItemNotSummarized::class => [
+                'quantity' => [
+                    'add'       => Sum::class,
+                    'remove'    => Subtract::class,
+                ],
+                'value'     => [
+                    'add'       => AddQuantityMultiple::class,
+                    'remove'    => SubtractQuantityMultiple::class,
+                ],
+            ],
+        ];
+    }
 
     public function containerNotSummarized() : BelongsTo
     {

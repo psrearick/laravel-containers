@@ -14,11 +14,15 @@ trait HasComputations
 
         $computations = [];
 
-        foreach ($this->computeAttributes as $attribute) {
-            $computations[$attribute] = [
-                'add'       => config('containers.default_add_computation'),
-                'remove'    => config('containers.default_remove_computation'),
-            ];
+        foreach ($this->computeAttributes as $class => $computeAttribute) {
+            $classComputations = [];
+            foreach ($computeAttribute as $attribute) {
+                $classComputations[$attribute] = [
+                    'add'       => config('containers.default_add_computation'),
+                    'remove'    => config('containers.default_remove_computation'),
+                ];
+            }
+            $computations[$class] = $classComputations;
         }
 
         return $computations;

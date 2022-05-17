@@ -20,7 +20,9 @@ class GetQuantityMultipleResult
             return $newValue;
         }
 
-        $quantity = $ref['model']->$quantityFieldName ?? 1;
+        $attributes = $ref['attributes'] ?? [];
+
+        $quantity   = $attributes[$quantityFieldName] ?? ($ref['model']->$quantityFieldName ?? 1);
 
         return $newValue * $quantity;
     }

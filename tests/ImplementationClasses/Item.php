@@ -20,7 +20,7 @@ class Item extends Base implements SummarizableItem
     use HasFactory;
     use IsSummarizable;
 
-    protected array $computeAttributes = ['quantity', 'value'];
+//    protected array $computeAttributes = ['quantity', 'value'];
 
     protected array $containerItemRelations = [
         Container::class => 'containerItems',
