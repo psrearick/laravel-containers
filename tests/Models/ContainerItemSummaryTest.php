@@ -12,7 +12,7 @@ test('a summary is created for new container items with attributes', function ()
 
     $attributes = [
         'quantity'  => 5.0,
-        'value'     => 1.5,
+        'value'     => 2,
     ];
 
     $container->receiveItem($item, $attributes);
@@ -20,7 +20,7 @@ test('a summary is created for new container items with attributes', function ()
     $itemContainerItemSummary      = $container->containerItems->last()->containerItemSummary;
 
     $this->assertEquals($attributes['quantity'], $itemContainerItemSummary->quantity);
-    $this->assertEquals($attributes['value'], $itemContainerItemSummary->value);
+    $this->assertEquals($attributes['quantity'] * $attributes['value'], $itemContainerItemSummary->value);
     $this->assertNotNull($itemContainerItemSummary);
     $this->assertDatabaseCount('container_item_summaries', 1);
 });
@@ -34,7 +34,7 @@ test('a summary is updated for new container items that match existing container
 
     $attributes = [
         'quantity'  => 5.0,
-        'value'     => 1.5,
+        'value'     => 2,
     ];
 
     $container->receiveItem($item, $attributes);
@@ -44,6 +44,6 @@ test('a summary is updated for new container items that match existing container
     $summary = $item->getContainerItem($container, 'item')->containerItemSummary;
 
     $this->assertEquals($attributes['quantity'] * 3, $summary->quantity);
-    $this->assertEquals($attributes['value'] * 3, $summary->value);
+    $this->assertEquals($attributes['value'] * 15, $summary->value);
     $this->assertDatabaseCount('container_item_summaries', 1);
 });

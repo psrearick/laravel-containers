@@ -9,4 +9,7 @@ interface Summary extends Model
 
     /** The name of the field use to define the summary quantity */
     public function quantityFieldName() : string;
+
+    /** The relationship method names associated with the summary. Key should be container, item, containerItems. */
+    public function containerItemSummaryRelations() : array;
 }

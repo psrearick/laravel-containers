@@ -3,6 +3,10 @@
 namespace Psrearick\Containers\Tests\ImplementationClasses;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Psrearick\Containers\Computations\AddQuantityMultiple;
+use Psrearick\Containers\Computations\Subtract;
+use Psrearick\Containers\Computations\SubtractQuantityMultiple;
+use Psrearick\Containers\Computations\Sum;
 use Psrearick\Containers\Contracts\Summarized;
 use Psrearick\Containers\Models\ContainerItem as Base;
 
@@ -17,7 +21,19 @@ class ContainerItem extends Base implements Summarized
         'value'     => 'float',
     ];
 
-    protected array $computeAttributes = ['quantity', 'value'];
+    public function computations(): array
+    {
+        return [
+            'quantity' => [
+                'add'       => Sum::class,
+                'remove'    => Subtract::class,
+            ],
+            'value'     => [
+                'add'       => AddQuantityMultiple::class,
+                'remove'    => SubtractQuantityMultiple::class,
+            ],
+        ];
+    }
 
     protected bool $isSummarized = true;
 

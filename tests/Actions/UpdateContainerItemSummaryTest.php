@@ -28,7 +28,7 @@ test('a new container item summary can be generated', function () {
 
     $summary = $containerItem->{$containerItem->summarizedBy()};
 
-    $this->assertEquals($attributes['value'], $summary->value);
+    $this->assertEquals(7.5, $summary->value);
 });
 
 test('a nested container item summary can be generated', function () {
@@ -58,6 +58,6 @@ test('a nested container item summary can be generated', function () {
     $parentItem        = $parentContainer->getContainerItem($childContainer, 'container');
     $parentItemSummary = $parentItem->{$parentItem->summarizedBy()};
 
-    $this->assertEquals($attributes['value'], $containerItemSummary->value);
-    $this->assertEquals($attributes['value'], $parentItemSummary->value);
+    $this->assertEquals($attributes['quantity'] * $attributes['value'], $containerItemSummary->value);
+    $this->assertEquals($attributes['quantity'] * $attributes['value'], $parentItemSummary->value);
 });

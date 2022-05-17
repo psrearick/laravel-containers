@@ -3,6 +3,7 @@
 namespace Psrearick\Containers\Actions;
 
 use Illuminate\Support\Facades\Event;
+use Psrearick\Containers\Contracts\ContainerItem;
 use Psrearick\Containers\Contracts\Summarized;
 use Psrearick\Containers\Events\ContainerItemSummaryWasUpdated;
 
@@ -26,11 +27,16 @@ class UpdateContainerItemSummary
 
         $updates = $containerItems->reduce(function ($carry, $item) use ($computations) {
             return collect($computations)->map(function ($class, $field) use ($carry, $item) {
-                $action = $item[$field] > 0 ? 'add' : 'remove';
+                $action = $item->$field >= 0 ? 'add' : 'remove';
 
                 return app($class[$action])->execute(
-                    $carry[$field],
-                    $item[$field],
+                    $carry[$field] ?: 0,
+                    $item->$field ?: 0,
+                    [
+                        'model'             => $item,
+                        'quantityFieldName' => $item->quantityFieldName(),
+                        'fieldName'         => $field,
+                    ]
                 );
             })->all();
         }, array_fill_keys(array_keys($computations), 0));

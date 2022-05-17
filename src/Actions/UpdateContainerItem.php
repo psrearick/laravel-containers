@@ -10,16 +10,14 @@ use Psrearick\Containers\Events\ContainerItemWasUpdated;
 
 class UpdateContainerItem
 {
-    public function execute(Container $container, Item $item, array $attributes) : ?ContainerItem
+    public function execute(ContainerItem $containerItem) : ?ContainerItem
     {
-        $containerItem = $item->getContainerItem($container, 'item');
+//        ray($containerItem, $containerItem->item, $containerItem->container);
 
-        if (! $attributes) {
-            return null;
-        }
+        ray(app(GetContainerItemTotals::class)->execute($containerItem->container, $containerItem->item));
 
         $updates = collect($attributes)->map(function ($value, $key) use ($containerItem) {
-            $action = $value > 0 ? 'add' : 'remove';
+            $action = $value >= 0 ? 'add' : 'remove';
 
             return app($containerItem->computations()[$key][$action])->execute(
                 $containerItem->$key ?? null,
@@ -29,7 +27,7 @@ class UpdateContainerItem
 
         $containerItem->update($updates);
 
-        Event::dispatch(new ContainerItemWasUpdated($containerItem, $attributes));
+        Event::dispatch(new ContainerItemWasUpdated($containerItem));
 
         return $containerItem;
     }

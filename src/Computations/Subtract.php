@@ -2,10 +2,12 @@
 
 namespace Psrearick\Containers\Computations;
 
-class Subtract
+use Psrearick\Containers\Contracts\Computation;
+
+class Subtract implements Computation
 {
-    public function execute(?float $currentValue = 0, ?float $change = 0) : float
+    public function execute(?float $currentValue = 0, ?float $newValue = 0, ?array $ref = []) : float
     {
-        return $currentValue - abs($change);
+        return $currentValue - abs($newValue);
     }
 }

@@ -26,10 +26,9 @@ class GetContainerItemTotals
             return $this->validateQuantity($this->getSummarizedTotals($item, $container));
         }
 
-        $containerItem = $item->getContainerItem($container, 'item');
-
-        $attributes = array_filter(
-            $item->computations(),
+        $containerItem  = $item->getContainerItem($container, 'item');
+        $attributes     = array_filter(
+            $containerItem->computations(),
             fn ($value, $key) => array_key_exists($key, $containerItem->toArray()),
             ARRAY_FILTER_USE_BOTH
         );
@@ -52,7 +51,10 @@ class GetContainerItemTotals
             throw new ContainerItemNotFoundException();
         }
 
-        $summary        = $item->{$relations[$class]}()->where('container_id', '=', $container->id)->first();
+        $summaryRelation    = $item->{$relations[$class]}();
+        $foreignKey         = $summaryRelation->getModel()->container()->getForeignKeyName();
+        $summary            = $summaryRelation->where($foreignKey, '=', $container->id)->first();
+
         if (! $summary) {
             throw new ContainerItemNotFoundException();
         }

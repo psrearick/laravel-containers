@@ -62,7 +62,7 @@ trait HasContainerItemRelation
     {
         $method = $this->getRelationName($relationClass, $key);
 
-        if (! is_string($method)) {
+        if (!$method) {
             throw new MissingRelationshipException();
         }
 

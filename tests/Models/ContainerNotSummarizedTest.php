@@ -6,6 +6,25 @@ use Psrearick\Containers\Exceptions\ContainerItemNotFoundException;
 use Psrearick\Containers\Tests\ImplementationClasses\ContainerNotSummarized;
 use Psrearick\Containers\Tests\ImplementationClasses\ItemNotSummarized;
 
+test('a container can be created', function () {
+    $data      = ['name' => 'container'];
+    $container = ContainerNotSummarized::factory()->create($data);
+
+    $this->assertDatabaseHas($container, $data);
+});
+
+test('a container can receive an item', function () {
+    /** @var ContainerNotSummarized $container */
+    $container = ContainerNotSummarized::factory()->create();
+
+    /** @var ItemNotSummarized $item */
+    $item = ItemNotSummarized::factory()->create();
+
+    $container->receiveItem($item, ['quantity' => 1]);
+
+    $this->assertDatabaseCount('container_item_not_summarizeds', 1);
+});
+
 test('a non-summarized container can remove part of its children quantity', function () {
     /** @var ContainerNotSummarized $container */
     $container = ContainerNotSummarized::factory()->create();

@@ -9,6 +9,6 @@ class UpdateContainerItemAttributesListener
 {
     public function handle(ContainerItemWasCreated $event) : void
     {
-        app(UpdateContainerItem::class)->execute($event->container, $event->item, $event->attributes);
+        app(UpdateContainerItem::class)->execute($event->containerItem);
     }
 }

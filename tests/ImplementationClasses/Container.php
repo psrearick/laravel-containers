@@ -43,7 +43,13 @@ class Container extends Base implements SummarizableItem, SummarizableContainer
     ];
 
     protected array $containerItemSummaryRelations = [
-        ContainerItem::class => 'containerItemSummaries',
+        'item'      => [
+            ContainerItem::class        => 'containerItemSummaries',
+            ContainerContainer::class   => 'childContainerContainerSummaries',
+        ],
+        'container' => [
+            ContainerContainer::class   => 'parentContainerContainerSummaries',
+        ],
     ];
 
     public function containerContainersChild() : HasMany
@@ -54,6 +60,16 @@ class Container extends Base implements SummarizableItem, SummarizableContainer
     public function containerContainersParent() : HasMany
     {
         return $this->hasMany(ContainerContainer::class, 'parent_id');
+    }
+
+    public function parentContainerContainerSummaries() : HasMany
+    {
+        return $this->hasMany(ContainerContainerSummary::class, 'parent_id');
+    }
+
+    public function childContainerContainerSummaries() : HasMany
+    {
+        return $this->hasMany(ContainerContainerSummary::class, 'child_id');
     }
 
     public function containerItems() : HasMany

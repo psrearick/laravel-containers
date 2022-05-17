@@ -15,7 +15,8 @@ class EventServiceProvider extends Provider
     protected $listen = [
         ContainerItemWasCreated::class => [
             UpdateContainerWithNewContainerItemListener::class,
-            //            UpdateContainerItemAttributesListener::class,
+            UpdateContainerItemParentListener::class,
+//            UpdateContainerItemAttributesListener::class,
         ],
         ContainerItemWasUpdated::class => [
             UpdateContainerWithContainerItemListener::class,
