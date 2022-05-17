@@ -1,47 +1,42 @@
 <?php
 
+use Psrearick\Containers\Facades\Containers;
 use Psrearick\Containers\Tests\ImplementationClasses\Container;
 use Psrearick\Containers\Tests\ImplementationClasses\Item;
 
 test('a summary is created for new container items with attributes', function () {
-    /** @var Container $container */
-    $container = Container::factory()->create();
-
-    /** @var Item $item */
-    $item = Item::factory()->create();
-
     $attributes = [
         'quantity'  => 5.0,
         'value'     => 2,
     ];
 
-    $container->receiveItem($item, $attributes);
+    $summary = Containers::getInstance(
+        Container::factory()->create(),
+        Item::factory()->create()
+    )
+        ->add($attributes)
+        ->getSummary();
 
-    $itemContainerItemSummary      = $container->containerItems->last()->containerItemSummary;
-
-    $this->assertEquals($attributes['quantity'], $itemContainerItemSummary->quantity);
-    $this->assertEquals($attributes['quantity'] * $attributes['value'], $itemContainerItemSummary->value);
-    $this->assertNotNull($itemContainerItemSummary);
+    $this->assertNotNull($summary);
     $this->assertDatabaseCount('container_item_summaries', 1);
+    $this->assertEquals($attributes['quantity'], $summary->quantity);
+    $this->assertEquals($attributes['quantity'] * $attributes['value'], $summary->value);
 });
 
 test('a summary is updated for new container items that match existing container-item ids', function () {
-    /** @var Container $container */
-    $container = Container::factory()->create();
-
-    /** @var Item $item */
-    $item = Item::factory()->create();
-
     $attributes = [
         'quantity'  => 5.0,
         'value'     => 2,
     ];
 
-    $container->receiveItem($item, $attributes);
-    $container->receiveItem($item, $attributes);
-    $container->receiveItem($item, $attributes);
-
-    $summary = $item->getContainerItem($container, 'item')->containerItemSummary;
+    $summary = Containers::getInstance(
+        Container::factory()->create(),
+        Item::factory()->create()
+    )
+        ->add($attributes)
+        ->add($attributes)
+        ->add($attributes)
+        ->getSummary();
 
     $this->assertEquals($attributes['quantity'] * 3, $summary->quantity);
     $this->assertEquals($attributes['value'] * 15, $summary->value);

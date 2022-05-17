@@ -10,14 +10,18 @@ class UpdateContainerItemSummary
 {
     public function execute(Summarized $containerItem) : void
     {
-        $relations         = $containerItem->containerItemRelations();
-        $containerRelation = $containerItem->{$relations['container']}();
-        $container         = $containerRelation->first();
-        $containerKey      = $containerRelation->getForeignKeyName();
-        $itemRelation      = $containerItem->{$relations['item']}();
-        $item              = $itemRelation->first();
-        $itemKey           = $itemRelation->getForeignKeyName();
-        $computations      = $containerItem->computations()[get_class($item)];
+        $relations          = $containerItem->containerItemRelations();
+        $containerRelation  = $containerItem->{$relations['container']}();
+        $container          = $containerRelation->first();
+        $containerKey       = $containerRelation->getForeignKeyName();
+        $itemRelation       = $containerItem->{$relations['item']}();
+        $item               = $itemRelation->first();
+        $itemKey            = $itemRelation->getForeignKeyName();
+        $relation           = $containerItem->summarizedBy();
+        $computations       = $containerItem
+            ->{$containerItem->summarizedBy()}()
+            ->getModel()
+            ->computations()[get_class($item)];
 
         $containerItems = app(get_class($containerItem))::query()
             ->where($containerKey, '=', $container->id)
@@ -39,8 +43,6 @@ class UpdateContainerItemSummary
                 );
             })->all();
         }, array_fill_keys(array_keys($computations), 0));
-
-        $relation = $containerItem->summarizedBy();
 
         $summary = app(get_class($containerItem->$relation()->getRelated()))->updateOrCreate(
             [
