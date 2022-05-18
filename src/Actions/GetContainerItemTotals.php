@@ -44,16 +44,8 @@ class GetContainerItemTotals
 
     private function getSummarizedTotals(SummarizableItem $item, SummarizableContainer $container) : array
     {
-        $relations  = $item->containerItemSummaryRelations();
-        $class      = $this->model ? get_class($this->model) : '';
-
-        if (! array_key_exists($class, $relations)) {
-            throw new ContainerItemNotFoundException();
-        }
-
-        $summaryRelation    = $item->{$relations[$class]}();
-        $foreignKey         = $summaryRelation->getModel()->container()->getForeignKeyName();
-        $summary            = $summaryRelation->where($foreignKey, '=', $container->id)->first();
+        $containerItem  = $item->getContainerItem($container, 'item');
+        $summary        = $containerItem->{$containerItem->summarizedBy()};
 
         if (! $summary) {
             throw new ContainerItemNotFoundException();

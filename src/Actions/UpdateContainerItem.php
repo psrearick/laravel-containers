@@ -10,25 +10,25 @@ use Psrearick\Containers\Events\ContainerItemWasUpdated;
 
 class UpdateContainerItem
 {
-    public function execute(ContainerItem $containerItem) : ?ContainerItem
+    public function execute(ContainerItem $parentContainerItem) : ?ContainerItem
     {
-//        ray($containerItem, $containerItem->item, $containerItem->container);
+        /** @var Container $container */
+        $container = $parentContainerItem->{$parentContainerItem->containerItemRelations()['container']};
 
-        ray(app(GetContainerItemTotals::class)->execute($containerItem->container, $containerItem->item));
+        $childClasses = $container->containerItemRelations()['container'];
 
-        $updates = collect($attributes)->map(function ($value, $key) use ($containerItem) {
-            $action = $value >= 0 ? 'add' : 'remove';
+        foreach (array_keys($childClasses) as $class) {
+            $children = $container->getItemsOfType($class);
+            $children->each(function ($child) use ($container) {
+                ray(app(GetContainerItemTotals::class)->execute($container, $child));
+            });
+        }
 
-            return app($containerItem->computations()[$key][$action])->execute(
-                $containerItem->$key ?? null,
-                $value
-            );
-        })->all();
+        return null;
 
-        $containerItem->update($updates);
 
-        Event::dispatch(new ContainerItemWasUpdated($containerItem));
-
-        return $containerItem;
+//        Event::dispatch(new ContainerItemWasUpdated($containerItem));
+//
+//        return $containerItem;
     }
 }

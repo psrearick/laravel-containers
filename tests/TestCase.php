@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
 use Psrearick\Containers\ContainersServiceProvider;
 use Psrearick\Containers\Providers\EventServiceProvider;
+use Spatie\LaravelRay\RayServiceProvider;
 
 class TestCase extends Orchestra
 {
@@ -38,6 +39,7 @@ class TestCase extends Orchestra
         return [
             ContainersServiceProvider::class,
             EventServiceProvider::class,
+            RayServiceProvider::class,
         ];
     }
 }

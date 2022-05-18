@@ -83,9 +83,28 @@ trait HasContainerItemRelation
             throw new ContainerItemNotFoundException('container item relations not defined');
         }
 
-        $relationRelationName = $model->containerItemRelations()[$relationType];
+        $relationRelationName   = $model->containerItemRelations()[$relationType];
+        $alternateRelationType  = $relationType === 'container' ? 'item' : 'container';
+        $alternateRelationName  = $model->containerItemRelations()[$alternateRelationType];
 
-        return $relation->get()->map(function (ContainerItem $containerItem) use ($relationRelationName) {
+        $childModel = $model->$relationRelationName()->getModel();
+        $childModelRelationName = $childModel->containerItemRelations()['item'][__CLASS__] ?? $childModel->containerItemRelations()[__CLASS__];
+
+        $relationNames = [
+            $relationRelationName,
+            "$relationRelationName.$childModelRelationName",
+            "$relationRelationName.$childModelRelationName.$alternateRelationName"
+        ];
+
+        if ($model->isSummarized()) {
+            $summaryRelation = $model->summarizedBy();
+            $relationNames[] =
+                "$relationRelationName.$childModelRelationName.$summaryRelation";
+        }
+
+        return $relation->with($relationNames)
+            ->get()
+            ->map(function (ContainerItem $containerItem) use ($relationRelationName) {
             return $containerItem->$relationRelationName;
         });
     }

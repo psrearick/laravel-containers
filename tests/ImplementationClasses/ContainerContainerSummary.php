@@ -4,8 +4,11 @@ namespace Psrearick\Containers\Tests\ImplementationClasses;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Psrearick\Containers\Computations\AddQuantityMultiple;
+use Psrearick\Containers\Computations\Subtract;
+use Psrearick\Containers\Computations\SubtractQuantityMultiple;
+use Psrearick\Containers\Computations\Sum;
 use Psrearick\Containers\Models\Summary as Base;
-use Psrearick\Containers\Tests\ImplementationClasses\Traits\ItemComputation;
 
 /**
  * @property float $value
@@ -13,11 +16,20 @@ use Psrearick\Containers\Tests\ImplementationClasses\Traits\ItemComputation;
  */
 class ContainerContainerSummary extends Base
 {
-    use ItemComputation;
-
     public function computations() : array
     {
-        return $this->itemComputations;
+        return [
+            Container::class => [
+                'quantity' => [
+                    'add'       => Sum::class,
+                    'remove'    => Subtract::class,
+                ],
+                'value'     => [
+                    'add'       => AddQuantityMultiple::class,
+                    'remove'    => SubtractQuantityMultiple::class,
+                ],
+            ],
+        ];
     }
 
     public function container() : BelongsTo
