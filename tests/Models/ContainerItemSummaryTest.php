@@ -1,6 +1,6 @@
 <?php
 
-use Psrearick\Containers\Facades\Containers;
+use Psrearick\Containers\Containers;
 use Psrearick\Containers\Tests\ImplementationClasses\Container;
 use Psrearick\Containers\Tests\ImplementationClasses\Item;
 
@@ -10,7 +10,7 @@ test('a summary is created for new container items with attributes', function ()
         'value'     => 2,
     ];
 
-    $summary = Containers::getInstance(
+    $summary = app(Containers::class)->getInstance(
         Container::factory()->create(),
         Item::factory()->create()
     )
@@ -29,7 +29,7 @@ test('a summary is updated for new container items that match existing container
         'value'     => 2,
     ];
 
-    $summary = Containers::getInstance(
+    $summary = app(Containers::class)->getInstance(
         Container::factory()->create(),
         Item::factory()->create()
     )

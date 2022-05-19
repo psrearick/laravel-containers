@@ -5,7 +5,6 @@ namespace Psrearick\Containers\Actions;
 use Illuminate\Support\Facades\Event;
 use Psrearick\Containers\Contracts\Container;
 use Psrearick\Containers\Contracts\ContainerItem;
-use Psrearick\Containers\Contracts\Item;
 use Psrearick\Containers\Events\ContainerItemWasUpdated;
 
 class UpdateContainerItem
@@ -25,7 +24,6 @@ class UpdateContainerItem
         }
 
         return null;
-
 
 //        Event::dispatch(new ContainerItemWasUpdated($containerItem));
 //

@@ -1,11 +1,11 @@
 <?php
 
-use Psrearick\Containers\Facades\Containers;
+use Psrearick\Containers\Containers;
 use Psrearick\Containers\Tests\ImplementationClasses\Container;
 use Psrearick\Containers\Tests\ImplementationClasses\Item;
 
 test('Attribute values can be increased on existing container item', function () {
-    $totals = Containers::getInstance(
+    $totals = app(Containers::class)->getInstance(
         Container::factory()->create(),
         Item::factory()->create()
     )
@@ -18,7 +18,7 @@ test('Attribute values can be increased on existing container item', function ()
 });
 
 test('Attribute values can be decreased on existing container item', function () {
-    $totals = Containers::getInstance(
+    $totals = app(Containers::class)->getInstance(
         Container::factory()->create(),
         Item::factory()->create()
     )

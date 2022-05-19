@@ -4,37 +4,34 @@ namespace Psrearick\Containers\Actions;
 
 use Illuminate\Support\Facades\Event;
 use Psrearick\Containers\Contracts\Container;
-use Psrearick\Containers\Contracts\ContainerItem;
 use Psrearick\Containers\Contracts\Item;
 use Psrearick\Containers\Events\ContainerItemWasCreated;
 use Psrearick\Containers\Events\ContainerItemWasUpdated;
 use Psrearick\Containers\Events\ItemWasRemovedFromContainer;
+use Psrearick\Containers\Services\ContainerItemManagerService;
+use Psrearick\Containers\Services\ContainerItemService;
 
 class SetContainerItemAttributes
 {
     private array $attributes;
 
-    private Container $container;
+    private ContainerItemService $service;
 
-    private ContainerItem $containerItem;
-
-    private Item $item;
+    private bool $remove = false;
 
     public function execute(Container $container, Item $item, array $attributes) : void
     {
-        $this->attributes = $attributes;
-        $this->container  = $container;
-        $this->item       = $item;
+        $this->service = app(ContainerItemManagerService::class)->service($container, $item);
 
-        if (! $item->containerItemExists($container, 'item')) {
+        $this->attributes = $attributes;
+
+        if (! $this->service->exists()) {
             $this->createNewContainerItem();
 
             return;
         }
 
-        $this->containerItem = $item->getContainerItem($container, 'item');
-
-        if ($this->containerItem->isSummarized()) {
+        if ($this->service->summarized()) {
             $this->getChange();
             $this->createNewContainerItem();
             $this->checkForItemRemoval();
@@ -42,38 +39,38 @@ class SetContainerItemAttributes
             return;
         }
 
-        $this->containerItem->update($attributes);
-        Event::dispatch(new ContainerItemWasUpdated($this->containerItem));
+        $this->service->updateOrCreate($attributes);
+        Event::dispatch(new ContainerItemWasUpdated($this->service->containerItem()));
         $this->checkForItemRemoval();
     }
 
     private function checkForItemRemoval() : void
     {
-        $quantityField = $this->containerItem->quantityFieldName();
-        if ($this->attributes[$quantityField] === 0) {
+        if (!$this->remove) {
             return;
         }
 
-        Event::dispatch(new ItemWasRemovedFromContainer($this->container, $this->item));
+        Event::dispatch(new ItemWasRemovedFromContainer($this->service->container(), $this->service->item()));
     }
 
     private function createNewContainerItem() : void
     {
-        $containerItem = $this->container->getContainerItemRelationForItem($this->item)
-            ->create(array_merge(
-                [$this->item->getItemForeignKeyName($this->container) => $this->item->id],
-                $this->attributes
-            ));
+        $this->service->create($this->attributes);
 
-        Event::dispatch(new ContainerItemWasCreated($containerItem));
+        Event::dispatch(new ContainerItemWasCreated($this->service->container(), $this->service->item()));
     }
 
     private function getChange() : void
     {
-        $totals         = app(GetContainerItemTotals::class)->execute($this->container, $this->item);
-        $quantityField  = $this->containerItem->quantityFieldName();
+        $totals         = app(GetContainerItemTotals::class)
+            ->execute($this->service->container(), $this->service->item());
+        $quantityField  = $this->service->quantityField();
         $quantity       = $totals[$quantityField];
         $newQuantity    = $this->attributes[$quantityField];
+
+        if ($newQuantity === 0) {
+            $this->remove = true;
+        }
 
         $this->attributes[$quantityField] = $newQuantity - $quantity;
     }

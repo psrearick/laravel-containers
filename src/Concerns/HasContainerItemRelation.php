@@ -87,13 +87,13 @@ trait HasContainerItemRelation
         $alternateRelationType  = $relationType === 'container' ? 'item' : 'container';
         $alternateRelationName  = $model->containerItemRelations()[$alternateRelationType];
 
-        $childModel = $model->$relationRelationName()->getModel();
+        $childModel             = $model->$relationRelationName()->getModel();
         $childModelRelationName = $childModel->containerItemRelations()['item'][__CLASS__] ?? $childModel->containerItemRelations()[__CLASS__];
 
         $relationNames = [
             $relationRelationName,
             "$relationRelationName.$childModelRelationName",
-            "$relationRelationName.$childModelRelationName.$alternateRelationName"
+            "$relationRelationName.$childModelRelationName.$alternateRelationName",
         ];
 
         if ($model->isSummarized()) {
@@ -105,8 +105,8 @@ trait HasContainerItemRelation
         return $relation->with($relationNames)
             ->get()
             ->map(function (ContainerItem $containerItem) use ($relationRelationName) {
-            return $containerItem->$relationRelationName;
-        });
+                return $containerItem->$relationRelationName;
+            });
     }
 
     /** Get the ContainerItem relation name for the provided class */
