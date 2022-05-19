@@ -3,27 +3,25 @@
 namespace Psrearick\Containers\Actions;
 
 use Psrearick\Containers\Contracts\Container;
-use Psrearick\Containers\Contracts\ContainerItem;
 use Psrearick\Containers\Contracts\Item;
+use Psrearick\Containers\Services\ContainerItemManagerService;
 
 class AddItemToContainer
 {
     public function execute(Container $container, Item $item, ?array $attributes = []) : void
     {
-        /** @var ContainerItem $model */
-        $model          = $item->getContainerItemRelationForContainer($container)->getModel();
-        $quantityField  = $model->quantityFieldName();
-        $computations   = $model->computations()[get_class($item)];
+        $service = app(ContainerItemManagerService::class)->service($container, $item);
 
-        if (($attributes[$quantityField] ?? 0) === 0 && ! $model->isSingleton()) {
+        $quantityField  = $service->quantityField();
+        $computations   = $service->computationsForItem();
+
+        if (($attributes[$quantityField] ?? 0) === 0 && ! $service->singleton()) {
             return;
         }
 
-        $containerItem = $item->containerItemExists($container, 'item')
-            ? $item->getContainerItem($container, 'item')
-            : $model;
+        $containerItem = $service->exists() ? $service->containerItem() : $service->model();
 
-        $currentValues = ! $item->containerItemExists($container, 'item')
+        $currentValues = ! $service->exists()
             ? array_fill_keys(array_keys($computations), 0)
             : app(GetContainerItemTotals::class)
                 ->execute($container, $item);

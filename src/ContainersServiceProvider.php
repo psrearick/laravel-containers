@@ -2,6 +2,7 @@
 
 namespace Psrearick\Containers;
 
+use Psrearick\Containers\Providers\ContainerItemManagerServiceProvider;
 use Psrearick\Containers\Providers\EventServiceProvider;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
@@ -20,9 +21,6 @@ class ContainersServiceProvider extends PackageServiceProvider
         parent::registeringPackage();
 
         $this->app->register(EventServiceProvider::class);
-
-        $this->app->bind('laravel-containers', function () {
-            return new Containers();
-        });
+        $this->app->register(ContainerItemManagerServiceProvider::class);
     }
 }

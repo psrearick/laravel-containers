@@ -3,32 +3,23 @@
 namespace Psrearick\Containers\Actions;
 
 use Psrearick\Containers\Contracts\Container;
-use Psrearick\Containers\Contracts\ContainerItem;
 use Psrearick\Containers\Contracts\Item;
-use Psrearick\Containers\Contracts\SummarizableContainer;
-use Psrearick\Containers\Contracts\SummarizableItem;
-use Psrearick\Containers\Contracts\Summarized;
 use Psrearick\Containers\Exceptions\ContainerItemNotFoundException;
+use Psrearick\Containers\Services\ContainerItemManagerService;
+use Psrearick\Containers\Services\ContainerItemService;
 
 class GetContainerItemTotals
 {
-    private ?Summarized $model = null;
-
     public function execute(Container $container, Item $item) : array
     {
-        /** @var ContainerItem $model */
-        $model = $item->getContainerItemRelationForContainer($container)->getModel();
-
-        if ($item instanceof SummarizableItem && $container instanceof SummarizableContainer && $model->isSummarized()) {
-            /** @var Summarized $model */
-            $this->model = $model;
-
-            return $this->validateQuantity($this->getSummarizedTotals($item, $container));
+        $service = app(ContainerItemManagerService::class)->service($container, $item);
+        if ($service->summarized()) {
+            return $this->validateQuantity($this->getSummarizedTotals($service));
         }
 
-        $containerItem  = $item->getContainerItem($container, 'item');
+        $containerItem  = $service->containerItem();
         $attributes     = array_filter(
-            $containerItem->computations()[get_class($item)],
+            $service->computationsForItem(),
             fn ($value, $key) => array_key_exists($key, $containerItem->toArray()),
             ARRAY_FILTER_USE_BOTH
         );
@@ -42,17 +33,16 @@ class GetContainerItemTotals
         return $this->validateQuantity($attributes);
     }
 
-    private function getSummarizedTotals(SummarizableItem $item, SummarizableContainer $container) : array
+    private function getSummarizedTotals(ContainerItemService $service) : array
     {
-        $containerItem  = $item->getContainerItem($container, 'item');
-        $summary        = $containerItem->{$containerItem->summarizedBy()};
+        $summary = $service->summary();
 
         if (! $summary) {
             throw new ContainerItemNotFoundException();
         }
 
         $attributes = array_filter(
-            $this->model->computations()[get_class($item)],
+            $service->computationsForItem(),
             fn ($value, $key) => array_key_exists($key, $summary->toArray()),
             ARRAY_FILTER_USE_BOTH
         );
