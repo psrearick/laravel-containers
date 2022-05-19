@@ -31,4 +31,7 @@ interface ContainerItem extends Model
 
     /** The name of the field use to define the container item quantity */
     public function quantityFieldName() : string;
+
+    /** The name of the relationship of this container item's summary */
+    public function summarizedBy() : string;
 }

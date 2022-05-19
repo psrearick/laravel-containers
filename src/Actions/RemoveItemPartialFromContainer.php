@@ -9,7 +9,7 @@ class RemoveItemPartialFromContainer
 {
     public function execute(Container $container, Item $item, array $attributes) : void
     {
-        $containerItem  = $item->getContainerItem($container);
+        $containerItem  = $item->getContainerItem($container, 'item');
         $computations   = $containerItem->computations()[get_class($item)];
         $currentValues  = app(GetContainerItemTotals::class)
             ->execute($container, $item);
