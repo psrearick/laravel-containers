@@ -23,7 +23,7 @@ test('an event is emitted when a container summary is updated', function () {
     /** @var ContainerItem $containerItem */
     $containerItem = $container->getContainerItem($item, 'container');
 
-    app(UpdateContainerItemSummary::class)->execute($containerItem);
+    app(UpdateContainerItemSummary::class)->execute($container, $item);
 
     Event::assertDispatched(
         ContainerItemSummaryWasUpdated::class,

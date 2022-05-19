@@ -3,15 +3,16 @@
 namespace Psrearick\Containers\Actions;
 
 use Illuminate\Support\Facades\Event;
-use Psrearick\Containers\Contracts\Summarized;
+use Psrearick\Containers\Contracts\Container;
+use Psrearick\Containers\Contracts\Item;
 use Psrearick\Containers\Events\ContainerItemSummaryWasUpdated;
 use Psrearick\Containers\Services\ContainerItemManagerService;
 
 class UpdateContainerItemSummary
 {
-    public function execute(Summarized $containerItem) : void
+    public function execute(Container $container, Item $item) : void
     {
-        $service = app(ContainerItemManagerService::class)->serviceFromContainerItem($containerItem);
+        $service = app(ContainerItemManagerService::class)->service($container, $item);
 
         $computations = $service->computationsForSummary();
 

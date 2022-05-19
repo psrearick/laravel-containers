@@ -25,9 +25,9 @@ test('a new container item summary can be updated', function () {
         'value'     => 1.5,
     ])->set([
         'quantity'  => 3.0,
-        'value'     => 2
+        'value'     => 2,
     ])->getSummary();
 
-    $this->assertEquals(3.5, $summary->value);
-    $this->assertEquals(6, $summary->current);
+    $this->assertEquals(3.5, optional($summary)->value);
+    $this->assertEquals(6, optional($summary)->current);
 });

@@ -17,12 +17,10 @@ class UpdateContainerWithNewContainerItemListener
             return;
         }
 
-        $containerItem = $service->containerItem();
-
-        if (! $containerItem) {
+        if (! $service->containerItem()) {
             return;
         }
 
-        app(UpdateContainerItemSummary::class)->execute($containerItem);
+        app(UpdateContainerItemSummary::class)->execute($event->container, $event->item);
     }
 }

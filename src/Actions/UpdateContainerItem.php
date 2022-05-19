@@ -2,20 +2,25 @@
 
 namespace Psrearick\Containers\Actions;
 
-use Psrearick\Containers\Contracts\ContainerItem;
+use Psrearick\Containers\Contracts\Container;
+use Psrearick\Containers\Contracts\Item;
 use Psrearick\Containers\Services\ContainerItemManagerService;
 
 class UpdateContainerItem
 {
-    public function execute(?ContainerItem $parentContainerItem, ContainerItem $updatedContainerItem, array $updates) : void
+    public function execute(Container $parentContainer, Item $parentItem, Container $container, Item $item) : void
     {
+        $childService           = app(ContainerItemManagerService::class)
+            ->service($container, $item);
+        $parentService          = app(ContainerItemManagerService::class)
+            ->service($parentContainer, $parentItem);
+        $parentContainerItem    = $parentService->containerItem();
+
         if (! $parentContainerItem) {
             return;
         }
 
-        $childService       = app(ContainerItemManagerService::class)->serviceFromContainerItem($updatedContainerItem);
         $childUpdates       = $childService->updates();
-        $parentService      = app(ContainerItemManagerService::class)->serviceFromContainerItem($parentContainerItem);
         $parentComputations = $parentService->computationsForSummary();
         $currentValues      = app(GetContainerItemTotals::class)
             ->execute($parentService->container(), $parentService->item());
