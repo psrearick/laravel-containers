@@ -4,17 +4,18 @@ namespace Psrearick\Containers\Actions;
 
 use Psrearick\Containers\Contracts\Container;
 use Psrearick\Containers\Contracts\Item;
+use Psrearick\Containers\Services\ContainerItemManagerService;
 
 class RemoveItemPartialFromContainer
 {
     public function execute(Container $container, Item $item, array $attributes) : void
     {
-        $containerItem  = $item->getContainerItem($container, 'item');
-        $computations   = $containerItem->computations()[get_class($item)];
+        $service        = app(ContainerItemManagerService::class)->service($container, $item);
+        $containerItem  = $service->containerItem();
         $currentValues  = app(GetContainerItemTotals::class)
             ->execute($container, $item);
 
-        $attributes = collect($computations)->map(
+        $attributes = collect($service->computationsForItem())->map(
             function ($class, $field) use ($currentValues, $attributes, $containerItem) {
                 return app($class['remove'])->execute(
                     $currentValues[$field] ?? 0,

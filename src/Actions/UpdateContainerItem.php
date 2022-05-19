@@ -11,19 +11,21 @@ class UpdateContainerItem
 {
     public function execute(ContainerItem $parentContainerItem) : ?ContainerItem
     {
-        /** @var Container $container */
-        $container = $parentContainerItem->{$parentContainerItem->containerItemRelations()['container']};
-
-        $childClasses = $container->containerItemRelations()['container'];
-
-        foreach (array_keys($childClasses) as $class) {
-            $children = $container->getItemsOfType($class);
-            $children->each(function ($child) use ($container) {
-                ray(app(GetContainerItemTotals::class)->execute($container, $child));
-            });
-        }
-
         return null;
+
+//        /** @var Container $container */
+//        $container = $parentContainerItem->{$parentContainerItem->containerItemRelations()['container']};
+//
+//        $childClasses = $container->containerItemRelations()['container'];
+//
+//        foreach (array_keys($childClasses) as $class) {
+//            $children = $container->getItemsOfType($class);
+//            $children->each(function ($child) use ($container) {
+//                ray(app(GetContainerItemTotals::class)->execute($container, $child));
+//            });
+//        }
+//
+//        return null;
 
 //        Event::dispatch(new ContainerItemWasUpdated($containerItem));
 //
