@@ -6,13 +6,15 @@ use Psrearick\Containers\Actions\UpdateContainerItem;
 use Psrearick\Containers\Contracts\Item;
 use Psrearick\Containers\Events\ContainerItemWasCreated;
 use Psrearick\Containers\Events\ContainerItemWasUpdated;
+use Psrearick\Containers\Services\ContainerItemManagerService;
 
 class UpdateContainerItemParentListener
 {
     public function handle(ContainerItemWasCreated|ContainerItemWasUpdated $event) : void
     {
-        $containerItem  = $event->containerItem;
-        $container      = $containerItem->{$containerItem->containerItemRelations()['container']};
+        $container = app(ContainerItemManagerService::class)
+            ->serviceFromContainerItem($event->containerItem)
+            ->container();
 
         if (! $container instanceof Item) {
             return;
@@ -31,7 +33,9 @@ class UpdateContainerItemParentListener
             }
 
             $parents->each(function ($parent) use ($container) {
-                $parentContainerItem = $container->getContainerItem($parent, 'item');
+                $parentContainerItem = app(ContainerItemManagerService::class)
+                    ->service($parent, $container)
+                    ->containerItem();
                 app(UpdateContainerItem::class)->execute($parentContainerItem);
             });
         }

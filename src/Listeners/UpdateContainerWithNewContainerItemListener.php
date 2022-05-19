@@ -10,11 +10,16 @@ class UpdateContainerWithNewContainerItemListener
 {
     public function handle(ContainerItemWasCreated $event) : void
     {
-        $containerItem = app(ContainerItemManagerService::class)
-            ->service($event->container, $event->item)
-            ->containerItem();
+        $service = app(ContainerItemManagerService::class)
+            ->service($event->container, $event->item);
 
-        if (! $containerItem->isSummarized()) {
+        if (! $service->summarized()) {
+            return;
+        }
+
+        $containerItem = $service->containerItem();
+
+        if (! $containerItem) {
             return;
         }
 

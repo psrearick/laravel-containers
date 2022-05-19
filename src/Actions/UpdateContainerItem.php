@@ -9,7 +9,7 @@ use Psrearick\Containers\Events\ContainerItemWasUpdated;
 
 class UpdateContainerItem
 {
-    public function execute(ContainerItem $parentContainerItem) : ?ContainerItem
+    public function execute(?ContainerItem $parentContainerItem) : ?ContainerItem
     {
         return null;
 
