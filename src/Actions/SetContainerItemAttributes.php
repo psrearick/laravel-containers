@@ -31,7 +31,7 @@ class SetContainerItemAttributes
             return;
         }
 
-        if ($this->service->summarized()) {
+        if ($this->service->summarized() && ! $this->service->singleton()) {
             $this->getChange();
             $this->createNewContainerItem();
             $this->checkForItemRemoval();
@@ -40,7 +40,7 @@ class SetContainerItemAttributes
         }
 
         $this->service->updateOrCreate($attributes);
-        Event::dispatch(new ContainerItemWasUpdated($this->service->containerItem()));
+        Event::dispatch(new ContainerItemWasUpdated($this->service->container(), $this->service->item(), $attributes));
         $this->checkForItemRemoval();
     }
 
@@ -57,11 +57,17 @@ class SetContainerItemAttributes
     {
         $this->service->create($this->attributes);
 
-        Event::dispatch(new ContainerItemWasCreated($this->service->container(), $this->service->item()));
+        Event::dispatch(new ContainerItemWasCreated($this->service->container(), $this->service->item(), $this->attributes));
     }
 
     private function getChange() : void
     {
+        if ($this->service->singleton()) {
+            $this->attributes['quantity'] ??= 1;
+
+            return;
+        }
+
         $totals         = app(GetContainerItemTotals::class)
             ->execute($this->service->container(), $this->service->item());
         $quantityField  = $this->service->quantityField();

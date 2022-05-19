@@ -2,7 +2,7 @@
 
 namespace Psrearick\Containers\Listeners;
 
-use Psrearick\Containers\Actions\UpdateContainerItem;
+use Psrearick\Containers\Actions\UpdateContainerItemAncestry;
 use Psrearick\Containers\Contracts\Item;
 use Psrearick\Containers\Events\ContainerItemWasCreated;
 use Psrearick\Containers\Events\ContainerItemWasUpdated;
@@ -12,9 +12,11 @@ class UpdateContainerItemParentListener
 {
     public function handle(ContainerItemWasCreated|ContainerItemWasUpdated $event) : void
     {
-        $container = app(ContainerItemManagerService::class)
-            ->serviceFromContainerItem($event->containerItem)
-            ->container();
+        $containerItem = app(ContainerItemManagerService::class)
+            ->service($event->container, $event->item)
+            ->containerItem();
+
+        $container = $event->container;
 
         if (! $container instanceof Item) {
             return;
@@ -32,11 +34,12 @@ class UpdateContainerItemParentListener
                 continue;
             }
 
-            $parents->each(function ($parent) use ($container) {
+            $parents->each(function ($parent) use ($container, $event, $containerItem) {
                 $parentContainerItem = app(ContainerItemManagerService::class)
                     ->service($parent, $container)
                     ->containerItem();
-                app(UpdateContainerItem::class)->execute($parentContainerItem);
+                app(UpdateContainerItemAncestry::class)
+                    ->execute($parentContainerItem, $containerItem, $event->attributes);
             });
         }
     }

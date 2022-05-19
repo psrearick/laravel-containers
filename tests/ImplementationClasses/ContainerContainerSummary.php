@@ -20,10 +20,10 @@ class ContainerContainerSummary extends Base
     {
         return [
             Container::class => [
-                'quantity' => [
-                    'add'       => Sum::class,
-                    'remove'    => Subtract::class,
-                ],
+                //                'quantity' => [
+                //                    'add'       => Sum::class,
+                //                    'remove'    => Subtract::class,
+                //                ],
                 'value'     => [
                     'add'       => AddQuantityMultiple::class,
                     'remove'    => SubtractQuantityMultiple::class,

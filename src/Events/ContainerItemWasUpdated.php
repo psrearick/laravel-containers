@@ -4,7 +4,8 @@ namespace Psrearick\Containers\Events;
 
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Psrearick\Containers\Contracts\ContainerItem;
+use Psrearick\Containers\Contracts\Container;
+use Psrearick\Containers\Contracts\Item;
 
 class ContainerItemWasUpdated
 {
@@ -13,10 +14,14 @@ class ContainerItemWasUpdated
 
     public array $attributes;
 
-    public ContainerItem $containerItem;
+    public Container $container;
 
-    public function __construct(ContainerItem $containerItem)
+    public Item $item;
+
+    public function __construct(Container $container, Item $item, array $attributes)
     {
-        $this->containerItem = $containerItem;
+        $this->attributes   = $attributes;
+        $this->container    = $container;
+        $this->item         = $item;
     }
 }
