@@ -264,17 +264,20 @@ class ContainerItemService
     {
         if (! $this->containerItem) {
             $this->updates = $updates;
+
             return $this;
         }
 
         if (! $this->singleton()) {
             $this->updates = $updates;
+
             return $this;
         }
 
         $summary = $this->summary();
         if (! $summary) {
             $this->updates = $updates;
+
             return $this;
         }
 
