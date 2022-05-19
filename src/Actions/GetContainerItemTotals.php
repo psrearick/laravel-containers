@@ -3,11 +3,7 @@
 namespace Psrearick\Containers\Actions;
 
 use Psrearick\Containers\Contracts\Container;
-use Psrearick\Containers\Contracts\ContainerItem;
 use Psrearick\Containers\Contracts\Item;
-use Psrearick\Containers\Contracts\SummarizableContainer;
-use Psrearick\Containers\Contracts\SummarizableItem;
-use Psrearick\Containers\Contracts\Summarized;
 use Psrearick\Containers\Exceptions\ContainerItemNotFoundException;
 use Psrearick\Containers\Services\ContainerItemManagerService;
 use Psrearick\Containers\Services\ContainerItemService;

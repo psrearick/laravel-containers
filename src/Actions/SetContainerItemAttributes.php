@@ -15,9 +15,9 @@ class SetContainerItemAttributes
 {
     private array $attributes;
 
-    private ContainerItemService $service;
-
     private bool $remove = false;
+
+    private ContainerItemService $service;
 
     public function execute(Container $container, Item $item, array $attributes) : void
     {
@@ -46,7 +46,7 @@ class SetContainerItemAttributes
 
     private function checkForItemRemoval() : void
     {
-        if (!$this->remove) {
+        if (! $this->remove) {
             return;
         }
 

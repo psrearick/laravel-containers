@@ -76,36 +76,36 @@ trait HasContainerItemRelation
      */
     protected function getRelatedRecordsForRelation(string $relationClass, string $relationType, string $key = '') : Collection
     {
-        $relation = $this->getContainerItemRelationOfType($relationClass, $key);
-        $model    = $relation->getRelated();
+        $containerItemRelation = $this->getContainerItemRelationOfType($relationClass, $key);
+        /** @var ContainerItem $containerItemModel */
+        $containerItemModel    = $containerItemRelation->getRelated();
 
-        if (! method_exists($model, 'containerItemRelations')) {
+        if (! method_exists($containerItemModel, 'containerItemRelations')) {
             throw new ContainerItemNotFoundException('container item relations not defined');
         }
 
-        $relationRelationName   = $model->containerItemRelations()[$relationType];
-        $alternateRelationType  = $relationType === 'container' ? 'item' : 'container';
-        $alternateRelationName  = $model->containerItemRelations()[$alternateRelationType];
-
-        $childModel             = $model->$relationRelationName()->getModel();
-        $childModelRelationName = $childModel->containerItemRelations()['item'][__CLASS__] ?? $childModel->containerItemRelations()[__CLASS__];
+        $targetRelationName         = $containerItemModel->containerItemRelations()[$relationType];
+        $alternateRelationType      = $relationType === 'container' ? 'item' : 'container';
+        $alternateRelationName      = $containerItemModel->containerItemRelations()[$alternateRelationType];
+        $targetModel                = $containerItemModel->$targetRelationName()->getModel();
+        $targetModelRelationName    = $targetModel->containerItemRelations()[$relationType][get_class($this)] ?? $targetModel->containerItemRelations()[__CLASS__];
 
         $relationNames = [
-            $relationRelationName,
-            "$relationRelationName.$childModelRelationName",
-            "$relationRelationName.$childModelRelationName.$alternateRelationName",
+            $targetRelationName,
+            "$targetRelationName.$targetModelRelationName",
+            "$targetRelationName.$targetModelRelationName.$alternateRelationName",
         ];
 
-        if ($model->isSummarized()) {
-            $summaryRelation = $model->summarizedBy();
+        if ($containerItemModel->isSummarized()) {
+            $summaryRelation = $containerItemModel->summarizedBy();
             $relationNames[] =
-                "$relationRelationName.$childModelRelationName.$summaryRelation";
+                "$targetRelationName.$targetModelRelationName.$summaryRelation";
         }
 
-        return $relation->with($relationNames)
+        return $containerItemRelation->with($relationNames)
             ->get()
-            ->map(function (ContainerItem $containerItem) use ($relationRelationName) {
-                return $containerItem->$relationRelationName;
+            ->map(function (ContainerItem $containerItem) use ($targetRelationName) {
+                return $containerItem->$targetRelationName;
             });
     }
 

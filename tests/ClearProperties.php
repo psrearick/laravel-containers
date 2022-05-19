@@ -2,9 +2,6 @@
 
 namespace Psrearick\Containers\Tests;
 
-use Psrearick\Containers\Services\ContainerItemManagerService;
-use Psrearick\Containers\Services\ContainerItemService;
-
 class ClearProperties
 {
     /**
@@ -12,10 +9,9 @@ class ClearProperties
      *
      * @return void
      */
-    public function after(): void
+    public function after() : void
     {
         ray(memory_get_usage());
-
     }
 
     public function before() : void

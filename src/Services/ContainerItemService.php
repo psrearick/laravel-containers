@@ -63,13 +63,14 @@ class ContainerItemService
         return $this->containerItems;
     }
 
-    public function setContainerItems() : self
+    public function create(array $attributes) : self
     {
-        ray('set');
-        $this->containerItems = app(get_class($this->model))::query()
-            ->where($this->foreignKey('containerItem', 'container'), '=', $this->container->id)
-            ->where($this->foreignKey('containerItem', 'item'), '=', $this->item->id)
-            ->get();
+        $containerItem = $this->relation('container', 'containerItem')->create(array_merge(
+            [$this->foreignKey('item', 'containerItem') => $this->item->id],
+            $attributes
+        ));
+
+        $this->setContainerItem($containerItem);
 
         return $this;
     }
@@ -206,22 +207,19 @@ class ContainerItemService
         return $this;
     }
 
-    private function getCurrentContainerItem(?ContainerItem $containerItem = null) : ?ContainerItem
-    {
-        if ($containerItem) {
-            return $containerItem;
-        }
-
-        if ($this->containerItems) {
-            return $this->containerItems->sortBy('id')->last();
-        }
-
-        return $this->containerItem ?? $this->containerItems(true)->sortBy('id')->last();
-    }
-
     public function setContainerItem(?ContainerItem $containerItem = null) : self
     {
         $this->containerItem    = $this->getCurrentContainerItem($containerItem);
+
+        return $this;
+    }
+
+    public function setContainerItems() : self
+    {
+        $this->containerItems = app(get_class($this->model))::query()
+            ->where($this->foreignKey('containerItem', 'container'), '=', $this->container->id)
+            ->where($this->foreignKey('containerItem', 'item'), '=', $this->item->id)
+            ->get();
 
         return $this;
     }
@@ -285,18 +283,6 @@ class ContainerItemService
         return $this->summary() ?: $this->summaryModel;
     }
 
-    public function create(array $attributes) : self
-    {
-        $containerItem = $this->relation('container', 'containerItem')->create(array_merge(
-            [$this->foreignKey('item', 'containerItem') => $this->item->id],
-            $attributes
-        ));
-
-        $this->setContainerItem($containerItem);
-
-        return $this;
-    }
-
     public function updateOrCreate(array $attributes) : self
     {
         if (! $this->containerItem) {
@@ -312,16 +298,10 @@ class ContainerItemService
 
     public function updateOrCreateSummary(array $attributes) : self
     {
-//        $containerRelation = $this->summaryModel()->containerItemSummaryRelations()['container'];
-//        $itemRelation      = $this->summaryModel()->containerItemSummaryRelations()['item'];
-
-//        $containerKey = $this->summaryModel()->$containerRelation()->getForeignKeyName();
-//        $itemKey      = $this->summaryModel()->$itemRelation()->getForeignKeyName();
-
         if ($this->summary) {
             $this->summary->update($attributes);
 
-            return $this;
+            return $this->associateSummary();
         }
 
         $summary = $this->relation('containerItem', 'summary')->create(array_merge(
@@ -332,11 +312,29 @@ class ContainerItemService
             $attributes
         ));
 
-        $this->relation('containerItem', 'summary')->associate($summary);
-        $this->containerItem->save();
-
         $this->setSummary($summary);
 
+        return $this->associateSummary();
+    }
+
+    private function associateSummary() : self
+    {
+        $this->relation('containerItem', 'summary')->associate($this->summary());
+        $this->containerItem->save();
+
         return $this;
+    }
+
+    private function getCurrentContainerItem(?ContainerItem $containerItem = null) : ?ContainerItem
+    {
+        if ($containerItem) {
+            return $containerItem;
+        }
+
+        if ($this->containerItems) {
+            return $this->containerItems->sortBy('id')->last();
+        }
+
+        return $this->containerItem ?? $this->containerItems(true)->sortBy('id')->last();
     }
 }

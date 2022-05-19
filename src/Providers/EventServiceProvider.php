@@ -17,7 +17,7 @@ class EventServiceProvider extends Provider
         ContainerItemWasCreated::class => [
             SetServiceContainerItem::class,
             UpdateContainerWithNewContainerItemListener::class,
-//                        UpdateContainerItemParentListener::class,
+            //                        UpdateContainerItemParentListener::class,
             //            UpdateContainerItemAttributesListener::class,
         ],
         ContainerItemWasUpdated::class => [
