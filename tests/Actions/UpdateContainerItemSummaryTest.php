@@ -31,33 +31,33 @@ test('a new container item summary can be generated', function () {
     $this->assertEquals(7.5, $summary->value);
 });
 
-test('a nested container item summary can be generated', function () {
-    /** @var Container $parentContainer */
-    $parentContainer = Container::factory()->create();
-
-    /** @var Container $childContainer */
-    $childContainer = Container::factory()->create();
-
-    app(AddItemToContainer::class)
-        ->execute($parentContainer, $childContainer);
-
-    /** @var Item $item */
-    $item = Item::factory()->create();
-
-    $attributes = [
-        'quantity'  => 5.0,
-        'value'     => 1.5,
-    ];
-
-    app(AddItemToContainer::class)
-        ->execute($childContainer, $item, $attributes);
-
-    $containerItem        = $childContainer->getContainerItem($item, 'container');
-    $containerItemSummary = $containerItem->{$containerItem->summarizedBy()};
-
-    $parentItem        = $parentContainer->getContainerItem($childContainer, 'container');
-    $parentItemSummary = $parentItem->{$parentItem->summarizedBy()};
-
-    $this->assertEquals($attributes['quantity'] * $attributes['value'], $containerItemSummary->value);
-    $this->assertEquals($attributes['quantity'] * $attributes['value'], $parentItemSummary->value);
-});
+//test('a nested container item summary can be generated', function () {
+//    /** @var Container $parentContainer */
+//    $parentContainer = Container::factory()->create();
+//
+//    /** @var Container $childContainer */
+//    $childContainer = Container::factory()->create();
+//
+//    app(AddItemToContainer::class)
+//        ->execute($parentContainer, $childContainer);
+//
+//    /** @var Item $item */
+//    $item = Item::factory()->create();
+//
+//    $attributes = [
+//        'quantity'  => 5.0,
+//        'value'     => 1.5,
+//    ];
+//
+//    app(AddItemToContainer::class)
+//        ->execute($childContainer, $item, $attributes);
+//
+//    $containerItem        = $childContainer->getContainerItem($item, 'container');
+//    $containerItemSummary = $containerItem->{$containerItem->summarizedBy()};
+//
+//    $parentItem        = $parentContainer->getContainerItem($childContainer, 'container');
+//    $parentItemSummary = $parentItem->{$parentItem->summarizedBy()};
+//
+//    $this->assertEquals($attributes['quantity'] * $attributes['value'], $containerItemSummary->value);
+//    $this->assertEquals($attributes['quantity'] * $attributes['value'], $parentItemSummary->value);
+//});

@@ -41,7 +41,7 @@ class GetContainerItemTotals
     {
         $summary = $service->summary();
 
-        if (! $service->summary()) {
+        if (! $summary) {
             throw new ContainerItemNotFoundException();
         }
 

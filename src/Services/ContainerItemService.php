@@ -32,12 +32,12 @@ class ContainerItemService
 
     public function computationsForItem() : array
     {
-        return $this->model->computations()[get_class($this->item)];
+        return $this->model()->computations()[get_class($this->item)];
     }
 
     public function computationsForSummary() : array
     {
-        return $this->summaryModel->computations()[get_class($this->item)];
+        return $this->summaryModel()->computations()[get_class($this->item)];
     }
 
     public function container() : Container
@@ -45,7 +45,7 @@ class ContainerItemService
         return $this->container;
     }
 
-    public function containerItem() : ContainerItem
+    public function containerItem() : ?ContainerItem
     {
         $this->setContainerItem();
 
@@ -65,6 +65,7 @@ class ContainerItemService
 
     public function setContainerItems() : self
     {
+        ray('set');
         $this->containerItems = app(get_class($this->model))::query()
             ->where($this->foreignKey('containerItem', 'container'), '=', $this->container->id)
             ->where($this->foreignKey('containerItem', 'item'), '=', $this->item->id)
@@ -100,11 +101,14 @@ class ContainerItemService
         $this->setContainer($container);
         $this->setItem($item);
 
-        $this->model         = $item->getContainerItemRelationForContainer($container)->getModel();
+        /** @var ContainerItem $relation */
+        $relation = $item->getContainerItemRelationForContainer($container)->getModel();
+
+        $this->model         = $relation;
         $this->containerItem = $this->exists() ? $item->getContainerItem($container, 'item') : null;
 
         if ($this->summarized()) {
-            $this->summaryModel  = $this->model->{$this->relationName('summary')}()->getModel();
+            $this->summaryModel  = $this->model()->{$this->relationName('summary')}()->getModel();
         }
 
         return $this;
@@ -127,7 +131,7 @@ class ContainerItemService
 
     public function is(Container $container, Item $item) : bool
     {
-        return $this->container->is($container) && $this->item->is($item);
+        return $this->container()->is($container) && $this->item()->is($item);
     }
 
     public function isContainerItem(ContainerItem $containerItem) : bool
@@ -142,25 +146,29 @@ class ContainerItemService
 
     public function model() : ContainerItem
     {
-        return $this->model;
+        return $this->containerItem ?: $this->model;
     }
 
     public function quantityField() : string
     {
-        return $this->model->quantityFieldName();
+        return $this->model()->quantityFieldName();
     }
 
     public function relation(string $from, string $to) : HasMany|BelongsTo
     {
         if ($from === 'containerItem') {
-            $relations = $this->containerItem()->containerItemRelations();
+            $relations = $this->model()->containerItemRelations();
             if ($to === 'summary') {
-                return $this->containerItem()->{$this->relationName('summary')}();
+                return $this->model()->{$this->relationName('summary')}();
             }
 
             return $to === 'item'
-                ? $this->containerItem()->{$relations['item']}()
-                : $this->containerItem()->{$relations['container']}();
+                ? $this->model()->{$relations['item']}()
+                : $this->model()->{$relations['container']}();
+        }
+
+        if ($from === 'summary') {
+            return $this->summaryModel()->{$this->relationName($to, $from)}();
         }
 
         return $from === 'item'
@@ -168,13 +176,17 @@ class ContainerItemService
             : $this->container->getContainerItemRelationForItem($this->item);
     }
 
-    public function relationName(string $to) : string
+    public function relationName(string $to, string $from = 'containerItem') : string
     {
         if ($to === 'summary') {
-            return $this->model->summarizedBy();
+            return $this->model()->summarizedBy();
         }
 
-        return $this->containerItem()->containerItemRelations()[$to];
+        if ($from === 'summary') {
+            return $this->summaryModel()->containerItemSummaryRelations()[$to];
+        }
+
+        return $this->model()->containerItemRelations()[$to];
     }
 
     public function setContainer(?Container $container = null) : self
@@ -194,7 +206,7 @@ class ContainerItemService
         return $this;
     }
 
-    private function getCurrentContainerItem(?ContainerItem $containerItem = null) : ContainerItem
+    private function getCurrentContainerItem(?ContainerItem $containerItem = null) : ?ContainerItem
     {
         if ($containerItem) {
             return $containerItem;
@@ -204,17 +216,12 @@ class ContainerItemService
             return $this->containerItems->sortBy('id')->last();
         }
 
-        if (isset($this->containerItem)) {
-            return $this->containerItem;
-        }
-
-        return $this->containerItems(true)->sortBy('id')->last();
+        return $this->containerItem ?? $this->containerItems(true)->sortBy('id')->last();
     }
 
     public function setContainerItem(?ContainerItem $containerItem = null) : self
     {
         $this->containerItem    = $this->getCurrentContainerItem($containerItem);
-        $this->model            = $this->containerItem;
 
         return $this;
     }
@@ -238,19 +245,22 @@ class ContainerItemService
 
     public function setSummary(?Summary $summary = null) : self
     {
+        if ($summary) {
+            $this->summary = $summary;
+        }
+
         if (isset($this->summary)) {
             return $this;
         }
 
-        $this->summary      = $summary ?: $this->containerItem()->{$this->relationName('summary')};
-        $this->summaryModel = $this->summary;
+        $this->summary = optional($this->containerItem())->{$this->relationName('summary')};
 
         return $this;
     }
 
     public function singleton() : bool
     {
-        return $this->model->isSingleton();
+        return $this->model()->isSingleton();
     }
 
     public function summarizable() : bool
@@ -260,14 +270,19 @@ class ContainerItemService
 
     public function summarized() : bool
     {
-        return $this->summarizable() && $this->model->isSummarized();
+        return $this->summarizable() && $this->model()->isSummarized();
     }
 
-    public function summary() : Summary
+    public function summary() : ?Summary
     {
         $this->setSummary();
 
         return $this->summary;
+    }
+
+    public function summaryModel() : Summary
+    {
+        return $this->summary() ?: $this->summaryModel;
     }
 
     public function create(array $attributes) : self
@@ -297,11 +312,11 @@ class ContainerItemService
 
     public function updateOrCreateSummary(array $attributes) : self
     {
-        $containerRelation = $this->summaryModel->containerItemSummaryRelations()['container'];
-        $itemRelation      = $this->summaryModel->containerItemSummaryRelations()['item'];
+//        $containerRelation = $this->summaryModel()->containerItemSummaryRelations()['container'];
+//        $itemRelation      = $this->summaryModel()->containerItemSummaryRelations()['item'];
 
-        $containerKey = $this->summaryModel->$containerRelation()->getForeignKeyName();
-        $itemKey      = $this->summaryModel->$itemRelation()->getForeignKeyName();
+//        $containerKey = $this->summaryModel()->$containerRelation()->getForeignKeyName();
+//        $itemKey      = $this->summaryModel()->$itemRelation()->getForeignKeyName();
 
         if ($this->summary) {
             $this->summary->update($attributes);
@@ -311,8 +326,8 @@ class ContainerItemService
 
         $summary = $this->relation('containerItem', 'summary')->create(array_merge(
             [
-                $containerKey => $this->container->id,
-                $itemKey      => $this->item->id,
+                $this->foreignKey('summary', 'container')   => $this->container->id,
+                $this->foreignKey('summary', 'item')        => $this->item->id,
             ],
             $attributes
         ));
