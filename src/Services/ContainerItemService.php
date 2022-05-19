@@ -30,6 +30,8 @@ class ContainerItemService
 
     private Summary $summaryModel;
 
+    private array $updates = [];
+
     public function computationsForItem() : array
     {
         return $this->model()->computations()[get_class($this->item)];
@@ -65,6 +67,8 @@ class ContainerItemService
 
     public function create(array $attributes) : self
     {
+        $this->setUpdates($attributes);
+
         $containerItem = $this->relation('container', 'containerItem')->create(array_merge(
             [$this->foreignKey('item', 'containerItem') => $this->item->id],
             $attributes
@@ -256,6 +260,36 @@ class ContainerItemService
         return $this;
     }
 
+    public function setUpdates(array $updates) : self
+    {
+        if (! $this->containerItem) {
+            $this->updates = $updates;
+            return $this;
+        }
+
+        if (! $this->singleton()) {
+            $this->updates = $updates;
+            return $this;
+        }
+
+        $summary = $this->summary();
+        if (! $summary) {
+            $this->updates = $updates;
+            return $this;
+        }
+
+        $changes = array_fill_keys(array_keys($this->computationsForSummary()), 0);
+
+        $this->updates = collect($changes)->map(function ($change, $key) use ($updates, $summary) {
+            $initial    = $summary[$key] ?? $change;
+            $update     = $updates[$key] ?? $change;
+
+            return $update - $initial;
+        })->all();
+
+        return $this;
+    }
+
     public function singleton() : bool
     {
         return $this->model()->isSingleton();
@@ -291,6 +325,8 @@ class ContainerItemService
             return $this;
         }
 
+        $this->setUpdates($attributes);
+
         $this->containerItem->update($attributes);
 
         return $this;
@@ -315,6 +351,11 @@ class ContainerItemService
         $this->setSummary($summary);
 
         return $this->associateSummary();
+    }
+
+    public function updates() : array
+    {
+        return $this->updates;
     }
 
     private function associateSummary() : self

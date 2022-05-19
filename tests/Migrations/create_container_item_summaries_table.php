@@ -11,6 +11,7 @@ return new class () extends Migration {
             $table->id();
             $table->float('quantity')->nullable();
             $table->float('value')->nullable();
+            $table->float('current')->nullable();
             $table->unsignedBigInteger('item_id');
             $table->unsignedBigInteger('container_id');
             $table->timestamps();

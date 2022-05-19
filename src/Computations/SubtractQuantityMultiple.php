@@ -9,6 +9,6 @@ class SubtractQuantityMultiple implements Computation
 {
     public function execute(?float $currentValue = 0, ?float $newValue = 0, ?array $ref = []) : mixed
     {
-        return $currentValue - app(GetQuantityMultipleResult::class)->execute($ref, $newValue);
+        return $currentValue - abs(app(GetQuantityMultipleResult::class)->execute($ref, $newValue));
     }
 }

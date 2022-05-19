@@ -58,3 +58,29 @@ test('a parent container is updated when its children are updated', function () 
 //});
 
 # ancestry is updated when removing, add, updating a container item
+
+
+test('a parent container is updated when its descendants are updated', function () {
+    $instance = app(Containers::class)->getInstance(
+        Container::factory()->create(),
+        Container::factory()->create()
+    )
+        ->add([]);
+
+    $parentInstance = app(Containers::class)->getInstance(
+        Container::factory()->create(),
+        $instance->getContainer()
+    )
+        ->add([]);
+
+    $childInstance = app(Containers::class)->getInstance(
+        $instance->getItem(),
+        Item::factory()->create()
+    )
+        ->add(['quantity'  => 5.0, 'value' => 1.5])
+        ->set(['quantity'  => 2.0, 'value' => 1.5]);
+
+    $this->assertEquals(3, $childInstance->getSummary()->value);
+    $this->assertEquals(3, $instance->getSummary()->value);
+    $this->assertEquals(3, $parentInstance->getSummary()->value);
+});

@@ -2,7 +2,7 @@
 
 namespace Psrearick\Containers\Listeners;
 
-use Psrearick\Containers\Actions\UpdateContainerItemAncestry;
+use Psrearick\Containers\Actions\UpdateContainerItem;
 use Psrearick\Containers\Contracts\Item;
 use Psrearick\Containers\Events\ContainerItemWasCreated;
 use Psrearick\Containers\Events\ContainerItemWasUpdated;
@@ -38,7 +38,7 @@ class UpdateContainerItemParentListener
                 $parentContainerItem = app(ContainerItemManagerService::class)
                     ->service($parent, $container)
                     ->containerItem();
-                app(UpdateContainerItemAncestry::class)
+                app(UpdateContainerItem::class)
                     ->execute($parentContainerItem, $containerItem, $event->attributes);
             });
         }

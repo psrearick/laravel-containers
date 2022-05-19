@@ -20,6 +20,7 @@ class EventServiceProvider extends Provider
         ],
         ContainerItemWasUpdated::class => [
             UpdateContainerWithContainerItemListener::class,
+            UpdateContainerItemParentListener::class,
         ],
     ];
 }
