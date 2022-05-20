@@ -343,13 +343,13 @@ class ContainerItemService
             return $this->associateSummary();
         }
 
-        $summary = $this->relation('containerItem', 'summary')->create(array_merge(
+        $summary = app(get_class($this->summaryModel()))::updateOrCreate(
             [
                 $this->foreignKey('summary', 'container')   => $this->container->id,
                 $this->foreignKey('summary', 'item')        => $this->item->id,
             ],
             $attributes
-        ));
+        );
 
         $this->setSummary($summary);
 

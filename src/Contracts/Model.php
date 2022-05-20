@@ -20,6 +20,7 @@ use JsonSerializable;
  * @method \Illuminate\Database\Eloquent\Model refresh()
  * @method \Illuminate\Database\Eloquent\Model update(array $update)
  * @method bool is(?\Illuminate\Database\Eloquent\Model $model)
+ * @method bool save(array $options = [])
  */
 interface Model extends Arrayable, ArrayAccess, CanBeEscapedWhenCastToString, HasBroadcastChannel, Jsonable, JsonSerializable, QueueableEntity, UrlRoutable
 {

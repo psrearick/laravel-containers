@@ -49,4 +49,11 @@ class ContainerItemManagerService
 
         return $found;
     }
+
+    public function unsetService(Container $container, Item $item) : void
+    {
+        $service = $this->service($container, $item);
+        $key     = array_search($service, $this->services, true);
+        unset($this->services[$key]);
+    }
 }

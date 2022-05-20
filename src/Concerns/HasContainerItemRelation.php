@@ -2,6 +2,7 @@
 
 namespace Psrearick\Containers\Concerns;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
 use Psrearick\Containers\Contracts\Container;
@@ -15,7 +16,9 @@ trait HasContainerItemRelation
 {
     public function containerItemExists(Container|Item $record, string $key = '') : bool
     {
-        return $this->getContainerItemRelationOfType(get_class($record), $key)->exists();
+        $containerItem = $this->find($record, $key);
+
+        return $containerItem instanceof ContainerItem;
     }
 
     /**
@@ -24,13 +27,34 @@ trait HasContainerItemRelation
      */
     public function getContainerItem(Container|Item $record, string $key = '') : ContainerItem
     {
-        $containerItem = $this->getContainerItemRelationOfType(get_class($record), $key)->orderByDesc('id')->first();
+        $containerItem = $this->find($record, $key);
 
         if (! $containerItem instanceof ContainerItem) {
             throw new ContainerItemNotFoundException();
         }
 
         return $containerItem;
+    }
+
+    protected function find(Container|Item $record, string $key = '') : HasMany|null|Model
+    {
+        $relatedId             = $record->id;
+        $containerItemRelation = $this->getContainerItemRelationOfType(get_class($record), $key);
+        /** @var ContainerItem $containerItemModel */
+        $containerItemModel    = $containerItemRelation->getRelated();
+
+        if (! method_exists($containerItemModel, 'containerItemRelations')) {
+            throw new ContainerItemNotFoundException('container item relations not defined');
+        }
+
+        $relationType       = $key === 'container' ? 'item' : 'container';
+        $targetRelationName = $containerItemModel->containerItemRelations()[$relationType];
+        $foreignKey         = $containerItemModel->{$targetRelationName}()->getForeignKeyName();
+
+        return $containerItemRelation
+            ->where($foreignKey, '=', $relatedId)
+            ->orderByDesc('id')
+            ->first();
     }
 
     /** Get the key in the relations array used to define this relationship */
@@ -44,7 +68,7 @@ trait HasContainerItemRelation
         $isItem      = $this instanceof Item;
 
         if ($isContainer && $isItem) {
-            return $key;
+            return 'item';
         }
 
         if ($isContainer) {

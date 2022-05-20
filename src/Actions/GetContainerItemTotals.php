@@ -18,6 +18,10 @@ class GetContainerItemTotals
         }
 
         $containerItem  = $service->containerItem();
+        if (! $containerItem) {
+            throw new ContainerItemNotFoundException();
+        }
+
         $attributes     = array_filter(
             $service->computationsForItem(),
             fn ($value, $key) => array_key_exists($key, $containerItem->toArray()),
