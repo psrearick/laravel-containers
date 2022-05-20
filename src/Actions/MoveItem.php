@@ -4,6 +4,7 @@ namespace Psrearick\Containers\Actions;
 
 use Psrearick\Containers\Contracts\Container;
 use Psrearick\Containers\Contracts\Item;
+use Psrearick\Containers\Exceptions\ContainerItemNotFoundException;
 use Psrearick\Containers\Services\ContainerItemManagerService;
 
 class MoveItem
@@ -12,7 +13,7 @@ class MoveItem
     {
         $service = app(ContainerItemManagerService::class)->service($container, $item);
         if (! $service->containerItem()) {
-            return;
+            throw new ContainerItemNotFoundException();
         }
 
         if ($service->summarized()) {
