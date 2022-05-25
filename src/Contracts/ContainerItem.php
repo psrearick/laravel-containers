@@ -9,6 +9,7 @@ use Psrearick\Containers\Tests\ImplementationClasses\ContainerItemSummary;
  * @method ContainerItem update(array $update)
  * @method ContainerItem save()
  * @method ContainerItem create(array $values)
+ * @method bool is(?ContainerItem $model)
  *
  * @property ContainerItemSummary $containerItemSummary
  */

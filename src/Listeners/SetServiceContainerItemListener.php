@@ -5,7 +5,7 @@ namespace Psrearick\Containers\Listeners;
 use Psrearick\Containers\Events\ContainerItemWasCreated;
 use Psrearick\Containers\Services\ContainerItemManagerService;
 
-class SetServiceContainerItem
+class SetServiceContainerItemListener
 {
     public function handle(ContainerItemWasCreated $event) : void
     {

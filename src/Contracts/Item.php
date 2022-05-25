@@ -7,6 +7,7 @@ use Illuminate\Support\Collection;
 
 /**
  * @method Item refresh()
+ * @method bool is(?Item $model)
  */
 interface Item extends Model
 {

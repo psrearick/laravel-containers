@@ -13,7 +13,6 @@ class ItemFactory extends Factory
     {
         return [
             'name'  => $this->faker->words(3, true),
-            'value' => $this->faker->randomFloat(2, 1, 10),
         ];
     }
 }

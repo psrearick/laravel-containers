@@ -10,7 +10,6 @@ return new class () extends Migration {
         Schema::create('items', static function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->float('value');
             $table->timestamps();
         });
     }

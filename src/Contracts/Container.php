@@ -7,6 +7,7 @@ use Illuminate\Support\Collection;
 
 /**
  * @method Container refresh()
+ * @method bool is(?Container $model)
  * @property Collection $containerItems
  */
 interface Container extends Model

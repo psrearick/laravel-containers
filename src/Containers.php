@@ -2,15 +2,15 @@
 
 namespace Psrearick\Containers;
 
-use Psrearick\Containers\Actions\AddItemToContainer;
+use Event;
 use Psrearick\Containers\Actions\GetContainerItemTotals;
-use Psrearick\Containers\Actions\RemoveItemFromContainer;
-use Psrearick\Containers\Actions\RemoveItemPartialFromContainer;
-use Psrearick\Containers\Actions\SetContainerItemAttributes;
 use Psrearick\Containers\Contracts\Container;
 use Psrearick\Containers\Contracts\ContainerItem;
 use Psrearick\Containers\Contracts\Item;
 use Psrearick\Containers\Contracts\Summary;
+use Psrearick\Containers\Events\AddingItemToContainer;
+use Psrearick\Containers\Events\RemovingItemFromContainer;
+use Psrearick\Containers\Events\SettingContainerItemAttributes;
 
 class Containers
 {
@@ -24,9 +24,9 @@ class Containers
         $this->item      = null;
     }
 
-    public function add(array $attributes) : self
+    public function add(array $attributes = []) : self
     {
-        app(AddItemToContainer::class)->execute($this->container, $this->item, $attributes);
+        Event::dispatch(new AddingItemToContainer($this->container, $this->item, $attributes));
 
         return $this;
     }
@@ -88,20 +88,14 @@ class Containers
 
     public function remove(array $attributes = []) : self
     {
-        if ($attributes) {
-            app(RemoveItemPartialFromContainer::class)->execute($this->container, $this->item, $attributes);
-
-            return $this;
-        }
-
-        app(RemoveItemFromContainer::class)->execute($this->container, $this->item);
+        Event::dispatch(new RemovingItemFromContainer($this->container, $this->item, $attributes));
 
         return $this;
     }
 
     public function set(array $attributes) : self
     {
-        app(SetContainerItemAttributes::class)->execute($this->container, $this->item, $attributes);
+        Event::dispatch(new SettingContainerItemAttributes($this->container, $this->item, $attributes));
 
         return $this;
     }
