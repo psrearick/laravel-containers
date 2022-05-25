@@ -10,9 +10,9 @@ use Psrearick\Containers\Tests\ImplementationClasses\Item;
 use Psrearick\Containers\Tests\ImplementationClasses\ItemNotSummarized;
 
 test('an item cannot be removed from a container that it is not currently in', function () {
-    $container = Container::factory()->create();
+    $container    = Container::factory()->create();
     $newContainer = Container::factory()->create();
-    $item = Item::factory()->create();
+    $item         = Item::factory()->create();
 
     $this->expectException(ContainerItemNotFoundException::class);
     app(MoveItem::class)->execute($container, $item, $newContainer);
