@@ -15,7 +15,8 @@ class TestCase extends Orchestra
         parent::setUp();
 
         Factory::guessFactoryNamesUsing(
-            static fn (string $modelName) => 'Psrearick\\Containers\\Tests\\Factories\\' . class_basename($modelName) . 'Factory'
+            static fn (string $modelName) => 'Psrearick\\Containers\\Tests\\CardManagement\\Factories\\' . class_basename($modelName) . 'Factory'
+//            static fn (string $modelName) => 'Psrearick\\Containers\\Tests\\Factories\\' . class_basename($modelName) . 'Factory'
         );
     }
 
@@ -23,15 +24,17 @@ class TestCase extends Orchestra
     {
         config()->set('database.default', 'testing');
 
-        (include 'Migrations/create_container_items_table.php')->up();
-        (include 'Migrations/create_container_outers_table.php')->up();
-        (include 'Migrations/create_containers_table.php')->up();
-        (include 'Migrations/create_items_table.php')->up();
-        (include 'Migrations/create_outers_table.php')->up();
-        (include 'Migrations/create_container_item_summaries_table.php')->up();
-        (include 'Migrations/create_not_summarized_tables.php')->up();
-        (include 'Migrations/create_container_container_table.php')->up();
-        (include 'Migrations/create_container_container_summaries_table.php')->up();
+        (include 'CardManagement/create_card_management_tables.php')->up();
+
+//        (include 'Migrations/create_container_items_table.php')->up();
+//        (include 'Migrations/create_container_outers_table.php')->up();
+//        (include 'Migrations/create_containers_table.php')->up();
+//        (include 'Migrations/create_items_table.php')->up();
+//        (include 'Migrations/create_outers_table.php')->up();
+//        (include 'Migrations/create_container_item_summaries_table.php')->up();
+//        (include 'Migrations/create_not_summarized_tables.php')->up();
+//        (include 'Migrations/create_container_container_table.php')->up();
+//        (include 'Migrations/create_container_container_summaries_table.php')->up();
     }
 
     protected function getPackageProviders($app) : array

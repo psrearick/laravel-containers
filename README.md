@@ -1,4 +1,4 @@
-# This is my package laravel-containers
+# laravel-containers
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/psrearick/laravel-containers.svg?style=flat-square)](https://packagist.org/packages/psrearick/laravel-containers)
 [![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/psrearick/laravel-containers/run-tests?label=tests)](https://github.com/psrearick/laravel-containers/actions?query=workflow%3Arun-tests+branch%3Amain)
@@ -6,14 +6,38 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/psrearick/laravel-containers.svg?style=flat-square)](https://packagist.org/packages/psrearick/laravel-containers)
 
 
+
+## Features
+
+* An item can be added to a container
+* Items can be moved between containers
+* Items can be removed from containers
+* An item can be in multiple containers
+* Items can have characteristics
+* All items within a container have a quantity
+
+
+* Containers can have multiple items
+* Containers can be infinitely nested
+* Containers can compute characteristic summaries of their items
+* Containers can compute characteristic summaries of their sub-containers
+* Nested containers can be moved between containers
+* Nested containers can be moved out of containers
+* Containers can be deleted
+* Container characteristic summaries are updated when an item is added, removed, or moved
+* Container characteristic summaries are updated when one of its item's characteristics are updated
+* Containers cannot have a quantity
+
+
+* Containers and items can exist independently of each other
+* Items cannot have a quantity if they are not in a container
+* An item cannot be in a container if the item's quantity is 0
+
+
+### Maybe?
+* Containers can have characteristics
+* Containers and items can be searched by characteristic
 * ContainerItem's can store item change history or be singleton, displaying the most recent data
-
-
-
-
-
-
-
 
 
 
@@ -40,25 +64,9 @@ You can publish the config file with:
 php artisan vendor:publish --tag="laravel-containers-config"
 ```
 
-This is the contents of the published config file:
-
-```php
-return [
-];
-```
-
-Optionally, you can publish the views using
-
-```bash
-php artisan vendor:publish --tag="laravel-containers-views"
-```
-
 ## Usage
 
-```php
-$containers = new Psrearick\Containers();
-echo $containers->echoPhrase('Hello, Psrearick!');
-```
+See [EXAMPLE](EXAMPLE.md) for usage details.
 
 ## Testing
 
@@ -74,14 +82,9 @@ Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed re
 
 Please see [CONTRIBUTING](.github/CONTRIBUTING.md) for details.
 
-## Security Vulnerabilities
-
-Please review [our security policy](../../security/policy) on how to report security vulnerabilities.
-
 ## Credits
 
 - [Phillip Rearick](https://github.com/psrearick)
-- [All Contributors](../../contributors)
 
 ## License
 
